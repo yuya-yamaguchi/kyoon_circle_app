@@ -10,7 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_20_071708) do
+ActiveRecord::Schema.define(version: 2020_12_20_124906) do
+
+  create_table "studio_reserves", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "studio_id", null: false
+    t.bigint "user_id", null: false
+    t.date "date", null: false
+    t.integer "hour", default: 0
+    t.integer "minutes", default: 0
+    t.integer "reserve_type", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["studio_id"], name: "index_studio_reserves_on_studio_id"
+    t.index ["user_id"], name: "index_studio_reserves_on_user_id"
+  end
+
+  create_table "studios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "fee", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_reserves", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "studio_id", null: false
+    t.date "date", null: false
+    t.string "start_time", null: false
+    t.string "end_time", null: false
+    t.integer "payment_fee", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["studio_id"], name: "index_user_reserves_on_studio_id"
+    t.index ["user_id"], name: "index_user_reserves_on_user_id"
+  end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "provider", default: "email", null: false
