@@ -7,22 +7,51 @@
         <a class="header-menu">スタジオ予約</a>
         <a class="header-menu">宿泊予約</a>
       </div>
-      <div v-if='!$store.getters["user/id"]'>
+      <template v-if='!$store.getters["user/id"]'>
         <router-link to="/signup" class="sign-btn">新規会員登録</router-link>
-        <router-link to="/signin" class="sign-btn">ログイン</router-link>
-      </div>
-      <div v-else class="header-menus">
-        <p class="header-menu">
-          {{ $store.getters["user/email"] }}
-        </p>
-      </div>
+        <router-link to="/login" class="sign-btn">ログイン</router-link>
+      </template>
+      <template v-else class="header-menus">
+        <p class="header-menu">{{ $store.getters["user/email"] }}</p>
+        <button type="submit" @click="logout()" class="sign-btn">ログアウト</button>
+      </template>
     </div>
   </header>
 </template>
 
 <script>
+import axios from 'axios';
+
+const hostName = 'localhost:3000';
+
 export default {
-  
+  methods: {
+    logout: function() {
+      console.log(this.$store.getters['user/uid']);
+      // API側にてログアウトを行う
+      axios.delete(
+        `http://${hostName}/api/auth/sign_out`,
+        {
+          data: {
+            "uid":          this.$store.getters['user/uid'],
+            "access-token": this.$store.getters['user/token'],
+            "client":       this.$store.getters['user/client']
+          }
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        // FRONT側のユーザ情報を削除
+        this.$store.dispatch("user/logout");
+        this.$router.push({
+          name: "Top"
+        })
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    }
+  }
 }
 </script>
 

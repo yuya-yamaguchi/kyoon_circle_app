@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Top from '@/views/Top.vue'
 import Signup from '@/views/auth/Signup.vue'
+import Login from '@/views/auth/Login.vue'
 
 const routes = [
   // トップページ
@@ -14,6 +15,12 @@ const routes = [
     path: '/signup',
     name: 'Signup',
     component: Signup
+  },
+  // ログイン
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   }
 ]
 
