@@ -1,19 +1,26 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Top from '@/views/Top.vue'
+import Signup from '@/views/auth/Signup.vue'
+import Login from '@/views/auth/Login.vue'
 
 const routes = [
+  // トップページ
   {
     path: '/',
     name: 'Top',
     component: Top
   },
+  // 新規会員登録
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/signup',
+    name: 'Signup',
+    component: Signup
+  },
+  // ログイン
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   }
 ]
 

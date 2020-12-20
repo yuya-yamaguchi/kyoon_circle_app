@@ -8,7 +8,8 @@
 footer {
   width: 100%;
   margin: 0 auto;
-  padding: 30px 0;
+  height: 80px;
+  line-height: 80px;
   text-align: center;
   background: #333;
   color: #FFF;
