@@ -7,14 +7,22 @@
         <a class="header-menu">スタジオ予約</a>
         <a class="header-menu">宿泊予約</a>
       </div>
-      <router-link to="/signup" class="sign-btn">新規会員登録</router-link>
-      <router-link to="/signin" class="sign-btn">ログイン</router-link>
+      <div v-if='!$store.getters["user/id"]'>
+        <router-link to="/signup" class="sign-btn">新規会員登録</router-link>
+        <router-link to="/signin" class="sign-btn">ログイン</router-link>
+      </div>
+      <div v-else class="header-menus">
+        <p class="header-menu">
+          {{ $store.getters["user/email"] }}
+        </p>
+      </div>
     </div>
   </header>
 </template>
 
 <script>
 export default {
+  
 }
 </script>
 
@@ -67,7 +75,7 @@ header{
       color:#FFF;
       font-size: 12px;
       font-weight: bold;
-      background: #13b1c0;
+      background: linear-gradient(70deg, rgb(85, 85, 236), #13b1c0);
       border: 1px solid;
       margin: 0 10px;
       margin-top: 15px;

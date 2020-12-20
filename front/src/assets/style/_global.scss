@@ -22,9 +22,20 @@
   }
 }
 
+.auth-container {
+  width: 700px;
+  margin: 50px auto;
+  padding: 30px 0;
+  box-shadow: 10px 10px 10px rgba(70, 70, 70, 0.2);
+}
+
 .main-title {
   font-size: 30px;
   font-weight: bold;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .default-button {
@@ -37,6 +48,40 @@
   background: linear-gradient(70deg, rgb(85, 85, 236), #13b1c0);
   color: #FFF;
   cursor: pointer;
+}
+
+.form-item{
+  width:  60%;
+  min-width: 300px;
+  margin: 40px auto;
+  text-align: left;
+  p {
+    text-align: left;
+    font-size: 20px;
+    margin: 5px;
+  }
+  input {
+    width: 100%;
+    padding: 5px;
+  }
+  textarea {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    min-height: 100px;
+    padding: 5px;
+  }
+}
+
+.error-messages {
+  margin: 0 auto;
+  width: 60%;
+  background: rgb(241, 154, 154);
+  li {
+    color: rgb(240, 48, 48);
+    padding: 5px;
+    margin-left: 10px;
+  }
 }
 
 .comming-soon {

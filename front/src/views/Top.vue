@@ -112,7 +112,7 @@ export default {
       margin-left: 20px;
       position: relative;
       &--explain {
-        font-size: 20px;
+        font-size: 18px;
         line-height: 30px;
       }
       &--btn {
@@ -132,7 +132,7 @@ export default {
       margin-right: 20px;
       position: relative;
       &--explain {
-        font-size: 20px;
+        font-size: 18px;
         line-height: 30px;
       }
       &--btn {
