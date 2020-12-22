@@ -56,6 +56,16 @@
   cursor: pointer;
 }
 
+.close-button {
+  font-size: 2rem;
+  float: right;
+  color: gray;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
 .form-item{
   width:  60%;
   min-width: 300px;
@@ -82,7 +92,7 @@
 .error-messages {
   margin: 0 auto;
   width: 60%;
-  background: rgb(241, 154, 154);
+  background: rgb(241, 202, 202);
   li {
     color: rgb(240, 48, 48);
     padding: 5px;

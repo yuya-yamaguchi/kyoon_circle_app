@@ -1,5 +1,6 @@
 <template>
   <div class="single-container">
+    <ReserveModal v-if="clickReserve!=''" :click-reserve-prop="clickReserve" :studio-prop="studio" @from-child="closeModal()"/>
     <div class="studio-reserve-container">
       {{ studio.name }}
       <h3 class="sub-title">予約表</h3>
@@ -18,7 +19,7 @@
           </td>
           <template v-for="(r, j) in reserve" :key="j">
             <td v-if="r.reserved_flg" class="already-reserved">×</td>
-            <td v-else @click="postStudioReserve(r)"  class="can-reserve"></td>
+            <td v-else @click="displayReserveModal(r)"  class="can-reserve"></td>
           </template>
         </tr>
       </table>
@@ -28,15 +29,21 @@
 
 <script>
 import axios from 'axios';
+import ReserveModal from '@/components/ReserveModal.vue';
 
 const hostName = 'localhost:3000';
 
 export default {
+  components: {
+    ReserveModal
+  },
   data() {
     return {
       studio: "",
       reserves: [],
-      weeks: []
+      weeks: [],
+      // Modal関連
+      clickReserve: ""
     }
   },
   methods: {
@@ -53,24 +60,13 @@ export default {
         console.log(error);
       });
     },
-    postStudioReserve: function(reserve){
-      axios.post(
-        `http://${hostName}/api/studios/${this.$route.params.id}/reserves`,
-        {
-          user_id: this.$store.getters["user/id"],
-          studio_reserve: {
-            date: reserve.date,
-            hour: reserve.hour,
-            minutes: reserve.minutes
-          }
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // スタジオ予約のモーダルを表示する
+    displayReserveModal: function(reserve) {
+      console.log(reserve);
+      this.clickReserve = reserve;
+    },
+    closeModal: function() {
+      this.clickReserve = ''
     }
   },
   mounted: function() {

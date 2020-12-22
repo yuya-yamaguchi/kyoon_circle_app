@@ -16,8 +16,7 @@ ActiveRecord::Schema.define(version: 2020_12_20_124906) do
     t.bigint "studio_id", null: false
     t.bigint "user_id", null: false
     t.date "date", null: false
-    t.integer "hour", default: 0
-    t.integer "minutes", default: 0
+    t.integer "time", default: 0
     t.integer "reserve_type", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -36,8 +35,8 @@ ActiveRecord::Schema.define(version: 2020_12_20_124906) do
     t.bigint "user_id", null: false
     t.bigint "studio_id", null: false
     t.date "date", null: false
-    t.string "start_time", null: false
-    t.string "end_time", null: false
+    t.integer "start_time", null: false
+    t.integer "end_time", null: false
     t.integer "payment_fee", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

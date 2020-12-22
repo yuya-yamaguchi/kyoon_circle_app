@@ -13,10 +13,9 @@ class Api::StudiosController < ApplicationController
                                    .where('date between ? and ?', weeks[0], weeks[6])
     reserved = []
     studio_reserves.each do |studio_reserve|
-      reserved << sprintf("%s%02d%02d",
+      reserved << sprintf("%s%04d",
                           studio_reserve.date.strftime("%Y%m%d"),
-                          studio_reserve.hour,
-                          studio_reserve.minutes)
+                          studio_reserve.time)
     end
     # 0:00〜23:30をセット
     times = set_24times
