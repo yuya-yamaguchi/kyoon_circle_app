@@ -1,6 +1,10 @@
 <template>
   <div class="single-container">
-    <ReserveModal v-if="clickReserve!=''" :click-reserve-prop="clickReserve" :studio-prop="studio" @from-child="closeModal()"/>
+    <ReserveModal v-if="clickReserve!=''"
+      :click-reserve-prop="clickReserve"
+      :studio-prop="studio"
+      @from-child="closeModal()"
+      @reserve-success="getStudioStatus()"/>
     <div class="studio-reserve-container">
       {{ studio.name }}
       <h3 class="sub-title">予約表</h3>
@@ -62,7 +66,6 @@ export default {
     },
     // スタジオ予約のモーダルを表示する
     displayReserveModal: function(reserve) {
-      console.log(reserve);
       this.clickReserve = reserve;
     },
     closeModal: function() {
@@ -109,5 +112,6 @@ tr {
   background: lightgray;
   color: #888;
   text-align: center;
+  border: 1px dotted;
 }
 </style>
