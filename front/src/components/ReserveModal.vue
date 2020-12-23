@@ -105,7 +105,7 @@ export default {
         minutes: ""
       },
       months: [...Array(12).keys()].map(i => ++i),
-      hours:  [...Array(24).keys()].map(i => i++),
+      hours:  [...Array(25).keys()].map(i => i++),
       mins:   [0, 30],
       selected: {
         year:  this.clickReserveProp.date.substr(0, 4),
@@ -114,7 +114,7 @@ export default {
         start_hour: this.clickReserveProp.hour,
         start_min:  this.clickReserveProp.minutes,
         end_hour: this.clickReserveProp.hour + 1,
-        end_min:  this.clickReserveProp.minutes,
+        end_min:  this.clickReserveProp.end_minutes
       },
       errorMessages: {
         date: [],
