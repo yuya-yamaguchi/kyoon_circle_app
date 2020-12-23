@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Top from '@/views/Top.vue'
 import Signup from '@/views/auth/Signup.vue'
 import Login from '@/views/auth/Login.vue'
+import StudioShow from '@/views/studio/Show.vue'
 
 const routes = [
   // トップページ
@@ -21,6 +22,12 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  // スタジオ詳細
+  {
+    path: '/studios/:id',
+    name: 'StudioShow',
+    component: StudioShow
   }
 ]
 

@@ -34,6 +34,11 @@
   font-weight: bold;
 }
 
+.sub-title {
+  font-size: 24px;
+  margin: 20px 0;
+}
+
 .text-center {
   text-align: center;
 }
@@ -47,6 +52,17 @@
   font-weight: bold;
   background: linear-gradient(70deg, rgb(85, 85, 236), #13b1c0);
   color: #FFF;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.close-button {
+  font-size: 2rem;
+  float: right;
+  color: gray;
+  background-color: transparent;
+  border: none;
+  outline: none;
   cursor: pointer;
 }
 
@@ -76,7 +92,7 @@
 .error-messages {
   margin: 0 auto;
   width: 60%;
-  background: rgb(241, 154, 154);
+  background: rgb(241, 202, 202);
   li {
     color: rgb(240, 48, 48);
     padding: 5px;

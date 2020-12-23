@@ -1,0 +1,2 @@
+class StudioReserve < ApplicationRecord
+end

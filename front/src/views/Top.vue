@@ -21,7 +21,7 @@
               広さ30畳でライブもできる広々スタジオです。<br>
               バンド練習やライブなどにご利用ください！
             </p>
-            <button class="about-studio--right--btn default-button">スタジオ予約</button>
+            <router-link to="/studios/1" class="about-studio--right--btn default-button">スタジオ予約</router-link>
           </div>
         </div>
       </div>

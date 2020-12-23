@@ -1,0 +1,2 @@
+class UserReserve < ApplicationRecord
+end
