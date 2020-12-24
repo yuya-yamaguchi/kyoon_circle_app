@@ -59,6 +59,7 @@ export default {
           "user/updateUser",
           {
             id:     response.data.data.id,
+            name:   response.data.data.name,
             email:  response.data.data.email,
             token:  response.headers['access-token'],
             uid:    response.headers['uid'],

@@ -1,5 +1,6 @@
 const state = {
   id:     0,
+  name:   '',
   email:  '',
   token:  '',
   uid:    '',
@@ -9,6 +10,7 @@ const state = {
 
 const getters = {
   id:     state => state.id,
+  name:   state => state.name,
   email:  state => state.email,
   token:  state => state.token,
   uid:    state => state.uid,
@@ -19,6 +21,7 @@ const getters = {
 const mutations = {
   logout (state) {
     state.id     = 0;
+    state.name   = null;
     state.email  = null;
     state.token  = null;
     state.uid    = null;
@@ -27,6 +30,7 @@ const mutations = {
   },
   updateUser(state, user) {
     state.id     = user.id;
+    state.name     = user.name;
     state.email  = user.email;
     state.token  = user.token;
     state.uid    = user.uid;

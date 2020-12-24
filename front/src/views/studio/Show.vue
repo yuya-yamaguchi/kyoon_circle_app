@@ -146,10 +146,12 @@ export default {
     margin-left: 10px;
     table {
       margin-top: 20px;
-      border: 1px solid;
+      border: 1px solid #333;
       th {
-        border: 1px solid;
+        border-bottom: 1px solid #FFF;
         padding: 10px;
+        background: #333;
+        color: #FFF;
       }
       td {
         border: 1px solid;
@@ -169,7 +171,7 @@ export default {
   }
 
   th {
-    border: 1px solid;
+    border-bottom: 1px solid;
     text-align: center;
     width: 100px;
     background: #333;

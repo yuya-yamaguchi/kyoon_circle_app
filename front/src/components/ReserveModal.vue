@@ -113,7 +113,7 @@ export default {
         day:   this.clickReserveProp.date.substr(8, 2),
         start_hour: this.clickReserveProp.hour,
         start_min:  this.clickReserveProp.minutes,
-        end_hour: this.clickReserveProp.hour + 1,
+        end_hour: this.clickReserveProp.end_hour,
         end_min:  this.clickReserveProp.end_minutes
       },
       errorMessages: {

@@ -3,6 +3,8 @@ import Top from '@/views/Top.vue'
 import Signup from '@/views/auth/Signup.vue'
 import Login from '@/views/auth/Login.vue'
 import StudioShow from '@/views/studio/Show.vue'
+import MypageTop from '@/views/mypage/Top.vue'
+import MypageProfile from '@/views/mypage/Profile.vue'
 
 const routes = [
   // トップページ
@@ -28,6 +30,18 @@ const routes = [
     path: '/studios/:id',
     name: 'StudioShow',
     component: StudioShow
+  },
+  // マイページ
+  {
+    path: '/mypage',
+    name: 'MypageTop',
+    component: MypageTop
+  },
+  // プロフィール編集
+  {
+    path: '/mypage/profile',
+    name: 'MypageProfile',
+    component: MypageProfile
   }
 ]
 

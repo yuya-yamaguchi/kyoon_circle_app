@@ -8,7 +8,8 @@ Rails.application.routes.draw do
       scope module: :studio do
         resources :reserves, only: [:create]
       end
-      # resources :studio_reserves, only: [:create]
     end
+
+    resources :mypage
   end
 end
