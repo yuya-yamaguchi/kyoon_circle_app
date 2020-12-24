@@ -1,6 +1,7 @@
 <template>
   <div>
     <router-link to="/mypage" class="side-menu">マイページトップ</router-link>
+    <router-link to="/mypage/profile" class="side-menu">プロフィール編集</router-link>
   </div>
 </template>
 
