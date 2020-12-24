@@ -8,14 +8,14 @@
   display: flex;
   justify-content: space-between;
   margin: 50px 0;
-  .side-container{
-    width: 30%;
+  &--left {
+    width: 25%;
     background: var(--main_color);
     box-sizing: border-box;
     padding: 10px;
   }
-  .main-container{
-    width: 65%;
+  &--right {
+    width: 73%;
     background: var(--main_color);
     box-sizing: border-box;
     padding: 10px;

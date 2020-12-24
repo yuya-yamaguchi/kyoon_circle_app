@@ -3,6 +3,7 @@ import Top from '@/views/Top.vue'
 import Signup from '@/views/auth/Signup.vue'
 import Login from '@/views/auth/Login.vue'
 import StudioShow from '@/views/studio/Show.vue'
+import Mypage from '@/views/Mypage.vue'
 
 const routes = [
   // トップページ
@@ -28,6 +29,12 @@ const routes = [
     path: '/studios/:id',
     name: 'StudioShow',
     component: StudioShow
+  },
+  // マイページ
+  {
+    path: '/mypage',
+    name: 'Mypage',
+    component: Mypage
   }
 ]
 

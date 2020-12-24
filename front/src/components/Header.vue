@@ -12,7 +12,7 @@
         <router-link to="/login" class="sign-btn">ログイン</router-link>
       </template>
       <template v-else class="header-menus">
-        <p class="header-menu">{{ $store.getters["user/email"] }}</p>
+        <router-link to="/mypage" class="header-menu">{{ $store.getters["user/name"] }}</router-link>
         <button type="submit" @click="logout()" class="sign-btn">ログアウト</button>
       </template>
     </div>
@@ -76,6 +76,8 @@ header{
     display: flex;
     justify-content: flex-end;
     .header-menu {
+      text-decoration: none;
+      color: #FFF;
       line-height: 60px;
       margin: 0 20px;
       font-weight: bold;
