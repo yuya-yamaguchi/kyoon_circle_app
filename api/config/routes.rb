@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :mypage
+    resources :mypage, only: [:show, :update]
+
+    resources :events, only: [:create]
   end
 end

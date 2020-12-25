@@ -5,6 +5,7 @@ import Login from '@/views/auth/Login.vue'
 import StudioShow from '@/views/studio/Show.vue'
 import MypageTop from '@/views/mypage/Top.vue'
 import MypageProfile from '@/views/mypage/Profile.vue'
+import EventNew from '@/views/event/New.vue'
 
 const routes = [
   // トップページ
@@ -42,6 +43,12 @@ const routes = [
     path: '/mypage/profile',
     name: 'MypageProfile',
     component: MypageProfile
+  },
+  // イベント登録
+  {
+    path: '/event/new',
+    name: 'EventNew',
+    component: EventNew
   }
 ]
 
