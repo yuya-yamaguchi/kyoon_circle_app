@@ -7,7 +7,13 @@
     <div class="single-container">
       <div class="top-container">
         <p class="main-title">イベント一覧</p>
-        <div class="comming-soon">Comming Soon</div>
+        <div v-for="(event, i) in events" :key="i" class="event-card">
+          <p>{{ event.title }}</p>
+          <p>{{ event.details }}</p>
+          <p>開催日時：{{ event.start_datetime }} 〜 {{ event.end_datetime }}</p>
+          <p>開催場所：{{ event.place }}</p>
+          <p>料金：{{ event.fee }}</p>
+        </div>
       </div>
       <div class="top-container">
         <p class="main-title">スタジオ</p>
@@ -53,14 +59,14 @@ const hostName = 'localhost:3000';
 export default {
   data() {
     return {
-      test: ""
+      events: []
     }
   },
   methods: {
     getTop: function(){
       axios.get(`http://${hostName}/api/top`)
       .then((response) => {
-        this.test = response.data;
+        this.events = response.data;
       })
       .catch(function(error) {
         console.log(error);
@@ -95,6 +101,11 @@ export default {
   margin: auto;
   margin-bottom: 200px;
   width: 95%;
+  .event-card {
+    border: 1px solid;
+    border-radius: 5px;
+    margin: 10px;
+  }
   .about-studio {
     display: flex;
     justify-content: space-between;

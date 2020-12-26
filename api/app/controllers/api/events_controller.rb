@@ -17,9 +17,8 @@ class Api::EventsController < ApplicationController
                   :end_min,
                   :place,
                   :fee,
-                  :max_entry
-                  :event_type,
-                )
+                  :max_entry,
+                  :event_type)
           .merge(user_id: params[:user_id])
   end
 
