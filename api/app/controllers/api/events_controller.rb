@@ -1,5 +1,11 @@
 class Api::EventsController < ApplicationController
 
+
+  def show
+    event = Event.find(params[:id])
+    render json: event
+  end
+
   def create
     event_params = require_event_params
     Event.create!(set_event_params(event_params))

@@ -6,6 +6,7 @@ import StudioShow from '@/views/studio/Show.vue'
 import MypageTop from '@/views/mypage/Top.vue'
 import MypageProfile from '@/views/mypage/Profile.vue'
 import EventNew from '@/views/event/New.vue'
+import EventShow from '@/views/event/Show.vue'
 
 const routes = [
   // トップページ
@@ -49,6 +50,12 @@ const routes = [
     path: '/event/new',
     name: 'EventNew',
     component: EventNew
+  },
+  // イベント詳細
+  {
+    path: '/event/:id',
+    name: 'EventShow',
+    component: EventShow
   }
 ]
 

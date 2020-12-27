@@ -12,6 +12,6 @@ Rails.application.routes.draw do
 
     resources :mypage, only: [:show, :update]
 
-    resources :events, only: [:create]
+    resources :events, only: [:show, :create]
   end
 end

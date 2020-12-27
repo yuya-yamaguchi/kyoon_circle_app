@@ -8,11 +8,13 @@
       <div class="top-container">
         <p class="main-title">イベント一覧</p>
         <div v-for="(event, i) in events" :key="i" class="event-card">
-          <p>{{ event.title }}</p>
-          <p>{{ event.details }}</p>
-          <p>開催日時：{{ event.start_datetime }} 〜 {{ event.end_datetime }}</p>
-          <p>開催場所：{{ event.place }}</p>
-          <p>料金：{{ event.fee }}</p>
+          <router-link :to="`/event/${event.id}`">
+            <p>{{ event.title }}</p>
+            <p>{{ event.details }}</p>
+            <p>開催日時：{{ event.start_datetime }} 〜 {{ event.end_datetime }}</p>
+            <p>開催場所：{{ event.place }}</p>
+            <p>料金：{{ event.fee }}</p>
+          </router-link>
         </div>
       </div>
       <div class="top-container">
