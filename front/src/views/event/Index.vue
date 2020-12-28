@@ -1,6 +1,8 @@
 <template>
   <div class="single-container">
-    {{ event.id }}
+    <div v-for="(event, i) in events" :key="i">
+      {{ event.id }}
+    </div>
   </div>
 </template>
 
@@ -12,18 +14,16 @@ const hostName = 'localhost:3000';
 export default {
   data() {
     return {
-      event: ""
+      events: []
     }
   },
   methods: {
-    getEvent: function() {
-      console.log("a")
+    getEvents: function() {
       axios.get(
-        `http://${hostName}/api/events/${this.$route.params.id}`
+        `http://${hostName}/api/events`
       )
       .then((response) => {
-        console.log(response);
-        this.event = response.data;
+        this.events = response.data;
       })
       .catch(function(error) {
         console.log(error);
@@ -31,7 +31,7 @@ export default {
     }
   },
   mounted: function() {
-    this.getEvent();
+    this.getEvents();
   }
 }
 </script>

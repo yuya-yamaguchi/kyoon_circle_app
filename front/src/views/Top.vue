@@ -9,6 +9,10 @@
         <p class="main-title">イベント一覧</p>
         <div v-for="(event, i) in events" :key="i" class="event-card">
           <router-link :to="`/event/${event.id}`">
+            <p v-if="event.event_type=='1'">セッション</p>
+            <p v-else-if="event.event_type=='2'">飲み会・懇親会</p>
+            <p v-else-if="event.event_type=='3'">合宿</p>
+            <p v-else-if="event.event_type=='4'">その他</p>
             <p>{{ event.title }}</p>
             <p>{{ event.details }}</p>
             <p>開催日時：{{ event.start_datetime }} 〜 {{ event.end_datetime }}</p>
