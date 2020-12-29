@@ -1,6 +1,9 @@
 <template>
   <div class="single-container">
-    {{ event.id }}
+    <p class="main-title">{{ event.title }}</p>
+    <p class="event--details">{{ event.details }}</p>
+    <p class="event--details">開催日時 {{ event.start_datetime }}</p>
+    <p class="event--fee">参加費 {{ event.fee }}</p>
   </div>
 </template>
 

@@ -7,19 +7,8 @@
     <div class="single-container">
       <div class="top-container">
         <p class="main-title">イベント一覧</p>
-        <div v-for="(event, i) in events" :key="i" class="event-card">
-          <router-link :to="`/event/${event.id}`">
-            <p v-if="event.event_type=='1'">セッション</p>
-            <p v-else-if="event.event_type=='2'">飲み会・懇親会</p>
-            <p v-else-if="event.event_type=='3'">合宿</p>
-            <p v-else-if="event.event_type=='4'">その他</p>
-            <p>{{ event.title }}</p>
-            <p>{{ event.details }}</p>
-            <p>開催日時：{{ event.start_datetime }} 〜 {{ event.end_datetime }}</p>
-            <p>開催場所：{{ event.place }}</p>
-            <p>料金：{{ event.fee }}</p>
-          </router-link>
-        </div>
+        <EventList v-if="events.length!=0" :events-prop="events"/>
+        <router-link to="/events" class="events-all">すべてのイベントを見る</router-link>
       </div>
       <div class="top-container">
         <p class="main-title">スタジオ</p>
@@ -59,10 +48,14 @@
 
 <script>
 import axios from 'axios';
+import EventList from '@/components/EventList.vue';
 
 const hostName = 'localhost:3000';
 
 export default {
+  components: {
+    EventList
+  },
   data() {
     return {
       events: []
@@ -105,12 +98,16 @@ export default {
 
 .top-container {
   margin: auto;
-  margin-bottom: 200px;
+  margin-bottom: 100px;
   width: 95%;
-  .event-card {
-    border: 1px solid;
-    border-radius: 5px;
-    margin: 10px;
+  .events-all {
+    display: block;
+    text-decoration: none;
+    margin: 0 auto;
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
   }
   .about-studio {
     display: flex;
