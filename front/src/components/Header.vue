@@ -3,7 +3,7 @@
     <router-link to="/" class="main-title">京音</router-link>
     <div class="header-menus">
       <div class="header-menus">
-        <a class="header-menu">イベント一覧</a>
+        <router-link to="/events" class="header-menu">イベント一覧</router-link>
         <a class="header-menu">スタジオ予約</a>
         <a class="header-menu">宿泊予約</a>
       </div>

@@ -109,8 +109,8 @@ export default {
       mins:   [0, 30],
       selected: {
         year:  this.clickReserveProp.date.substr(0, 4),
-        month: this.clickReserveProp.date.substr(5, 2),
-        day:   this.clickReserveProp.date.substr(8, 2),
+        month: Number(this.clickReserveProp.date.substr(5, 2)),
+        day:   Number(this.clickReserveProp.date.substr(8, 2)),
         start_hour: this.clickReserveProp.hour,
         start_min:  this.clickReserveProp.minutes,
         end_hour: this.clickReserveProp.end_hour,

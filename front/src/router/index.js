@@ -5,6 +5,9 @@ import Login from '@/views/auth/Login.vue'
 import StudioShow from '@/views/studio/Show.vue'
 import MypageTop from '@/views/mypage/Top.vue'
 import MypageProfile from '@/views/mypage/Profile.vue'
+import EventNew from '@/views/event/New.vue'
+import EventIndex from '@/views/event/Index.vue'
+import EventShow from '@/views/event/Show.vue'
 
 const routes = [
   // トップページ
@@ -42,6 +45,24 @@ const routes = [
     path: '/mypage/profile',
     name: 'MypageProfile',
     component: MypageProfile
+  },
+  // イベント登録
+  {
+    path: '/event/new',
+    name: 'EventNew',
+    component: EventNew
+  },
+  // イベント一覧
+  {
+    path: '/events',
+    name: 'EventIndex',
+    component: EventIndex
+  },
+  // イベント詳細
+  {
+    path: '/event/:id',
+    name: 'EventShow',
+    component: EventShow
   }
 ]
 

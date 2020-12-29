@@ -7,7 +7,8 @@
     <div class="single-container">
       <div class="top-container">
         <p class="main-title">イベント一覧</p>
-        <div class="comming-soon">Comming Soon</div>
+        <EventList v-if="events.length!=0" :events-prop="events"/>
+        <router-link to="/events" class="events-all">すべてのイベントを見る</router-link>
       </div>
       <div class="top-container">
         <p class="main-title">スタジオ</p>
@@ -47,20 +48,24 @@
 
 <script>
 import axios from 'axios';
+import EventList from '@/components/EventList.vue';
 
 const hostName = 'localhost:3000';
 
 export default {
+  components: {
+    EventList
+  },
   data() {
     return {
-      test: ""
+      events: []
     }
   },
   methods: {
     getTop: function(){
       axios.get(`http://${hostName}/api/top`)
       .then((response) => {
-        this.test = response.data;
+        this.events = response.data;
       })
       .catch(function(error) {
         console.log(error);
@@ -93,8 +98,17 @@ export default {
 
 .top-container {
   margin: auto;
-  margin-bottom: 200px;
+  margin-bottom: 100px;
   width: 95%;
+  .events-all {
+    display: block;
+    text-decoration: none;
+    margin: 0 auto;
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+  }
   .about-studio {
     display: flex;
     justify-content: space-between;
