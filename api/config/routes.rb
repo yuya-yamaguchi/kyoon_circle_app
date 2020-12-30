@@ -10,7 +10,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :mypage, only: [:show, :update]
+    resources :mypage, only: [:show, :update] do
+      collection do
+        get :studio_reserves
+      end
+    end
 
     resources :events, only: [:index, :show, :create]
   end
