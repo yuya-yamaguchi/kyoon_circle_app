@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
     resources :studios, only: [:show] do
       scope module: :studio do
-        resources :reserves, only: [:create]
+        resources :reserves, only: [:create, :destroy]
       end
     end
 

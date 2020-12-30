@@ -26,6 +26,16 @@ class Api::Studio::ReservesController < ApplicationController
     UserReserve.create!(set_user_reserve_params(reserves_params))
   end
 
+  def destroy
+    user_reserve = UserReserve.find(params[:id])
+    user_reserve
+    studio_reserves = StudioReserve.where(studio_id: params[:studio_id])
+                                   .where(date: user_reserve.date)
+                                   .where('time between ? and ?', user_reserve.start_time, user_reserve.end_time)
+    user_reserve.destroy
+    studio_reserves.destroy_all
+  end
+
   private
   def set_studio_reserves_params
     params.require(:studio_reserve)
