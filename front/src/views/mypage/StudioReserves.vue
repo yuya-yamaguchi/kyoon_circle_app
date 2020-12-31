@@ -1,5 +1,8 @@
 <template>
   <div class="double-container">
+    <ConfirmlModal v-show="cancelFlg"
+      :modal-msg-prop="modalMsg"
+      @cancel-confirm="cancelStudioReserve"/>
     <div class="double-container--left">
       <SideBar/>
     </div>
@@ -25,15 +28,19 @@
             </td>
             <td>{{ futureReserve.payment_fee }}円</td>
           </div>
-          <div @click="cancelStudioReserve(futureReserve)" class="reserve--cancel">取消</div>
+          <div @click="displayCancelModal(futureReserve)" class="reserve--cancel">取消</div>
         </tr>
       </div>
       <div v-show="currentTab === 2" class="studio-reserves">
-        <div v-for="(historyReserve, i) in historyReserves" :key="i" class="studio-reserves--reserve">
-          {{ formatDate(historyReserve.date) }}
-          {{ formatTime(historyReserve.start_time) }} 〜
-          {{ formatTime(historyReserve.end_time) }}
-        </div>
+        <tr v-for="(historyReserve, i) in historyReserves" :key="i" class="reserve">
+          <div class="reserve--info">
+            <td>{{ formatDate(historyReserve.date) }}</td>
+            <td>{{ formatTime(historyReserve.start_time) }} 〜
+                {{ formatTime(historyReserve.end_time) }}
+            </td>
+            <td>{{ historyReserve.payment_fee }}円</td>
+          </div>
+        </tr>
       </div>
     </div>
   </div>
@@ -42,18 +49,27 @@
 <script>
 import axios from 'axios';
 import SideBar from "@/components/SideBar.vue";
+import ConfirmlModal from "@/components/ConfirmlModal.vue";
 
 const hostName = 'localhost:3000';
 
 export default {
   components: {
-    SideBar
+    SideBar,
+    ConfirmlModal
   },
   data() {
     return {
       futureReserves: [],
       historyReserves: [],
-      currentTab: 1
+      selectedReserve: "",
+      currentTab: 1, // 1:スタジオ予約タブ、2:予約履歴タブ
+      cancelFlg: false,
+      modalMsg: {
+        title: "スタジオ予約取消",
+        message: "スタジオの予約を取り消します。よろしいですか？",
+        btn: "取消"
+      }
     }
   },
   methods: {
@@ -75,16 +91,26 @@ export default {
         console.log(error);
       });
     },
-    cancelStudioReserve: function(reserve) {
-      axios.delete(
-        `http://${hostName}/api/studios/${reserve.studio_id}/reserves/${reserve.id}`
-      )
-      .then(() => {
-        this.getStudioReserves();
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    // キャンセルモーダルの表示
+    displayCancelModal: function(reserve) {
+      this.cancelFlg = true;
+      this.selectedReserve = reserve;
+    },
+    // キャンセル処理の実行
+    cancelStudioReserve(cancelConfirmFlg) {
+      this.cancelFlg = false;
+      console.log(cancelConfirmFlg);
+      if (cancelConfirmFlg) {
+        axios.delete(
+          `http://${hostName}/api/studios/${this.selectedReserve.studio_id}/reserves/${this.selectedReserve.id}`
+        )
+        .then(() => {
+          this.getStudioReserves();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      }
     },
     formatDate: function(date) {
       return date.substr(0, 4) + "年" + date.substr(5, 2) + "月" + date.substr(8, 2) + "日"
