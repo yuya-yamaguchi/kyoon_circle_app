@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :mypage, only: [:show, :update] do
       collection do
         get :studio_reserves
+        get :events
       end
     end
 

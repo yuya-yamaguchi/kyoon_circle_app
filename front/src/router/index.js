@@ -5,7 +5,8 @@ import Login from '@/views/auth/Login.vue'
 import StudioShow from '@/views/studio/Show.vue'
 import MypageTop from '@/views/mypage/Top.vue'
 import MypageProfile from '@/views/mypage/Profile.vue'
-import StudioReserves from '@/views/mypage/StudioReserves.vue'
+import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
+import MypageEvents from '@/views/mypage/Events.vue'
 import EventNew from '@/views/event/New.vue'
 import EventIndex from '@/views/event/Index.vue'
 import EventShow from '@/views/event/Show.vue'
@@ -49,9 +50,15 @@ const routes = [
   },
   // スタジオ予約一覧
   {
-    path: '/studio/reserves',
-    name: 'StudioReserves',
-    component: StudioReserves
+    path: '/mypage/studio/reserves',
+    name: 'MypageStudioReserves',
+    component: MypageStudioReserves
+  },
+  // 参加イベント一覧
+  {
+    path: '/mypage/events',
+    name: 'MypageEvents',
+    component: MypageEvents
   },
   // イベント登録
   {
