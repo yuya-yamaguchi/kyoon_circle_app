@@ -4,7 +4,7 @@
     <div class="header-menus">
       <div class="header-menus">
         <router-link to="/events" class="header-menu">イベント一覧</router-link>
-        <a class="header-menu">スタジオ予約</a>
+        <router-link to="/studios/1" class="header-menu">スタジオ予約</router-link>
         <a class="header-menu">宿泊予約</a>
       </div>
       <template v-if='!$store.getters["user/id"]'>

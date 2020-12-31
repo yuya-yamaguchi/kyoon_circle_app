@@ -6,11 +6,15 @@ Rails.application.routes.draw do
 
     resources :studios, only: [:show] do
       scope module: :studio do
-        resources :reserves, only: [:create]
+        resources :reserves, only: [:create, :destroy]
       end
     end
 
-    resources :mypage, only: [:show, :update]
+    resources :mypage, only: [:show, :update] do
+      collection do
+        get :studio_reserves
+      end
+    end
 
     resources :events, only: [:index, :show, :create]
   end

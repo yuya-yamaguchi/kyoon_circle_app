@@ -20,7 +20,6 @@ export default {
   },
   methods: {
     getEvent: function() {
-      console.log("a")
       axios.get(
         `http://${hostName}/api/events/${this.$route.params.id}`
       )
