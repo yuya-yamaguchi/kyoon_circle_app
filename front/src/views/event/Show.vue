@@ -9,7 +9,7 @@
       </div>
       <div class="number-info">
         <p class="number-info--title">参加人数</p>
-        <p class="number-info--value">0人 / {{ event.max_entry }}人</p>
+        <p class="number-info--value">{{ entryCnt }}人 / {{ event.max_entry }}人</p>
       </div>
     </div>
     <div class="event-middle-info">開催日時 {{ event.start_datetime }}〜{{ event.end_datetime }}</div>
@@ -17,13 +17,11 @@
     <div class="event-details">{{ event.details }}</div>
     <button v-if="!entryFlg"
             @click="postEventEntry()"
-            class="default-button"
-            :disabled="entryFlg">参加する
+            class="default-button">参加する
     </button>
     <button v-if="entryFlg"
-            @click="cancelEventEntry()"
-            class="cancel-button"
-            :disabled="entryFlg">参加をやめる
+            @click="postCancelEventEntry()"
+            class="cancel-button">参加をやめる
     </button>
   </div>
 </template>
@@ -37,7 +35,8 @@ export default {
   data() {
     return {
       event: "",
-      entryFlg: false
+      entryFlg: false,
+      entryCnt: 0
     }
   },
   methods: {
@@ -53,6 +52,7 @@ export default {
       .then((response) => {
         this.event = response.data.event;
         this.entryFlg = response.data.entry_flg;
+        this.entryCnt = response.data.entry_cnt;
       })
       .catch(function(error) {
         console.log(error);
@@ -65,8 +65,24 @@ export default {
           user_id: this.$store.getters['user/id']
         }
       )
-      .then(() => {
+      .then((response) => {
         this.entryFlg = true;
+        this.entryCnt = response.data;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    },
+    postCancelEventEntry: function() {
+      axios.post(
+        `http://${hostName}/api/events/${this.$route.params.id}/entry_cancel`,
+        {
+          user_id: this.$store.getters['user/id']
+        }
+      )
+      .then((response) => {
+        this.entryFlg = false;
+        this.entryCnt = response.data;
       })
       .catch(function(error) {
         console.log(error);
