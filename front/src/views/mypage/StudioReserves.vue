@@ -7,13 +7,13 @@
       <SideBar/>
     </div>
     <div class="double-container--right">
-      <div class="reserve-tabs">
-        <div class="reserve-tabs--tab"
+      <div class="tabs">
+        <div class="tabs--tab"
              :class="{ active: currentTab === 1 }"
              @click="changeTab(1)">
           スタジオ予約
         </div>
-        <div class="reserve-tabs--tab"
+        <div class="tabs--tab"
              :class="{ active: currentTab === 2 }"
              @click="changeTab(2)">
           過去の予約履歴
@@ -73,7 +73,7 @@ export default {
     }
   },
   methods: {
-    // プロフィール情報の取得
+    // ユーザのスタジオ予約状況の取得
     getStudioReserves: function() {
       axios.get(
         `http://${hostName}/api/mypage/studio_reserves`,
@@ -130,25 +130,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.reserve-tabs {
-  display: flex;
-  justify-content: space-between;
-  &--tab {
-    width: 50%;
-    padding: 10px;
-    background: #888;
-    color: #FFF;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-  }
-  &--tab.active {
-    background: #FFF;
-    color: #333;
-    border-top: 2px solid #13b1c0;
-  }
-}
-
 .studio-reserves {
   background: #FFF;
   padding: 10px;

@@ -6,13 +6,38 @@ class Api::EventsController < ApplicationController
   end
 
   def show
+    entry_flg = false
     event = Event.find(params[:id])
-    render json: event
+    if params[:user_id].to_i > 0
+      cnt = EventEntry.where(event_id: params[:id])
+                      .where(user_id: params[:user_id])
+                      .count
+      entry_flg = true if cnt > 0
+    end
+    entry_cnt = EventEntry.where(event_id: params[:id]).count
+    out_params = event.set_out_params
+    render json: { event: out_params,
+                   entry_flg: entry_flg,
+                   entry_cnt: entry_cnt }
   end
 
   def create
     event_params = require_event_params
     Event.create!(set_event_params(event_params))
+  end
+
+  def entry
+    EventEntry.create(user_id: params[:user_id], event_id: params[:id])
+    entry_cnt = EventEntry.where(event_id: params[:id]).count
+    render json: entry_cnt
+  end
+
+  def entry_cancel
+    event_entry = EventEntry.where(user_id: params[:user_id])
+                            .where(event_id: params[:id])
+    event_entry.destroy_all
+    entry_cnt = EventEntry.where(event_id: params[:id]).count
+    render json: entry_cnt
   end
 
   private

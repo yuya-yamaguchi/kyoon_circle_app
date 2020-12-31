@@ -8,4 +8,6 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   has_many :user_reserves
+  has_many :event_entries
+  has_many :events, through: :event_entries
 end
