@@ -57,6 +57,19 @@
   cursor: pointer;
 }
 
+.cancel-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 30px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  background: linear-gradient(70deg, rgb(204, 17, 157), #e46c6c);
+  color: #FFF;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .close-button {
   font-size: 2rem;
   float: right;

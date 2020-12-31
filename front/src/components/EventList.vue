@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(event, i) in events" :key="i" class="event-card">
+    <div v-for="(event, i) in eventsProp" :key="i" class="event-card">
       <router-link :to="`/event/${event.id}`">
         <p class="event-card--title">{{ event.title }}</p>
         <div class="event-card--middle">
@@ -19,12 +19,7 @@
 <script>
 export default {
   props: {
-    eventsProp: []
-  },
-  data() {
-    return {
-      events: this.eventsProp
-    }
+    eventsProp: {}
   }
 }
 </script>

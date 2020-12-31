@@ -16,6 +16,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :events, only: [:index, :show, :create]
+    resources :events, only: [:index, :show, :create] do
+      member do
+        post :entry
+      end
+    end
   end
 end
