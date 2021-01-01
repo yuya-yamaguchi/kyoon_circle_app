@@ -30,12 +30,15 @@ const mutations = {
   },
   updateUser(state, user) {
     state.id     = user.id;
-    state.name     = user.name;
+    state.name   = user.name;
     state.email  = user.email;
     state.token  = user.token;
     state.uid    = user.uid;
     state.client = user.client;
     state.adminType = user.adminType;
+  },
+  changeUserProfile(state, user) {
+    state.name = user.name;
   }
 }
 
@@ -45,6 +48,9 @@ const actions = {
   },
   logout(context) {
     context.commit('logout');
+  },
+  changeUserProfile(context, user) {
+    context.commit('changeUserProfile', user);
   }
 }
 
