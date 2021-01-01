@@ -1,6 +1,9 @@
 <template>
-  <div class="single-container">
-    <div class="XXXXXXXXXXXX">
+  <div class="double-container">
+    <div class="double-container--left">
+      <SideBar/>
+    </div>
+    <div class="double-container--right">
       <h1 class="main-title text-center">イベント登録</h1>
       <form v-on:submit.prevent="postNewEvent()">
         <div class="form-item">
@@ -48,10 +51,14 @@
 
 <script>
 import axios from 'axios';
+import SideBar from "@/components/SideBar.vue";
 
 const hostName = 'localhost:3000';
 
 export default {
+  components: {
+    SideBar
+  },
   data() {
     return {
       selected: "",

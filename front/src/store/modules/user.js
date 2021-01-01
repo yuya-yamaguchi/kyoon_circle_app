@@ -5,7 +5,7 @@ const state = {
   token:  '',
   uid:    '',
   client: '',
-  admin_flg: false
+  adminType: 0
 };
 
 const getters = {
@@ -15,7 +15,7 @@ const getters = {
   token:  state => state.token,
   uid:    state => state.uid,
   client: state => state.client,
-  admin_flg: state => state.admin_flg
+  adminType: state => state.adminType
 }
 
 const mutations = {
@@ -26,16 +26,19 @@ const mutations = {
     state.token  = null;
     state.uid    = null;
     state.client = null;
-    state.admin_flg = false;
+    state.adminType = false;
   },
   updateUser(state, user) {
     state.id     = user.id;
-    state.name     = user.name;
+    state.name   = user.name;
     state.email  = user.email;
     state.token  = user.token;
     state.uid    = user.uid;
     state.client = user.client;
-    state.admin_flg = user.admin_flg;
+    state.adminType = user.adminType;
+  },
+  changeUserProfile(state, user) {
+    state.name = user.name;
   }
 }
 
@@ -45,6 +48,9 @@ const actions = {
   },
   logout(context) {
     context.commit('logout');
+  },
+  changeUserProfile(context, user) {
+    context.commit('changeUserProfile', user);
   }
 }
 

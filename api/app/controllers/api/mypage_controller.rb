@@ -8,7 +8,7 @@ class Api::MypageController < ApplicationController
   def update
     user = User.find(params[:id])
     if user.update(user_params)
-      render status: 200
+      render status: 200, json: user
     else
       render status: 500
     end

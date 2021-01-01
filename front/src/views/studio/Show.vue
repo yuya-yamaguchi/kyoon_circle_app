@@ -18,7 +18,10 @@
         <table>
           <tr>
             <th>料金</th>
-            <td>250円（30min）</td>
+            <td>
+              ¥{{ studio.fee }}（1 Hour）<br>
+              （30分単位で予約可）
+            </td>
           </tr>
           <tr>
             <th>機材</th>

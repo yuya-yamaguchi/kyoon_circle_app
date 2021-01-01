@@ -10,6 +10,8 @@ import MypageEvents from '@/views/mypage/Events.vue'
 import EventNew from '@/views/event/New.vue'
 import EventIndex from '@/views/event/Index.vue'
 import EventShow from '@/views/event/Show.vue'
+import UsersIndex from '@/views/admin/users/Index.vue'
+import StudioEdit from '@/views/admin/studio/Edit.vue'
 
 const routes = [
   // トップページ
@@ -77,6 +79,21 @@ const routes = [
     path: '/event/:id',
     name: 'EventShow',
     component: EventShow
+  },
+  /***********************/
+  /* 管理者用VIEW         */
+  /***********************/
+  // ユーザ一覧表示
+  {
+    path: '/users',
+    name: 'UsersIndex',
+    component: UsersIndex
+  },
+  // スタジオ内容編集
+  {
+    path: '/studio/1/edit',
+    name: 'StudioEdit',
+    component: StudioEdit
   }
 ]
 

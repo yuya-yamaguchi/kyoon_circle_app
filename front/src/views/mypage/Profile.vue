@@ -64,9 +64,15 @@ export default {
           }
         }
       )
-      .then(() => {
+      .then((response) => {
+        this.$store.dispatch(
+          "user/changeUserProfile",
+          {
+            name: response.data.name
+          }
+        );
         this.$router.push({ 
-          name: "Mypage"
+          name: "MypageTop"
         })
       })
       .catch(function(error) {

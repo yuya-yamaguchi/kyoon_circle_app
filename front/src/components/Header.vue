@@ -10,6 +10,7 @@
       <template v-if='!$store.getters["user/id"]'>
         <router-link to="/signup" class="sign-btn">新規会員登録</router-link>
         <router-link to="/login" class="sign-btn">ログイン</router-link>
+        <a @click="testLogin" class="sign-btn">テストログイン</a>
       </template>
       <template v-else class="header-menus">
         <router-link to="/mypage" class="header-menu">{{ $store.getters["user/name"] }}</router-link>
@@ -49,6 +50,36 @@ export default {
       })
       .catch(function(error) {
         console.log(error);
+      });
+    },
+    testLogin: function(){
+      axios.post(`http://${hostName}/api/auth/sign_in`,
+        {
+          email: 'a@gmail.com',
+          password: '12345678'
+        }	
+      )
+      .then((response) => {
+        this.$store.dispatch(
+          "user/updateUser",
+          {
+            id:     response.data.data.id,
+            name:   response.data.data.name,
+            email:  response.data.data.email,
+            token:  response.headers['access-token'],
+            uid:    response.headers['uid'],
+            client: response.headers['client'],
+            adminType: response.data.data.admin_type
+          }
+        );
+        this.$router.push({ 
+          name: "Top"
+        })
+      })
+      .catch((error) => {
+        if (error.response) {
+          this.errorMessages = error.response.data.errors;
+        }
       });
     }
   }
