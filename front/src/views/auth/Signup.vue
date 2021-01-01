@@ -64,7 +64,7 @@ export default {
             token:  response.headers['access-token'],
             uid:    response.headers['uid'],
             client: response.headers['client'],
-            instructor_flg: response.data.data.instructor_flg,
+            adminType: response.data.data.admin_type
           }
         );
         this.$router.push({
