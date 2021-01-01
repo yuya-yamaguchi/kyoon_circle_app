@@ -1,8 +1,8 @@
 <template>
   <div class="double-container">
-    <ConfirmlModal v-show="cancelFlg"
+    <ConfirmModal v-show="cancelFlg"
       :modal-msg-prop="modalMsg"
-      @cancel-confirm="cancelStudioReserve"/>
+      @process-confirm="cancelStudioReserve"/>
     <div class="double-container--left">
       <SideBar/>
     </div>
@@ -49,14 +49,14 @@
 <script>
 import axios from 'axios';
 import SideBar from "@/components/SideBar.vue";
-import ConfirmlModal from "@/components/ConfirmlModal.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 const hostName = 'localhost:3000';
 
 export default {
   components: {
     SideBar,
-    ConfirmlModal
+    ConfirmModal
   },
   data() {
     return {
@@ -99,7 +99,6 @@ export default {
     // キャンセル処理の実行
     cancelStudioReserve(cancelConfirmFlg) {
       this.cancelFlg = false;
-      console.log(cancelConfirmFlg);
       if (cancelConfirmFlg) {
         axios.delete(
           `http://${hostName}/api/studios/${this.selectedReserve.studio_id}/reserves/${this.selectedReserve.id}`

@@ -6,7 +6,7 @@
       <p class="caution-msg">{{ modalMsgProp.message }}</p>
       <div class="btn-area">
         <button @click="closeModal()" class="default-button back-btn">戻る</button>
-        <button @click="ConfirmCancel()" class="default-button confirm-btn">{{ modalMsgProp.btn }}</button>
+        <button @click="confirmCancel()" class="default-button confirm-btn">{{ modalMsgProp.btn }}</button>
       </div>
     </div>
   </div>
@@ -24,10 +24,10 @@ export default {
   },
   methods: {
     closeModal: function() {
-      this.$emit('cancel-confirm', false);
+      this.$emit('process-confirm', false);
     },
-    ConfirmCancel: function() {
-      this.$emit('cancel-confirm', true);
+    confirmCancel: function() {
+      this.$emit('process-confirm', true);
     }
   }
 }
