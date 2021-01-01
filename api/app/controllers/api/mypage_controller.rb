@@ -10,7 +10,7 @@ class Api::MypageController < ApplicationController
     if user.update(user_params)
       render status: 200, json: user
     else
-      render status: 500
+      render status: 500, json: user.errors.full_messages
     end
   end
 
