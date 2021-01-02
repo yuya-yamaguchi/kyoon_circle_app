@@ -48,10 +48,9 @@
 
 <script>
 import axios from 'axios';
+import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import ConfirmModal from "@/components/ConfirmModal.vue";
-
-const hostName = 'localhost:3000';
 
 export default {
   components: {
@@ -76,7 +75,7 @@ export default {
     // ユーザのスタジオ予約状況の取得
     getStudioReserves: function() {
       axios.get(
-        `http://${hostName}/api/mypage/studio_reserves`,
+        `http://${g.hostName}/api/mypage/studio_reserves`,
         {
           params: {
             user_id: this.$store.getters['user/id']
@@ -101,7 +100,7 @@ export default {
       this.cancelFlg = false;
       if (cancelConfirmFlg) {
         axios.delete(
-          `http://${hostName}/api/studios/${this.selectedReserve.studio_id}/reserves/${this.selectedReserve.id}`
+          `http://${g.hostName}/api/studios/${this.selectedReserve.studio_id}/reserves/${this.selectedReserve.id}`
         )
         .then(() => {
           this.getStudioReserves();

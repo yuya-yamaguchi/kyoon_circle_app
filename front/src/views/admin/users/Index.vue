@@ -23,9 +23,8 @@
 
 <script>
 import axios from 'axios';
+import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
-
-const hostName = 'localhost:3000';
 
 export default {
   components: {
@@ -38,7 +37,7 @@ export default {
   },
   methods: {
     getUsers: function(){
-      axios.get(`http://${hostName}/api/admin/users`)
+      axios.get(`http://${g.hostName}/api/admin/users`)
       .then((response) => {
         this.users = response.data;
       })

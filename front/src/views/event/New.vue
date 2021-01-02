@@ -51,9 +51,8 @@
 
 <script>
 import axios from 'axios';
+import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
-
-const hostName = 'localhost:3000';
 
 export default {
   components: {
@@ -86,7 +85,7 @@ export default {
   methods: {
     postNewEvent: function() {
       axios.post(
-        `http://${hostName}/api/events`,
+        `http://${g.hostName}/api/events`,
         {
           user_id: this.$store.getters['user/id'],
           event: this.event
