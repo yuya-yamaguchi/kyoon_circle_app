@@ -22,8 +22,7 @@
 
 <script>
 import axios from 'axios';
-
-const hostName = 'localhost:3000';
+import g from "@/variable/variable.js";
 
 export default {
   methods: {
@@ -31,7 +30,7 @@ export default {
       console.log(this.$store.getters['user/uid']);
       // API側にてログアウトを行う
       axios.delete(
-        `http://${hostName}/api/auth/sign_out`,
+        `http://${g.hostName}/api/auth/sign_out`,
         {
           data: {
             "uid":          this.$store.getters['user/uid'],
@@ -53,7 +52,7 @@ export default {
       });
     },
     testLogin: function(){
-      axios.post(`http://${hostName}/api/auth/sign_in`,
+      axios.post(`http://${g.hostName}/api/auth/sign_in`,
         {
           email: 'a@gmail.com',
           password: '12345678'

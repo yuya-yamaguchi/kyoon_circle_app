@@ -31,10 +31,10 @@
 
 <script>
 import axios from 'axios';
+import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import ConfirmModal from "@/components/ConfirmModal.vue";
 
-const hostName = 'localhost:3000';
 var studio_no = 1;
 
 export default {
@@ -57,7 +57,7 @@ export default {
     // スタジオ情報の取得
     getStudio: function() {
       axios.get(
-        `http://${hostName}/api/admin/studios/${studio_no}/edit`
+        `http://${g.hostName}/api/admin/studios/${studio_no}/edit`
       )
       .then((response) => {
         this.studio = response.data
@@ -75,7 +75,7 @@ export default {
       this.modalFlg = false;
       if (confirm) {
         axios.put(
-          `http://${hostName}/api/admin/studios/${studio_no}`,
+          `http://${g.hostName}/api/admin/studios/${studio_no}`,
           {
             studio: {
               name: this.studio.name,

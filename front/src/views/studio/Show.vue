@@ -65,9 +65,9 @@
 <script>
 import axios from 'axios';
 import moment from "moment";
+import g from "@/variable/variable.js";
 import ReserveModal from '@/components/ReserveModal.vue';
 
-const hostName = 'localhost:3000';
 const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 
 export default {
@@ -86,7 +86,7 @@ export default {
   methods: {
     getStudioStatus: function(){
       axios.get(
-        `http://${hostName}/api/studios/${this.$route.params.id}`
+        `http://${g.hostName}/api/studios/${this.$route.params.id}`
       )
       .then((response) => {
         this.studio = response.data.studio;

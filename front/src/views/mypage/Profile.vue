@@ -27,9 +27,8 @@
 
 <script>
 import axios from 'axios';
+import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
-
-const hostName = 'localhost:3000';
 
 export default {
   components: {
@@ -44,7 +43,7 @@ export default {
     // プロフィール情報の取得
     getProfile: function() {
       axios.get(
-        `http://${hostName}/api/mypage/${this.$store.getters['user/id']}`
+        `http://${g.hostName}/api/mypage/${this.$store.getters['user/id']}`
       )
       .then((response) => {
         this.user   = response.data
@@ -56,7 +55,7 @@ export default {
     // プロフィールの更新
     updateProfile: function() {
       axios.put(
-        `http://${hostName}/api/mypage/${this.$store.getters.['user/id']}`,
+        `http://${g.hostName}/api/mypage/${this.$store.getters.['user/id']}`,
         {
           user: {
             name:    this.user.name,

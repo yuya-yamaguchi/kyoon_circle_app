@@ -48,9 +48,9 @@
 
 <script>
 import axios from 'axios';
+import g from "@/variable/variable.js";
 import EventList from '@/components/EventList.vue';
 
-const hostName = 'localhost:3000';
 
 export default {
   components: {
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     getTop: function(){
-      axios.get(`http://${hostName}/api/top`)
+      axios.get(`http://${g.hostName}/api/top`)
       .then((response) => {
         this.events = response.data;
       })

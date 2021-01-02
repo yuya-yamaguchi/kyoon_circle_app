@@ -30,10 +30,9 @@
 
 <script>
 import axios from 'axios';
+import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import EventList from '@/components/EventList.vue';
-
-const hostName = 'localhost:3000';
 
 export default {
   components: {
@@ -50,7 +49,7 @@ export default {
   methods: {
     getMyEvents: function() {
       axios.get(
-        `http://${hostName}/api/mypage/events`,
+        `http://${g.hostName}/api/mypage/events`,
         {
           params: {
             user_id: this.$store.getters['user/id']
