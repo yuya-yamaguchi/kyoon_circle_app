@@ -3,6 +3,7 @@
     <ConfirmModal v-show="cancelFlg"
       :modal-msg-prop="modalMsg"
       @process-confirm="cancelStudioReserve"/>
+    <FlashMsg v-if="$store.getters['flash/message'].length!=0" :flash-prop="flash"/>
     <div class="double-container--left">
       <SideBar/>
     </div>
@@ -51,11 +52,13 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import ConfirmModal from "@/components/ConfirmModal.vue";
+import FlashMsg from "@/components/FlashMsg.vue";
 
 export default {
   components: {
     SideBar,
-    ConfirmModal
+    ConfirmModal,
+    FlashMsg
   },
   data() {
     return {
@@ -68,7 +71,12 @@ export default {
         title: "スタジオ予約取消",
         message: "スタジオの予約を取り消します。よろしいですか？",
         btn: "取消"
-      }
+      },
+      flash: {
+        message: "",
+        type: 0
+      },
+      show: true
     }
   },
   methods: {
@@ -86,7 +94,7 @@ export default {
         this.futureReserves  = response.data.future_reserves
         this.historyReserves = response.data.history_reserves
       })
-      .catch(function(error) {
+      .catch((error) => {
         console.log(error);
       });
     },
@@ -105,8 +113,16 @@ export default {
         .then(() => {
           this.getStudioReserves();
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch((error) => {
+          this.flash.message = error.response.data.error_message;
+          this.flash.type = 2;
+          this.$store.dispatch(
+          "flash/create",
+          {
+            message: error.response.data.error_message,
+            type:    2
+          }
+        );
         });
       }
     },

@@ -28,7 +28,12 @@ class Api::Studio::ReservesController < ApplicationController
 
   def destroy
     user_reserve = UserReserve.find(params[:id])
-    user_reserve
+    now = Time.now.in_time_zone
+    if user_reserve.date <= now.to_date &&
+       user_reserve.start_time < (now.hour.to_s + now.min.to_s).to_i
+      render status: 500, json: { error_message: "開始時刻を過ぎているため取消できません" }
+      return
+    end
     studio_reserves = StudioReserve.where(studio_id: params[:studio_id])
                                    .where(date: user_reserve.date)
                                    .where('time between ? and ?', user_reserve.start_time, user_reserve.end_time)
