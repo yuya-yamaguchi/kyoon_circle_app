@@ -26,7 +26,7 @@ services:
     volumes:
       - ./front:/app
     ports:
-      - '8080:8080'
+      - '80:80'
     tty: true
     stdin_open: true
     command: npm run serve

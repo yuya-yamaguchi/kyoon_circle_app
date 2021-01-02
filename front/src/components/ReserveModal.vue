@@ -86,8 +86,8 @@
 
 <script>
 import axios from 'axios';
+import g from "@/variable/variable.js";
 
-const hostName = 'localhost:3000';
 const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 var today = new Date();
 
@@ -154,7 +154,7 @@ export default {
     },
     postStudioReserve: function(){
       axios.post(
-        `http://${hostName}/api/studios/${this.$route.params.id}/reserves`,
+        `http://${g.hostName}/api/studios/${this.$route.params.id}/reserves`,
         {
           user_id: this.$store.getters["user/id"],
           studio_reserve: {

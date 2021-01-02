@@ -22,8 +22,7 @@
 
 <script>
 import axios from 'axios';
-
-const hostName = 'localhost:3000';
+import g from "@/variable/variable.js";
 
 export default {
   data() {
@@ -35,7 +34,7 @@ export default {
   },
   methods: {
     login: function(){
-      axios.post(`http://${hostName}/api/auth/sign_in`,
+      axios.post(`http://${g.hostName}/api/auth/sign_in`,
         {
           email: this.email,
           password: this.password

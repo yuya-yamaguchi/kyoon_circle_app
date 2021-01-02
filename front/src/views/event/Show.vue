@@ -28,8 +28,7 @@
 
 <script>
 import axios from 'axios';
-
-const hostName = 'localhost:3000';
+import g from "@/variable/variable.js";
 
 export default {
   data() {
@@ -42,7 +41,7 @@ export default {
   methods: {
     getEvent: function() {
       axios.get(
-        `http://${hostName}/api/events/${this.$route.params.id}`,
+        `http://${g.hostName}/api/events/${this.$route.params.id}`,
         {
           params:{
             user_id: this.$store.getters['user/id']
@@ -60,7 +59,7 @@ export default {
     },
     postEventEntry: function() {
       axios.post(
-        `http://${hostName}/api/events/${this.$route.params.id}/entry`,
+        `http://${g.hostName}/api/events/${this.$route.params.id}/entry`,
         {
           user_id: this.$store.getters['user/id']
         }
@@ -75,7 +74,7 @@ export default {
     },
     postCancelEventEntry: function() {
       axios.post(
-        `http://${hostName}/api/events/${this.$route.params.id}/entry_cancel`,
+        `http://${g.hostName}/api/events/${this.$route.params.id}/entry_cancel`,
         {
           user_id: this.$store.getters['user/id']
         }
