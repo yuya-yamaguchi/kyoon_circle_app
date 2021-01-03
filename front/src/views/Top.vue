@@ -124,16 +124,15 @@ export default {
     &--right {
       width: 40%;
       margin-left: 20px;
-      position: relative;
       &--explain {
         font-size: 18px;
         line-height: 30px;
       }
       &--btn {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translate(-50%,0);
+        display: block;
+        white-space: nowrap;
+        text-align: center;
+        width: 150px;
       }
     }
   }
@@ -144,16 +143,12 @@ export default {
     &--left {
       width: 40%;
       margin-right: 20px;
-      position: relative;
       &--explain {
         font-size: 18px;
         line-height: 30px;
       }
       &--btn {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translate(-50%,0);
+        white-space: nowrap;
       }
     }
     &--right {

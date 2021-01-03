@@ -1,6 +1,6 @@
 <template>
   <header>
-    <router-link to="/" class="main-title">京音</router-link>
+    <router-link to="/" class="site-title">京音</router-link>
     <div class="header-menus">
       <div class="header-menus">
         <router-link to="/events" class="header-menu">イベント一覧</router-link>
@@ -94,13 +94,14 @@ header{
   display: flex;
   justify-content: space-between;
   color: #FFF;
-  .main-title {
+  .site-title {
     text-align: left;
     line-height: 60px;
     padding: 0 20px;
     color: #FFF;
     font-size: 30px;
     text-decoration: none;
+    white-space: nowrap;
   }
   .header-menus {
     margin-right: 30px;
@@ -114,6 +115,7 @@ header{
       font-weight: bold;
       position: relative;
       cursor: pointer;
+      white-space: nowrap;
       &::after {
         position: absolute;
         bottom: 15px;
@@ -146,6 +148,7 @@ header{
       height: 30px;
       line-height: 30px;
       cursor: pointer;
+      white-space: nowrap;
     }
   }
 }
