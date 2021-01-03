@@ -157,6 +157,7 @@ export default {
         `http://${g.hostName}/api/studios/${this.$route.params.id}/reserves`,
         {
           user_id: this.$store.getters["user/id"],
+          token:   this.$store.getters["user/secureToken"],
           studio_reserve: {
             date: this.selected.year + '-' + this.selected.month + '-' + this.selected.day,
             start_hour: this.selected.start_hour,
@@ -171,7 +172,12 @@ export default {
         this.$emit('reserve-success');
       })
       .catch((error) => {
-        console.log(error);
+        this.$store.dispatch(
+          "flash/create",
+          { message: error.response.data.error_message,
+            type:    2
+          }
+        );
       });
     },
     changeDate: function() {

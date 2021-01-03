@@ -3,11 +3,11 @@ class Api::StudiosController < ApplicationController
   def show
     studio = Studio.find(params[:id])
     reserves_params = []
-    today = Date.today
+    now = Time.now.in_time_zone
     weeks = []
     # 1週間を配列に設定
     7.times do |i|
-      weeks << today + i
+      weeks << now.to_date + i
     end
     studio_reserves = StudioReserve.where(studio_id: params[:id])
                                    .where('date between ? and ?', weeks[0], weeks[6])

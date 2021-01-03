@@ -4,23 +4,27 @@
       <SideBar/>
     </div>
     <div class="double-container--right">
-      <form v-on:submit.prevent="updateProfile">
-        <div class="form-item">
-          <p>
-            ユーザ名
-          </p>
-          <input type="text" v-model="user.name">
-        </div>
-        <div>
+      <div class="user-profile-container">
+        <h1 class="main-title">プロフィール編集</h1>
+        <ErrMsg :error-messages-prop="apiErrorMessages"/>
+        <form v-on:submit.prevent="updateProfile">
           <div class="form-item">
             <p>
-              プロフィール
+              ユーザ名
             </p>
-            <textarea v-model="user.profile"></textarea>
+            <input type="text" v-model="user.name">
           </div>
-        </div>
-        <button class="default-button">変更する</button>
-      </form>
+          <div>
+            <div class="form-item">
+              <p>
+                プロフィール
+              </p>
+              <textarea v-model="user.profile"></textarea>
+            </div>
+          </div>
+          <button class="default-button">変更する</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -29,14 +33,17 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
+import ErrMsg from "@/components/ErrMsg.vue";
 
 export default {
   components: {
-    SideBar
+    SideBar,
+    ErrMsg
   },
   data() {
     return {
-      user: {}
+      user: {},
+      apiErrorMessages: []
     }
   },
   methods: {
@@ -46,10 +53,10 @@ export default {
         `http://${g.hostName}/api/mypage/${this.$store.getters['user/id']}`
       )
       .then((response) => {
-        this.user   = response.data
+        this.user = response.data
       })
       .catch(function(error) {
-        console.log(error);
+        console.log(error.response);
       });
     },
     // プロフィールの更新
@@ -74,8 +81,8 @@ export default {
           name: "MypageTop"
         })
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch((error) => {
+        this.apiErrorMessages = error.response.data;
       });
     }
   },
@@ -86,4 +93,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.user-profile-container {
+  width: 80%;
+  margin: 0 auto;
+}
 </style>

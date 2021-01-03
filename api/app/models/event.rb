@@ -1,5 +1,18 @@
 class Event < ApplicationRecord
+  
   has_many :event_entries
+  
+  validates :title, presence: true
+  validates :title, length: { maximum: 40, message: "は40文字以下で入力してください" }, allow_blank: true
+  validates :event_type,
+    numericality: {greater_than_or_equal_to: 1,
+                   less_than_or_equal_to:    4,
+                   message: "選択してください"
+                  }
+  validates :details, presence: true
+  validates :details, length: { maximum: 1000, message: "は1000文字以下で入力してください" }, allow_blank: true
+  
+  
   def set_out_params
     start_datetime = ""
     end_datetime = ""

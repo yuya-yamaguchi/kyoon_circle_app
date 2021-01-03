@@ -20,7 +20,7 @@
             <p>
               料金（1 Hour）
             </p>
-            <input type="number" v-model="studio.fee">円
+            <input type="number" v-model="studio.fee">
           </div>
         </div>
         <button class="default-button">変更する</button>
