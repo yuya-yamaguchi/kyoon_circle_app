@@ -4,6 +4,10 @@ ja:
     attributes:
       user:
         name: ユーザ名
+      event:
+        title: イベント名
+        details: イベント内容
+        event_type: イベントの種類
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'

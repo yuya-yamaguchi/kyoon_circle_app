@@ -23,7 +23,13 @@ class Api::EventsController < ApplicationController
 
   def create
     event_params = require_event_params
-    Event.create!(set_event_params(event_params))
+    event = Event.new(set_event_params(event_params))
+    if event.save
+      render status: 200
+    else
+      # binding.pry
+      render status: 500, json: event.errors.full_messages
+    end
   end
 
   def entry
@@ -61,8 +67,10 @@ class Api::EventsController < ApplicationController
     year  = event_params[:start_date][0, 4].to_i
     month = event_params[:start_date][5, 2].to_i
     day   = event_params[:start_date][8, 2].to_i
-    start_datetime = DateTime.new(year, month, day, event_params[:start_hour].to_i, event_params[:start_min].to_i)
-    end_datetime = DateTime.new(year, month, day, event_params[:end_hour].to_i, event_params[:end_min].to_i)
+    if year > 0 && month > 0 && day > 0
+      start_datetime = DateTime.new(year, month, day, event_params[:start_hour].to_i, event_params[:start_min].to_i)
+      end_datetime = DateTime.new(year, month, day, event_params[:end_hour].to_i, event_params[:end_min].to_i)
+    end
     return_params = {
       user_id: event_params[:user_id],
       title: event_params[:title],

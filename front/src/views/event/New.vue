@@ -5,6 +5,7 @@
     </div>
     <div class="double-container--right">
       <h1 class="main-title text-center">イベント登録</h1>
+      <ErrMsg :error-messages-prop="apiErrorMessages"/>
       <form v-on:submit.prevent="postNewEvent()">
         <div class="form-item">
           <p>イベントの種類</p>
@@ -53,10 +54,12 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
+import ErrMsg from "@/components/ErrMsg.vue";
 
 export default {
   components: {
-    SideBar
+    SideBar,
+    ErrMsg
   },
   data() {
     return {
@@ -79,7 +82,8 @@ export default {
         place: "",
         fee: "",
         max_entry: 0
-      }
+      },
+      apiErrorMessages: []
     }
   },
   methods: {
@@ -94,8 +98,8 @@ export default {
       .then((response) => {
         console.log(response);
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch((error) => {
+        this.apiErrorMessages = error.response.data;
       });
     }
   }
