@@ -1,6 +1,7 @@
 <template>
   <div id="overlay">
     <div class="reserve-container">
+      <FlashMsg v-if="$store.getters['flash/message'].length!=0" :flash-prop="flash"/>
       <button @click="closeModal()" class="close-button">×</button>
       <template v-if="!reserveCompleteFlg">
         <h1 class="main-title text-center">スタジオ予約</h1>
@@ -87,11 +88,15 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import FlashMsg from "@/components/FlashMsg.vue";
 
 const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 var today = new Date();
 
 export default {
+  components: {
+    FlashMsg
+  },
   props: {
     clickReserveProp: {},
     studioProp: {},
@@ -157,6 +162,7 @@ export default {
         `http://${g.hostName}/api/studios/${this.$route.params.id}/reserves`,
         {
           user_id: this.$store.getters["user/id"],
+          token:   this.$store.getters["user/secureToken"],
           studio_reserve: {
             date: this.selected.year + '-' + this.selected.month + '-' + this.selected.day,
             start_hour: this.selected.start_hour,
@@ -171,7 +177,12 @@ export default {
         this.$emit('reserve-success');
       })
       .catch((error) => {
-        console.log(error);
+        this.$store.dispatch(
+          "flash/create",
+          { message: error.response.data.error_message,
+            type:    2
+          }
+        );
       });
     },
     changeDate: function() {

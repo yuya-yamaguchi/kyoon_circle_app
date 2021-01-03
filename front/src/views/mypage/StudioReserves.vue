@@ -114,15 +114,12 @@ export default {
           this.getStudioReserves();
         })
         .catch((error) => {
-          this.flash.message = error.response.data.error_message;
-          this.flash.type = 2;
           this.$store.dispatch(
-          "flash/create",
-          {
-            message: error.response.data.error_message,
-            type:    2
-          }
-        );
+            "flash/create",
+            { message: error.response.data.error_message,
+              type:    2
+            }
+          );
         });
       }
     },

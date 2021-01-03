@@ -41,6 +41,7 @@ export default {
         }	
       )
       .then((response) => {
+        console.log(response.data.data);
         this.$store.dispatch(
           "user/updateUser",
           {
@@ -50,7 +51,8 @@ export default {
             token:  response.headers['access-token'],
             uid:    response.headers['uid'],
             client: response.headers['client'],
-            adminType: response.data.data.admin_type
+            adminType: response.data.data.admin_type,
+            secureToken: response.data.data.token
           }
         );
         this.$router.push({ 

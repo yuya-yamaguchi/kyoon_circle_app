@@ -1,5 +1,7 @@
 class Api::Studio::ReservesController < ApplicationController
   
+  before_action :user_check, only: [:create]
+  
   def create
     reserves_params = set_studio_reserves_params
     @start_time = sprintf("%02d%02d",
@@ -73,4 +75,20 @@ class Api::Studio::ReservesController < ApplicationController
     }
     return user_reserve_params
   end
+
+  def user_check
+    user = User.where(id: params[:user_id]).first
+    # ユーザ存在チェック
+    if user.nil?
+      render status: 500, json:{ error_message: "会員登録（またはログイン）を行ってください" }
+      return
+    end
+    # ユーザトークンチェック
+    err_msg = user.auth_check(params[:token])
+    if err_msg.present?
+      render status: 500, json:{ error_message: err_msg }
+      return
+    end
+  end
 end
+ 
