@@ -3,7 +3,7 @@
     <ConfirmModal v-show="cancelFlg"
       :modal-msg-prop="modalMsg"
       @process-confirm="cancelStudioReserve"/>
-    <FlashMsg v-if="$store.getters['flash/message'].length!=0" :flash-prop="flash"/>
+    <FlashMsg v-if="$store.getters['flash/message'].length!=0"/>
     <div class="double-container--left">
       <SideBar/>
     </div>
@@ -71,12 +71,7 @@ export default {
         title: "スタジオ予約取消",
         message: "スタジオの予約を取り消します。よろしいですか？",
         btn: "取消"
-      },
-      flash: {
-        message: "",
-        type: 0
-      },
-      show: true
+      }
     }
   },
   methods: {

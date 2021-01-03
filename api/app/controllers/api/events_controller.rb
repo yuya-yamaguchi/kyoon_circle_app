@@ -1,5 +1,7 @@
 class Api::EventsController < ApplicationController
 
+  before_action :user_check, only: [:entry, :entry_cancel]
+
   def index
     events = Event.all
     render json: events
@@ -27,12 +29,12 @@ class Api::EventsController < ApplicationController
     if event.save
       render status: 200
     else
-      # binding.pry
       render status: 500, json: event.errors.full_messages
     end
   end
 
   def entry
+
     EventEntry.create(user_id: params[:user_id], event_id: params[:id])
     entry_cnt = EventEntry.where(event_id: params[:id]).count
     render json: entry_cnt
@@ -83,5 +85,20 @@ class Api::EventsController < ApplicationController
       event_type: event_params[:event_type]
     }
     return return_params
+  end
+
+  def user_check
+    user = User.where(id: params[:user_id]).first
+    # ユーザ存在チェック
+    if user.nil?
+      render status: 500, json:{ error_message: "会員登録（またはログイン）を行ってください" }
+      return
+    end
+    # ユーザトークンチェック
+    err_msg = user.auth_check(params[:token])
+    if err_msg.present?
+      render status: 500, json:{ error_message: err_msg }
+      return
+    end
   end
 end

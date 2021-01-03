@@ -2,6 +2,7 @@
   <div id="nav">
     <Header/>
     <div class="base-container">
+      <FlashMsg v-if="$store.getters['flash/message'].length!=0"/>
       <router-view/>
     </div>
     <Footer/>
@@ -13,11 +14,13 @@ import "@/assets/reset.css";
 import "@/assets/style/_global.scss";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import FlashMsg from "@/components/FlashMsg.vue";
 
 export default {
   components: {
     Header,
-    Footer
+    Footer,
+    FlashMsg
   }
 }
 </script>

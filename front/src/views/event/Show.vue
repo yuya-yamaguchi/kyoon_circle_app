@@ -15,14 +15,16 @@
     <div class="event-middle-info">開催日時 {{ event.start_datetime }}〜{{ event.end_datetime }}</div>
     <div class="event-middle-info">開催場所 {{ event.place }}</div>
     <div class="event-details">{{ event.details }}</div>
-    <button v-if="!entryFlg"
-            @click="postEventEntry()"
-            class="default-button">参加する
-    </button>
-    <button v-if="entryFlg"
-            @click="postCancelEventEntry()"
-            class="cancel-button">参加をやめる
-    </button>
+    <div>
+      <button v-if="!entryFlg"
+              @click="postEventEntry()"
+              class="default-button">参加する
+      </button>
+      <button v-if="entryFlg"
+              @click="postCancelEventEntry()"
+              class="cancel-button">参加をやめる
+      </button>
+    </div>
   </div>
 </template>
 
@@ -68,8 +70,13 @@ export default {
         this.entryFlg = true;
         this.entryCnt = response.data;
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch((error) => {
+        this.$store.dispatch(
+          "flash/create",
+          { message: error.response.data.error_message,
+            type:    2
+          }
+        );
       });
     },
     postCancelEventEntry: function() {
@@ -83,8 +90,13 @@ export default {
         this.entryFlg = false;
         this.entryCnt = response.data;
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch((error) => {
+        this.$store.dispatch(
+          "flash/create",
+          { message: error.response.data.error_message,
+            type:    2
+          }
+        );
       });
     }
   },
