@@ -27,7 +27,6 @@ import g from "@/variable/variable.js";
 export default {
   methods: {
     logout: function() {
-      console.log(this.$store.getters['user/uid']);
       // API側にてログアウトを行う
       axios.delete(
         `http://${g.hostName}/api/auth/sign_out`,
@@ -43,6 +42,12 @@ export default {
         console.log(response);
         // FRONT側のユーザ情報を削除
         this.$store.dispatch("user/logout");
+        this.$store.dispatch(
+          "flash/create",
+          { message: "ログアウトが完了しました",
+            type:    1
+          }
+        );
         this.$router.push({
           name: "Top"
         })
@@ -70,6 +75,12 @@ export default {
             client: response.headers['client'],
             adminType: response.data.data.admin_type,
             secureToken: response.data.data.token
+          }
+        );
+        this.$store.dispatch(
+          "flash/create",
+          { message: "ログインが完了しました",
+            type:    1
           }
         );
         this.$router.push({ 

@@ -38,7 +38,6 @@ class Api::EventsController < ApplicationController
   end
 
   def entry
-
     EventEntry.create(user_id: params[:user_id], event_id: params[:id])
     entry_cnt = EventEntry.where(event_id: params[:id]).count
     render json: entry_cnt

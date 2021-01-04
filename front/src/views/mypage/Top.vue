@@ -5,10 +5,10 @@
     </div>
     <div class="double-container--right">
       <div class="mypage-user-icon">
-        <img src="@/assets/logo.png">
+        <img src="@/assets/person.png">
         <p class="main-title">{{ $store.getters['user/name'] }}</p>
       </div>
-      <p>{{ user.profile }}</p>
+      <div class="user-profile">{{ user.profile }}</div>
     </div>
   </div>
 </template>
@@ -49,6 +49,21 @@ export default {
 <style scoped lang="scss">
 .mypage-user-icon {
   text-align: center;
-  border: 1px solid #888;
+  display: flex;
+  justify-content: flex-start;
+  img {
+    display: block;
+    border: 1px solid;
+    border-radius: 100%;
+    width: 100px;
+  }
+  p {
+    margin-left: 30px;
+    bottom: 0;
+  }
+}
+
+.user-profile {
+  margin: 20px;
 }
 </style>
