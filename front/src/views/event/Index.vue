@@ -1,5 +1,10 @@
 <template>
   <div class="single-container">
+    <h1 class="main-title">イベント一覧</h1>
+    <p class="event-explain">
+      セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
+      お気軽にご参加ください！
+    </p>
     <EventList v-if="events.length!=0" :events-prop="events"/>
   </div>
 </template>
@@ -38,4 +43,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.event-explain {
+  padding: 20px;
+}
 </style>

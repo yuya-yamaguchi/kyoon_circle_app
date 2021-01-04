@@ -1,16 +1,21 @@
 <template>
   <div>
-    <div v-for="(event, i) in eventsProp" :key="i" class="event-card">
-      <router-link :to="`/event/${event.id}`">
-        <p class="event-card--title">{{ event.title }}</p>
-        <div class="event-card--middle">
-          <span v-if="event.event_type=='1'" class="event-card--middle--type">セッション</span>
-          <span v-else-if="event.event_type=='2'" class="event-card--middle--type">飲み会・懇親会</span>
-          <span v-else-if="event.event_type=='3'" class="event-card--middle--type">合宿</span>
-          <span v-else-if="event.event_type=='4'" class="event-card--middle--type">その他</span>
-          <span>参加費</span><span class="event-card--middle--fee">{{ event.fee }}</span>
+    <div v-for="(event, i) in eventsProp" :key="i">
+      <router-link :to="`/event/${event.id}`" class="event-card">
+        <div class="event-card--left">
+          <p class="event-card--left--date">{{ event.start_date }}</p>
+          <p class="event-card--left--week">{{ event.start_week }}</p>
         </div>
-        <p class="event-card--hold-datetime">開催日時：{{ event.start_datetime }} 〜 {{ event.end_datetime }}</p>
+        <div class="event-card--right">
+          <p class="event-card--right--title">{{ event.title }}</p>
+          <p v-if="event.event_type=='1'" class="event-card--right--type">セッション</p>
+          <p v-else-if="event.event_type=='2'" class="event-card--right--type">飲み会・懇親会</p>
+          <p v-else-if="event.event_type=='3'" class="event-card--right--type">合宿</p>
+          <p v-else-if="event.event_type=='4'" class="event-card--right--type">その他</p>
+          <p>参加費
+            <span class="event-card--right--fee">{{ event.fee }}</span>
+          </p>
+        </div>
       </router-link>
     </div>
   </div>
@@ -26,37 +31,46 @@ export default {
 
 <style scoped lang="scss">
 .event-card {
-  box-shadow: 10px 10px 10px rgba(70, 70, 70, 0.2);
-  margin: 40px 0;
-  padding: 10px;
+  margin: 20px;
   color: #333;
-  a {
-    text-decoration: none;
-    color: #333;
-    display: block;
+  background: #FFF;
+  display: flex;
+  justify-content: flex-start;
+  text-decoration: none;
+  box-shadow:  2px 2px 0 0 rgba(0,0,0,0.3);
+  &--left {
+    width: 100px;
+    padding: 20px;
+    font-weight: bold;
+    text-align: center;
+    background: orange;
+    &--date {
+      font-size: 24px;
+    }
+    &--week {
+      font-size: 20px;
+      color: #FFF;
+    }
   }
-  &--title {
-    font-size: 24px;
-  }
-  &--middle {
-    line-height: 20px;
-    margin: 5px 0;
+  &--right {
+    padding: 10px;
+    &--title {
+      font-size: 20px;
+    }
     &--type {
       background: rgb(71, 71, 241);
+      display: inline-block;
       color: #FFF;
       font-size: 10px;
       font-weight: bold;
       border-radius: 5px;
-      margin: 5px;
       padding: 2px 10px;
+      margin: 5px 0;
     }
     &--fee {
       font-weight: bold;
       margin-left: 10px;
     }
-  }
-  &--hold-datetime {
-    margin: 5px;
   }
 }
 </style>

@@ -31,9 +31,17 @@ class Api::MypageController < ApplicationController
   def events
     now = Time.now.in_time_zone
     user = User.find(params[:user_id])
-    future_events = user.events.where('start_datetime >= ? ', now.to_date)
-    history_events = user.events.where('start_datetime < ? ', now.to_date)
-    render json: { future_events: future_events, history_events: history_events }
+    future_events_params = []
+    history_events_params = []
+    future_events = user.events.where('start_datetime >= ? ', now.to_date).order('start_datetime DESC')
+    future_events.each do |event|
+      future_events_params << event.set_out_params
+    end
+    history_events = user.events.where('start_datetime < ? ', now.to_date).order('start_datetime DESC')
+    history_events.each do |event|
+      history_events_params << event.set_out_params
+    end
+    render json: { future_events: future_events_params, history_events: history_events_params }
   end
 
   private
