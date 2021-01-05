@@ -11,34 +11,35 @@
           <li v-for="(error, j) in errorMessages.time" :key="j">
             {{ error }}
           </li>
+          <li v-show="errorMessages.api!=''">{{errorMessages.api}}</li>
         </ul>
         <form v-on:submit.prevent="postStudioReserve()" class="reserve-form">
           <div class="reserve-form--date">
-            <select v-model="selected.year" @change="changeDate()">
+            <select v-model="selected.year" @change="changeDateTime()">
               <option v-for="year in selectYears" :key="year">{{ year }}</option>
             </select>
             年
-            <select v-model="selected.month" @change="changeDate()">
+            <select v-model="selected.month" @change="changeDateTime()">
               <option v-for="month in months" :key="month">{{ month }}</option>
             </select>
             月
-            <select v-model="selected.day" @change="changeDate()">
+            <select v-model="selected.day" @change="changeDateTime()">
               <option v-for="day in selectDays" :key="day">{{ day }}</option>
             </select>
             日
             <span>（{{ setWeeks }}）</span>
           </div>
           <div class="reserve-form--date">
-            <select v-model="selected.start_hour" @change="changeTime()">
+            <select v-model="selected.start_hour" @change="changeDateTime()">
               <option v-for="hour in hours" :key="hour">{{ hour }}</option>
             </select>時
-            <select v-model="selected.start_min" @change="changeTime()">
+            <select v-model="selected.start_min" @change="changeDateTime()">
               <option v-for="min in mins" :key="min">{{ min }}</option>
             </select>分〜
-            <select v-model="selected.end_hour" @change="changeTime()">
+            <select v-model="selected.end_hour" @change="changeDateTime()">
               <option v-for="hour in hours" :key="hour">{{ hour }}</option>
             </select>時
-            <select v-model="selected.end_min" @change="changeTime()">
+            <select v-model="selected.end_min" @change="changeDateTime()">
               <option v-for="min in mins" :key="min">{{ min }}</option>
             </select>分
           </div>
@@ -47,7 +48,7 @@
           </div>
           <div class="reserve-form--btn">
             <button @click="closeModal()" class="default-button back-btn">戻る</button>
-            <button class="default-button reserve-btn">予約する</button>
+            <button :disabled="disabledFlg" :class="{ 'reserve-disable': disabledFlg }" class="default-button reserve-btn">予約する</button>
           </div>
         </form>
       </template>
@@ -118,8 +119,10 @@ export default {
       },
       errorMessages: {
         date: [],
-        time: []
-      }
+        time: [],
+        api: ""
+      },
+      disabledFlg: false
     }
   },
   computed: {
@@ -148,10 +151,12 @@ export default {
     }
   },
   methods: {
+    // モーダルウィンドウを閉じる
     closeModal: function() {
       this.reserveCompleteFlg = false;
       this.$emit('from-child');
     },
+    // スタジオ予約の実行
     postStudioReserve: function(){
       axios.post(
         `http://${g.hostName}/api/studios/${this.$route.params.id}/reserves`,
@@ -172,16 +177,13 @@ export default {
         this.$emit('reserve-success');
       })
       .catch((error) => {
-        this.$store.dispatch(
-          "flash/create",
-          { message: error.response.data.error_message,
-            type:    2
-          }
-        );
+        this.errorMessages.api = error.response.data.error_message;
       });
     },
-    changeDate: function() {
-      this.errorMessages.date = []
+    changeDateTime: function() {
+      this.errorMessages.date = [];
+      this.errorMessages.time = [];
+      this.disabledFlg = false;
       var select_date = new Date(this.selected.year,
                                  this.selected.month-1,
                                  this.selected.day,
@@ -190,17 +192,21 @@ export default {
                                   today.getMonth(),
                                   today.getDate()+60);
       if (select_date < today) {
+        this.disabledFlg = true;
         this.errorMessages.date.push('予約日時が過ぎています');
       }
       else if (select_date > after_60date) {
+        this.disabledFlg = true;
         this.errorMessages.date.push('予約日は60日以内にしてください');
       }
-    },
-    changeTime: function() {
-      this.errorMessages.time = [];
       var sa = calcReserveTime(this.selected);
       if (sa <= 0) {
+        this.disabledFlg = true;
         this.errorMessages.time.push('終了時間は開始時間より後にしてください');
+      }
+      if (this.selected.end_hour == 24 && this.selected.end_min == 30) {
+        this.disabledFlg = true;
+        this.errorMessages.time.push('終了時刻は24:00までを選択してください');
       }
     }
   }
@@ -262,10 +268,15 @@ function calcReserveTime(selected) {
       .reserve-btn {
         width: 150px;
       }
+      
       .back-btn {
         width: 150px;
         color: #333;
         background: #FFF;
+      }
+      .reserve-disable {
+        cursor: not-allowed;
+        background: #888;
       }
     }
   }
@@ -287,6 +298,5 @@ function calcReserveTime(selected) {
     margin: 20px;
     font-size:  14px;
   }
-
 }
 </style>

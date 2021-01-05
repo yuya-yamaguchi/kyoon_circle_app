@@ -12,7 +12,6 @@ class Event < ApplicationRecord
   validates :details, presence: true
   validates :details, length: { maximum: 1000, message: "は1000文字以下で入力してください" }, allow_blank: true
   
-  
   def set_out_params
     week = ['Sun', 'Mon', 'Tue', 'Web', 'Thu', 'Fri', 'Sat']
     params = {

@@ -1,29 +1,35 @@
 <template>
   <div class="single-container">
-    <h1 class="main-title">{{ event.title }}</h1>
-    <p v-show="entryFlg" class="entry-now-msg">このイベントに参加中です</p>
-    <div class="event-top-info">
-      <div class="number-info">
-        <p class="number-info--title">参加費</p>
-        <p class="number-info--value">{{ event.fee }}</p>
+    <Loading v-if="loading"/>
+    <div v-else>
+      <h1 class="main-title">{{ event.title }}</h1>
+      <p v-show="entryFlg" class="entry-now-msg">このイベントに参加中です</p>
+      <div class="event-top-info">
+        <div class="number-info">
+          <p class="number-info--title">参加費</p>
+          <p class="number-info--value">{{ event.fee }}</p>
+        </div>
+        <div class="number-info">
+          <p class="number-info--title">参加人数</p>
+          <p class="number-info--value">
+            <span>{{ entryCnt }}人</span>
+            <span v-show="event.max_entry>0"> / {{ event.max_entry }}人</span>
+          </p>
+        </div>
       </div>
-      <div class="number-info">
-        <p class="number-info--title">参加人数</p>
-        <p class="number-info--value">{{ entryCnt }}人 / {{ event.max_entry }}人</p>
+      <div class="event-middle-info">開催日時 {{ event.start_datetime }}〜{{ event.end_datetime }}</div>
+      <div class="event-middle-info">開催場所 {{ event.place }}</div>
+      <div class="event-details">{{ event.details }}</div>
+      <div>
+        <button v-if="!entryFlg"
+                @click="postEventEntry()"
+                class="default-button">参加する
+        </button>
+        <button v-if="entryFlg"
+                @click="postCancelEventEntry()"
+                class="cancel-button">参加をやめる
+        </button>
       </div>
-    </div>
-    <div class="event-middle-info">開催日時 {{ event.start_datetime }}〜{{ event.end_datetime }}</div>
-    <div class="event-middle-info">開催場所 {{ event.place }}</div>
-    <div class="event-details">{{ event.details }}</div>
-    <div>
-      <button v-if="!entryFlg"
-              @click="postEventEntry()"
-              class="default-button">参加する
-      </button>
-      <button v-if="entryFlg"
-              @click="postCancelEventEntry()"
-              class="cancel-button">参加をやめる
-      </button>
     </div>
   </div>
 </template>
@@ -31,13 +37,18 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import Loading from '@/components/Loading.vue';
 
 export default {
+  components: {
+    Loading
+  },
   data() {
     return {
       event: "",
       entryFlg: false,
-      entryCnt: 0
+      entryCnt: 0,
+      loading: true
     }
   },
   methods: {
@@ -54,6 +65,7 @@ export default {
         this.event = response.data.event;
         this.entryFlg = response.data.entry_flg;
         this.entryCnt = response.data.entry_cnt;
+        this.loading = false;
       })
       .catch(function(error) {
         console.log(error);
@@ -63,7 +75,8 @@ export default {
       axios.post(
         `http://${g.hostName}/api/events/${this.$route.params.id}/entry`,
         {
-          user_id: this.$store.getters['user/id']
+          user_id: this.$store.getters['user/id'],
+          token:   this.$store.getters['user/secureToken']
         }
       )
       .then((response) => {
@@ -83,7 +96,8 @@ export default {
       axios.post(
         `http://${g.hostName}/api/events/${this.$route.params.id}/entry_cancel`,
         {
-          user_id: this.$store.getters['user/id']
+          user_id: this.$store.getters['user/id'],
+          token:   this.$store.getters['user/secureToken']
         }
       )
       .then((response) => {
@@ -131,7 +145,7 @@ export default {
   }
 }
 .event-details {
-  background: rgb(245, 242, 222);
+  background: #FFF;
   margin: 20px auto;
   padding: 10px;
 }

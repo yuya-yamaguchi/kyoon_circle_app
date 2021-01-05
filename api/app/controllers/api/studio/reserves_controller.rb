@@ -16,7 +16,7 @@ class Api::Studio::ReservesController < ApplicationController
                                .where('time between ? and ?', @start_time.to_i, @end_time.to_i)
                                .count
     if reserve_cnt > 0 
-      render status: 500
+      render status: 500, json: { error_message: "すでに予約されています。別の時間帯をご指定ください。" }
       return
     end
     @start_time_i = reserves_params[:start_hour].to_i + (reserves_params[:start_min].to_f / 60.0)
