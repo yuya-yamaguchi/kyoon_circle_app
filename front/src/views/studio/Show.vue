@@ -37,7 +37,8 @@
         </table>
       </div>
     </div>
-    <div class="studio-reserve-container">
+    <Loading v-if="loading"/>
+    <div v-else class="studio-reserve-container">
       <table>
         <tr>
           <th></th>
@@ -67,12 +68,14 @@ import axios from 'axios';
 import moment from "moment";
 import g from "@/variable/variable.js";
 import ReserveModal from '@/components/ReserveModal.vue';
+import Loading from '@/components/Loading.vue';
 
 const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 
 export default {
   components: {
-    ReserveModal
+    ReserveModal,
+    Loading
   },
   data() {
     return {
@@ -80,7 +83,8 @@ export default {
       reserves: [],
       weeks: [],
       // Modal関連
-      clickReserve: ""
+      clickReserve: "",
+      loading: true
     }
   },
   methods: {
@@ -92,6 +96,7 @@ export default {
         this.studio = response.data.studio;
         this.reserves = response.data.reserves;
         this.weeks = response.data.weeks;
+        this.loading = false;
       })
       .catch((error) => {
         console.log(error);

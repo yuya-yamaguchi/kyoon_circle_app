@@ -7,6 +7,7 @@
     <div class="single-container">
       <div class="top-container">
         <p class="main-title">イベント一覧</p>
+        <Loading v-if="loading"/>
         <EventList v-if="events.length!=0" :events-prop="events"/>
         <router-link to="/events" class="events-all">すべてのイベントを見る</router-link>
       </div>
@@ -35,7 +36,7 @@
               2部屋利用可能です。<br>
               遠方からお越しの方など、下記よりご予約の上ご利用ください！
             </p>
-            <button class="about-stay--left--btn default-button">宿泊予約</button>
+            <button class="about-stay--left--btn default-button">Comming<br>Soon...</button>
           </div>
           <div class="about-stay--right">
             <img src="@/assets/pictures/studio5.jpg">
@@ -50,15 +51,17 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import EventList from '@/components/EventList.vue';
-
+import Loading from '@/components/Loading.vue';
 
 export default {
   components: {
-    EventList
+    EventList,
+    Loading
   },
   data() {
     return {
-      events: []
+      events: [],
+      loading: true
     }
   },
   methods: {
@@ -66,6 +69,7 @@ export default {
       axios.get(`http://${g.hostName}/api/top`)
       .then((response) => {
         this.events = response.data;
+        this.loading = false;
       })
       .catch(function(error) {
         console.log(error);
@@ -124,16 +128,15 @@ export default {
     &--right {
       width: 40%;
       margin-left: 20px;
-      position: relative;
       &--explain {
         font-size: 18px;
         line-height: 30px;
       }
       &--btn {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translate(-50%,0);
+        display: block;
+        white-space: nowrap;
+        text-align: center;
+        width: 150px;
       }
     }
   }
@@ -144,16 +147,14 @@ export default {
     &--left {
       width: 40%;
       margin-right: 20px;
-      position: relative;
       &--explain {
         font-size: 18px;
         line-height: 30px;
       }
       &--btn {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translate(-50%,0);
+        white-space: nowrap;
+        background: #888;
+        cursor: not-allowed;
       }
     }
     &--right {

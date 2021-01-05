@@ -1,7 +1,7 @@
 <template>
   <div class="double-container">
     <div class="double-container--left">
-      <SideBar/>
+      <SideBar :select-menu-prop="4"/>
     </div>
     <div class="double-container--right">
       <div class="tabs">

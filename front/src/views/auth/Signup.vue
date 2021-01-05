@@ -67,6 +67,12 @@ export default {
             secureToken: response.data.data.token
           }
         );
+        this.$store.dispatch(
+          "flash/create",
+          { message: "会員登録が完了しました",
+            type:    1
+          }
+        );
         this.$router.push({
           name: "Top"
         })

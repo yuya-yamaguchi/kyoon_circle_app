@@ -17,9 +17,10 @@ export default {
 <style scoped lang="scss">
 .error-messages-container {
   background: rgb(243, 195, 195);
+  margin: 10px 0;
   .message {
     color: red;
-    padding: 10px;
+    padding: 0s 5px;
   }
 }
 </style>

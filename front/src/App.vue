@@ -31,12 +31,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  background: rgb(245, 245, 245);
 }
 
 .base-container{
   width: 100%;
-  max-width: 100rem;
   min-height: calc(100vh - 190px);
   margin: 0 auto;
+  box-sizing: border-box;
 }
 </style>

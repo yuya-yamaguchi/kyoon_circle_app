@@ -1,7 +1,8 @@
 <template>
   <transition name="vshow">
     <div v-show="showFlg" class="error-messages-container">
-      <p class="message">{{ $store.getters['flash/message'] }}</p>
+      <div v-if="$store.getters['flash/type'] === 1" class="success-msg">{{ $store.getters['flash/message'] }}</div>
+      <div v-if="$store.getters['flash/type'] === 2" class="error-msg">{{ $store.getters['flash/message'] }}</div>
     </div>
   </transition>
 </template>
@@ -45,10 +46,17 @@ export default {
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-  background-color:rgba(243, 195, 195, 0.7);
-  .message {
+  .success-msg {
+    color: #333;
+    font-size: 20px;
+    padding: 5px 20px;
+    background: rgba(109, 106, 106, 0.7);
+  }
+  .error-msg {
     color: red;
-    padding: 10px;
+    font-size: 20px;
+    padding: 5px 20px;
+    background: rgba(243, 195, 195, 0.7);
   }
 }
 </style>
