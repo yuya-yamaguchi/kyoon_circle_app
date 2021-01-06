@@ -12,6 +12,7 @@
       <router-link to="/users" :class="{'select-menu': selectMenuProp==101}" class="side-menu">登録ユーザ一覧</router-link>
       <router-link to="/studio/1/edit" :class="{'select-menu': selectMenuProp==102}" class="side-menu">スタジオ内容編集</router-link>
       <router-link to="/event/new" :class="{'select-menu': selectMenuProp==103}" class="side-menu">イベントの登録</router-link>
+      <router-link to="/event/editlist" :class="{'select-menu': selectMenuProp==104}" class="side-menu">イベントの編集</router-link>
     </div>
   </div>
 </template>

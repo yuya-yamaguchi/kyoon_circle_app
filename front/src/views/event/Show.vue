@@ -3,7 +3,8 @@
     <Loading v-if="loading"/>
     <div v-else>
       <h1 class="main-title">{{ event.title }}</h1>
-      <p v-show="entryFlg" class="entry-now-msg">このイベントに参加中です</p>
+      <router-link :to="`/event/${event.id}/edit`" class="event-card">内容を編集する</router-link>
+      <p v-show="entryFlg" class="entry-now-msg">このイベントに参加しました</p>
       <div class="event-top-info">
         <div class="number-info">
           <p class="number-info--title">参加費</p>
@@ -17,7 +18,7 @@
           </p>
         </div>
       </div>
-      <div class="event-middle-info">開催日時 {{ event.start_datetime }}〜{{ event.end_datetime }}</div>
+      <div class="event-middle-info">開催日時 {{ holdStart(event.start_date) }}〜{{ holdStart(event.end_date) }}</div>
       <div class="event-middle-info">開催場所 {{ event.place }}</div>
       <div class="event-details">{{ event.details }}</div>
       <div>
@@ -112,6 +113,9 @@ export default {
           }
         );
       });
+    },
+    holdStart: function(startDate) {
+      return startDate.substr(0, 4) + '/' + startDate.substr(5, 2) + '/' + startDate.substr(8, 2) + ' ' + startDate.substr(11, 5)
     }
   },
   mounted: function() {

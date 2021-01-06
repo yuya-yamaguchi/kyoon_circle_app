@@ -2,8 +2,9 @@
   <div>
     <div v-for="(event, i) in eventsProp" :key="i">
       <router-link :to="`/event/${event.id}`" class="event-card">
+        <div v-if="checkDateOver(event.start_date)" class="event-end">このイベントは終了しました</div>
         <div class="event-card--left">
-          <p class="event-card--left--date">{{ event.start_date }}</p>
+          <p class="event-card--left--date">{{ holdDate(event.start_date) }}</p>
           <p class="event-card--left--week">{{ event.start_week }}</p>
         </div>
         <div class="event-card--right">
@@ -25,6 +26,21 @@
 export default {
   props: {
     eventsProp: {}
+  },
+  methods: {
+    holdDate: function(startDate) {
+      return Number(startDate.substr(5, 2)) + '/' + Number(startDate.substr(8, 2))
+    },
+    checkDateOver: function(startDate) {
+      var today = new Date();
+      var holdDate = new Date(startDate.substr(0, 4),
+                              Number(startDate.substr(5, 2))-1,
+                              startDate.substr(8, 2))
+      if ( holdDate < today ) {
+        return true
+      }
+      return false
+    }
   }
 }
 </script>
@@ -38,6 +54,20 @@ export default {
   justify-content: flex-start;
   text-decoration: none;
   box-shadow:  2px 2px 0 0 rgba(0,0,0,0.3);
+  position: relative;
+  .event-end {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 1;
+  }
   &--left {
     width: 100px;
     padding: 20px;

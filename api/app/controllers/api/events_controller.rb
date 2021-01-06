@@ -27,6 +27,18 @@ class Api::EventsController < ApplicationController
                    entry_cnt: entry_cnt }
   end
 
+  def edit
+    event = Event.find(params[:id])
+    out_params = event.set_edit_params
+    render json: out_params
+  end
+
+  def update
+    event_params = require_event_params
+    event = Event.find(params[:id])
+    event.update(set_event_params(event_params))
+  end
+  
   def create
     event_params = require_event_params
     event = Event.new(set_event_params(event_params))
@@ -73,8 +85,8 @@ class Api::EventsController < ApplicationController
     month = event_params[:start_date][5, 2].to_i
     day   = event_params[:start_date][8, 2].to_i
     if year > 0 && month > 0 && day > 0
-      start_datetime = DateTime.new(year, month, day, event_params[:start_hour].to_i, event_params[:start_min].to_i)
-      end_datetime = DateTime.new(year, month, day, event_params[:end_hour].to_i, event_params[:end_min].to_i)
+      start_datetime = DateTime.new(year, month, day, event_params[:start_hour].to_i, event_params[:start_min].to_i) - Rational(9, 24)
+      end_datetime = DateTime.new(year, month, day, event_params[:end_hour].to_i, event_params[:end_min].to_i) - Rational(9, 24)
     end
     return_params = {
       user_id: event_params[:user_id],
