@@ -8,6 +8,8 @@ ja:
         title: イベント名
         details: イベント内容
         event_type: イベントの種類
+        fee: 参加費
+        place: 場所
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'

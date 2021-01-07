@@ -36,7 +36,11 @@ class Api::EventsController < ApplicationController
   def update
     event_params = require_event_params
     event = Event.find(params[:id])
-    event.update(set_event_params(event_params))
+    if event.update(set_event_params(event_params))
+      render status: 200
+    else
+      render status: 500, json: event.errors.full_messages
+    end
   end
   
   def create

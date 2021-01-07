@@ -6,46 +6,7 @@
     <div class="double-container--right">
       <h1 class="main-title text-center">イベント登録</h1>
       <ErrMsg :error-messages-prop="apiErrorMessages"/>
-      <form v-on:submit.prevent="postNewEvent()">
-        <div class="form-item">
-          <p>イベントの種類</p>
-          <select v-model="event.event_type">
-            <option disabled value="">イベントの種類を選択して下さい</option>
-            <option v-for="option in options" :value="option.event_type" :key="option.id">
-              {{ option.name }}
-            </option>
-          </select>
-        </div>
-        <div class="form-item">
-          <p>イベント名</p>
-          <input type="text" v-model="event.title" placeholder="イベント名">
-        </div>
-        <div class="form-item">
-          <p>イベント内容</p>
-          <textarea v-model="event.details"></textarea>
-        </div>
-        <div class="form-item">
-          <p>開催日時</p>
-          <input type="date" v-model="event.start_date">
-          <input type="text" v-model="event.start_hour" class="event-time">時
-          <input type="text" v-model="event.start_min" class="event-time">分 〜
-          <input type="text" v-model="event.end_hour" class="event-time">時
-          <input type="text" v-model="event.end_min" class="event-time">分
-        </div>
-        <div class="form-item">
-          <p>場所</p>
-          <input type="text" v-model="event.place">
-        </div>
-        <div class="form-item">
-          <p>参加費</p>
-          <input type="text" v-model="event.fee">
-        </div>
-        <div class="form-item">
-          <p>参加可能人数</p>
-          <input type="number" v-model="event.max_entry">
-        </div>
-        <button class="default-button">登録</button>
-    </form>
+      <EventForm :event-prop="event" @post-event="postNewEvent"/>
     </div>
   </div>
 </template>
@@ -54,22 +15,17 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
+import EventForm from "@/components/EventForm.vue";
 import ErrMsg from "@/components/ErrMsg.vue";
 
 export default {
   components: {
     SideBar,
+    EventForm,
     ErrMsg
   },
   data() {
     return {
-      selected: "",
-      options: [
-        { event_type: 1, name: 'セッション' },
-        { event_type: 2, name: '飲み会・懇親会' },
-        { event_type: 3, name: '合宿' },
-        { event_type: 4, name: 'その他' }
-      ],
       event: {
         event_type: 0,
         title: "",
@@ -87,15 +43,16 @@ export default {
     }
   },
   methods: {
-    postNewEvent: function() {
+    postNewEvent: function(event) {
       axios.post(
         `http://${g.hostName}/api/events`,
         {
           user_id: this.$store.getters['user/id'],
-          event: this.event
+          event: event
         }
       )
       .then((response) => {
+        this.apiErrorMessages = []
         console.log(response);
       })
       .catch((error) => {
