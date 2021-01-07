@@ -3,7 +3,11 @@
     <Loading v-if="loading"/>
     <div v-else>
       <h1 class="main-title">{{ event.title }}</h1>
-      <router-link :to="`/event/${event.id}/edit`" class="event-card">内容を編集する</router-link>
+      <router-link :to="`/event/${event.id}/edit`" class="edit-btn">編集する</router-link>
+      <a @click="displayConfirmModal" class="delete-btn">削除する</a>
+      <ConfirmModal v-show="modalFlg"
+        :modal-msg-prop="modalMsg"
+        @process-confirm="deleteEvent"/>
       <p v-show="entryFlg" class="entry-now-msg">このイベントに参加しました</p>
       <div class="event-top-info">
         <div class="number-info">
@@ -39,17 +43,25 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import Loading from '@/components/Loading.vue';
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 export default {
   components: {
-    Loading
+    Loading,
+    ConfirmModal
   },
   data() {
     return {
       event: "",
       entryFlg: false,
       entryCnt: 0,
-      loading: true
+      loading: true,
+      modalFlg: false,
+      modalMsg: {
+        title: "イベントの取消",
+        message: `イベントの取消を行います。削除したイベントは元へは戻せません。よろしいですか？`,
+        btn: "削除"
+      }
     }
   },
   methods: {
@@ -114,6 +126,31 @@ export default {
         );
       });
     },
+    deleteEvent: function(confirm) {
+      this.modalFlg = false;
+      if (confirm) {
+        axios.delete(
+          `http://${g.hostName}/api/events/${this.event.id}`
+        )
+        .then(() => {
+          this.$store.dispatch(
+            "flash/create",
+            { message: "イベントを削除しました",
+              type:    1
+            }
+          );
+          this.$router.push({ 
+            name: "EventEditList"
+          })
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      }
+    },
+    displayConfirmModal: function() {
+      this.modalFlg = true;
+    },
     holdStart: function(startDate) {
       return startDate.substr(0, 4) + '/' + startDate.substr(5, 2) + '/' + startDate.substr(8, 2) + ' ' + startDate.substr(11, 5)
     }
@@ -152,5 +189,27 @@ export default {
   background: #FFF;
   margin: 20px auto;
   padding: 10px;
+}
+.edit-btn {
+  display: inline-block;
+  padding: 2px 15px;
+  margin: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #FFF;
+  cursor: pointer;
+  background: orange;
+}
+.delete-btn {
+  display: inline-block;
+  padding: 2px 15px;
+  margin: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #FFF;
+  cursor: pointer;
+  background: red;
 }
 </style>

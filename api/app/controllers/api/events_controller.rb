@@ -53,6 +53,12 @@ class Api::EventsController < ApplicationController
     end
   end
 
+  def destroy
+    if Event.destroy(params[:id])
+      render status: 200
+    end
+  end
+
   def entry
     EventEntry.create(user_id: params[:user_id], event_id: params[:id])
     entry_cnt = EventEntry.where(event_id: params[:id]).count
