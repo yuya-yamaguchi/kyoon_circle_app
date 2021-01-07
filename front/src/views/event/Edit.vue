@@ -1,12 +1,12 @@
 <template>
   <div class="double-container">
     <div class="double-container--left">
-      <SideBar :select-menu-prop="103"/>
+      <SideBar :select-menu-prop="104"/>
     </div>
     <div class="double-container--right">
-      <h1 class="main-title text-center">イベント登録</h1>
+      <h1 class="main-title text-center">イベント編集</h1>
       <ErrMsg :error-messages-prop="apiErrorMessages"/>
-      <EventForm :event-prop="event" @post-event="postNewEvent"/>
+      <EventForm v-if="event" :event-prop="event" @post-event="updateEvent"/>
     </div>
   </div>
 </template>
@@ -26,26 +26,25 @@ export default {
   },
   data() {
     return {
-      event: {
-        event_type: 0,
-        title: "",
-        details: "",
-        start_date: "",
-        start_hour: "",
-        start_min: "",
-        end_hour: "",
-        end_min: "",
-        place: "",
-        fee: "",
-        max_entry: 0
-      },
+      event: '',
       apiErrorMessages: []
     }
   },
   methods: {
-    postNewEvent: function(event) {
-      axios.post(
-        `http://${g.hostName}/api/events`,
+    getEvent: function() {
+      axios.get(
+        `http://${g.hostName}/api/events/${this.$route.params.id}/edit`
+      )
+      .then((response) => {
+        this.event = response.data
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    updateEvent: function(event) {
+      axios.put(
+        `http://${g.hostName}/api/events/${event.id}`,
         {
           user_id: this.$store.getters['user/id'],
           event: event
@@ -59,12 +58,13 @@ export default {
         this.apiErrorMessages = error.response.data;
       });
     }
+  },
+  mounted() {
+    console.log(this.event.title);
+    this.getEvent();
   }
 }
 </script>
 
 <style scoped lang="scss">
-.event-time {
-  width: 50px;
-}
 </style>

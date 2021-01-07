@@ -8,6 +8,8 @@ import MypageProfile from '@/views/mypage/Profile.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
 import MypageEvents from '@/views/mypage/Events.vue'
 import EventNew from '@/views/event/New.vue'
+import EventEdit from '@/views/event/Edit.vue'
+import EventEditList from '@/views/event/EditList.vue'
 import EventIndex from '@/views/event/Index.vue'
 import EventShow from '@/views/event/Show.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
@@ -67,6 +69,18 @@ const routes = [
     path: '/event/new',
     name: 'EventNew',
     component: EventNew
+  },
+  // イベント編集
+  {
+    path: '/event/:id/edit',
+    name: 'EventEdit',
+    component: EventEdit
+  },
+  // イベント編集一覧
+  {
+    path: '/event/editlist',
+    name: 'EventEditList',
+    component: EventEditList
   },
   // イベント一覧
   {
