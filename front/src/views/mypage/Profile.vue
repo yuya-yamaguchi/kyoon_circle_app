@@ -12,7 +12,7 @@
             <p>
               ユーザ名
             </p>
-            <input type="text" v-model="user.name">
+            <input type="text" v-model="user.name" class="default-input">
           </div>
           <div>
             <div class="form-item">

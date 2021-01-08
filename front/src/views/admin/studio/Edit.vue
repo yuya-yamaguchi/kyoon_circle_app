@@ -13,14 +13,14 @@
           <p>
             スタジオ名
           </p>
-          <input type="text" v-model="studio.name">
+          <input type="text" v-model="studio.name" class="default-input">
         </div>
         <div>
           <div class="form-item">
             <p>
               料金（1 Hour）
             </p>
-            <input type="number" v-model="studio.fee">
+            <input type="number" v-model="studio.fee"  class="default-input">
           </div>
         </div>
         <button class="default-button">変更する</button>

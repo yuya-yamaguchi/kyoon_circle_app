@@ -38,7 +38,7 @@ export default {
         place: "",
         fee: "",
         max_entry: 0,
-        line_msg_flg: true
+        line_msg_push: true
       },
       apiErrorMessages: []
     }

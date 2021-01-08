@@ -6,7 +6,7 @@
     </div>
     <div class="single-container">
       <div class="top-container">
-        <p class="main-title">イベント一覧</p>
+        <p class="main-title">開催予定のイベント</p>
         <Loading v-if="loading"/>
         <EventList v-if="events.length!=0" :events-prop="events"/>
         <router-link to="/events" class="events-all">すべてのイベントを見る</router-link>

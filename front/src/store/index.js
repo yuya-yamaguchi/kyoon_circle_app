@@ -10,7 +10,6 @@ export default createStore({
   },
   plugins: [createPersistedState({
     key: 'UserInfo',
-    paths: ['user'],
-    storage: window.sessionStorage
+    paths: ['user']
   })]
 })

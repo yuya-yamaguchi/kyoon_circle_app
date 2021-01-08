@@ -9,11 +9,11 @@
     <form v-on:submit.prevent="login()">
       <div class="form-item">
         <p>メールアドレス</p>
-        <input type="text" v-model="email" placeholder="a@gmail.com">
+        <input type="text" v-model="email" placeholder="a@gmail.com"  class="default-input">
       </div>
       <div class="form-item">
         <p>パスワード</p>
-        <input type="password" v-model="password">
+        <input type="password" v-model="password"  class="default-input">
       </div>
       <button class="default-button">ログイン</button>
     </form>

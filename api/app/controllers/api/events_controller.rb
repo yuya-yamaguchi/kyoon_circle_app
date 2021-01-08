@@ -47,7 +47,10 @@ class Api::EventsController < ApplicationController
     event_params = require_event_params
     event = Event.new(set_event_params(event_params))
     if event.save
-      event.push_line
+      # グループラインへのメッセージ送信
+      if event.line_msg_push
+        event.push_line
+      end
       render status: 200
     else
       render status: 500, json: event.errors.full_messages
@@ -87,7 +90,8 @@ class Api::EventsController < ApplicationController
                   :place,
                   :fee,
                   :max_entry,
-                  :event_type)
+                  :event_type,
+                  :line_msg_push)
           .merge(user_id: params[:user_id])
   end
 
@@ -108,7 +112,8 @@ class Api::EventsController < ApplicationController
       max_entry: event_params[:max_entry],
       start_datetime: start_datetime,
       end_datetime: end_datetime,
-      event_type: event_params[:event_type]
+      event_type: event_params[:event_type],
+      line_msg_push: event_params[:line_msg_push]
     }
     return return_params
   end

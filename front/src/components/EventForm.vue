@@ -12,7 +12,7 @@
       </div>
       <div class="form-item">
         <p>イベント名</p>
-        <input type="text" v-model="event.title" placeholder="イベント名">
+        <input type="text" v-model="event.title" placeholder="イベント名" class="default-input">
       </div>
       <div class="form-item">
         <p>イベント内容</p>
@@ -28,15 +28,20 @@
       </div>
       <div class="form-item">
         <p>場所</p>
-        <input type="text" v-model="event.place">
+        <input type="text" v-model="event.place" class="default-input">
       </div>
       <div class="form-item">
         <p>参加費</p>
-        <input type="text" v-model="event.fee">
+        <input type="text" v-model="event.fee" class="default-input">
       </div>
       <div class="form-item">
         <p>参加可能人数</p>
         <input type="number" v-model="event.max_entry">
+      </div>
+      <div class="form-item" v-if="displayLinePush()">
+        <p>グループLINEへの通知</p>
+        <input type="checkbox" id="lineMsgFlg" class="checkbox" v-model="event.line_msg_push">
+        <label for="lineMsgFlg">通知する</label>
       </div>
       <button class="default-button">登録</button>
     </form>
@@ -62,6 +67,12 @@ export default {
   methods: {
     postEvent: function() {
       this.$emit('post-event', this.event);
+    },
+    displayLinePush: function() {
+      if (location.pathname == '/event/new') {
+        return true
+      }
+      return false
     }
   }
 }
