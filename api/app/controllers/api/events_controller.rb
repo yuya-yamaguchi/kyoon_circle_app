@@ -1,5 +1,5 @@
 class Api::EventsController < ApplicationController
-
+  
   before_action :user_check, only: [:entry, :entry_cancel]
 
   def index
@@ -47,6 +47,7 @@ class Api::EventsController < ApplicationController
     event_params = require_event_params
     event = Event.new(set_event_params(event_params))
     if event.save
+      event.push_line
       render status: 200
     else
       render status: 500, json: event.errors.full_messages

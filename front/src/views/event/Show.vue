@@ -3,8 +3,10 @@
     <Loading v-if="loading"/>
     <div v-else>
       <h1 class="main-title">{{ event.title }}</h1>
-      <router-link :to="`/event/${event.id}/edit`" class="edit-btn">編集する</router-link>
-      <a @click="displayConfirmModal" class="delete-btn">削除する</a>
+      <div v-show="$store.getters['user/adminType']>0">
+        <router-link :to="`/event/${event.id}/edit`" class="edit-btn">編集する</router-link>
+        <a @click="displayConfirmModal" class="delete-btn">削除する</a>
+      </div>
       <ConfirmModal v-show="modalFlg"
         :modal-msg-prop="modalMsg"
         @process-confirm="deleteEvent"/>
@@ -59,7 +61,7 @@ export default {
       modalFlg: false,
       modalMsg: {
         title: "イベントの取消",
-        message: `イベントの取消を行います。削除したイベントは元へは戻せません。よろしいですか？`,
+        message: "イベントの取消を行います。<br>削除したイベントは元へは戻せません。よろしいですか？",
         btn: "削除"
       }
     }

@@ -3,7 +3,7 @@
     <div class="confirm-container">
       <button @click="closeModal()" class="close-button">×</button>
       <h1>{{ modalMsgProp.title }}</h1>
-      <p class="caution-msg">{{ modalMsgProp.message }}</p>
+      <p v-html="modalMsgProp.message" class="caution-msg"></p>
       <div class="btn-area">
         <button @click="closeModal()" class="default-button back-btn">戻る</button>
         <button @click="confirmCancel()" class="default-button confirm-btn">{{ modalMsgProp.btn }}</button>
@@ -52,6 +52,7 @@ export default {
   width: 70%;
   margin: 0 auto;
   background: #FFF;
+  max-width: 700px;
   h1 {
     margin: 30px;
     font-weight: bold;
