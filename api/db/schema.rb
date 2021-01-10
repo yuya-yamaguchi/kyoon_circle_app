@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_08_145408) do
+ActiveRecord::Schema.define(version: 2021_01_08_194652) do
 
   create_table "event_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 2021_01_08_145408) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "line_msg_push", default: false
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "news", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.text "details", null: false
+    t.boolean "line_msg_push", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_news_on_user_id"
   end
 
   create_table "studio_reserves", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|

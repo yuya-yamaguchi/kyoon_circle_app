@@ -14,6 +14,7 @@ import EventIndex from '@/views/event/Index.vue'
 import EventShow from '@/views/event/Show.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
 import StudioEdit from '@/views/admin/studio/Edit.vue'
+import NewsNew from '@/views/admin/news/New.vue'
 
 const routes = [
   // トップページ
@@ -108,6 +109,12 @@ const routes = [
     path: '/studio/1/edit',
     name: 'StudioEdit',
     component: StudioEdit
+  },
+  // お知らせ新規作成
+  {
+    path: '/news/new',
+    name: 'NewsNew',
+    component: NewsNew
   }
 ]
 
