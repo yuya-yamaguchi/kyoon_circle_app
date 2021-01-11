@@ -5,6 +5,11 @@ class Api::Admin::NewsController < ApplicationController
     render json: news
   end
 
+  def show
+    news = News.find(params[:id])
+    render json: news
+  end
+
   def create
     news = News.new(news_params)
     if news.save

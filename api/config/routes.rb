@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     namespace :admin do
       resources :users, only: [:index]
       resources :studios, only: [:edit, :update]
-      resources :news, only: [:index, :create]
+      resources :news, only: [:index, :show, :create]
     end
   end
 end
