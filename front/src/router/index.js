@@ -15,6 +15,7 @@ import EventShow from '@/views/event/Show.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
 import StudioEdit from '@/views/admin/studio/Edit.vue'
 import NewsNew from '@/views/admin/news/New.vue'
+import NewsIndex from '@/views/admin/news/Index.vue'
 
 const routes = [
   // トップページ
@@ -94,6 +95,12 @@ const routes = [
     path: '/event/:id',
     name: 'EventShow',
     component: EventShow
+  },
+  // お知らせ一覧
+  {
+    path: '/news',
+    name: 'NewsIndex',
+    component: NewsIndex
   },
   /***********************/
   /* 管理者用VIEW         */

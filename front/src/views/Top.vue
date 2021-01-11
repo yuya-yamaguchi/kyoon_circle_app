@@ -6,6 +6,11 @@
     </div>
     <div class="single-container">
       <div class="top-container">
+        <p class="main-title">お知らせ</p>
+        <NewsList v-if="news.length!=0" :news-prop="news"/>
+        <router-link to="/news" class="events-all">すべてのお知らせを見る</router-link>
+      </div>
+      <div class="top-container">
         <p class="main-title">開催予定のイベント</p>
         <Loading v-if="loading"/>
         <EventList v-if="events.length!=0" :events-prop="events"/>
@@ -50,16 +55,19 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import NewsList from '@/components/NewsList.vue';
 import EventList from '@/components/EventList.vue';
 import Loading from '@/components/Loading.vue';
 
 export default {
   components: {
+    NewsList,
     EventList,
     Loading
   },
   data() {
     return {
+      news: [],
       events: [],
       loading: true
     }
@@ -68,7 +76,8 @@ export default {
     getTop: function(){
       axios.get(`http://${g.hostName}/api/top`)
       .then((response) => {
-        this.events = response.data;
+        this.events = response.data.events;
+        this.news = response.data.news;
         this.loading = false;
       })
       .catch(function(error) {

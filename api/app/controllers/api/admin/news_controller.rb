@@ -1,5 +1,10 @@
 class Api::Admin::NewsController < ApplicationController
 
+  def index
+    news = News.all.order('created_at DESC')
+    render json: news
+  end
+
   def create
     news = News.new(news_params)
     if news.save
