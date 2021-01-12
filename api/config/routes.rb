@@ -24,11 +24,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :news, only: [:index, :show, :create, :update]
+    
     # 管理者用機能
     namespace :admin do
       resources :users, only: [:index]
       resources :studios, only: [:edit, :update]
-      resources :news, only: [:index, :show, :create]
     end
   end
 end

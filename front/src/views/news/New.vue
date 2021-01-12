@@ -42,7 +42,7 @@ export default {
   methods: {
     postNewNews: function(news) {
       axios.post(
-        `http://${g.hostName}/api/admin/news`,
+        `http://${g.hostName}/api/news`,
         {
           user_id: this.$store.getters['user/id'],
           news: news
@@ -51,6 +51,12 @@ export default {
       .then((response) => {
         this.apiErrorMessages = []
         console.log(response);
+        this.$router.push({
+          name: "NewsShow",
+          params: {
+            id: response.data.id
+          }
+        })
       })
       .catch((error) => {
         this.apiErrorMessages = error.response.data;

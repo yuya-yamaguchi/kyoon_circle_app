@@ -22,7 +22,7 @@ export default {
   methods: {
     getNews: function() {
       axios.get(
-        `http://${g.hostName}/api/admin/news`
+        `http://${g.hostName}/api/news`
       )
       .then((response) => {
         this.news = response.data;

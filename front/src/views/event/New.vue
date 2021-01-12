@@ -55,6 +55,12 @@ export default {
       .then((response) => {
         this.apiErrorMessages = []
         console.log(response);
+        this.$router.push({
+          name: "EventShow",
+          params: {
+            id: response.data.id
+          }
+        })
       })
       .catch((error) => {
         this.apiErrorMessages = error.response.data;

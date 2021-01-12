@@ -51,7 +51,7 @@ class Api::EventsController < ApplicationController
       if event.line_msg_push
         event.push_line
       end
-      render status: 200
+      render status: 200, json: event
     else
       render status: 500, json: event.errors.full_messages
     end

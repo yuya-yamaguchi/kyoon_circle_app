@@ -14,9 +14,10 @@ import EventIndex from '@/views/event/Index.vue'
 import EventShow from '@/views/event/Show.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
 import StudioEdit from '@/views/admin/studio/Edit.vue'
-import NewsNew from '@/views/admin/news/New.vue'
-import NewsIndex from '@/views/admin/news/Index.vue'
-import NewsShow from '@/views/admin/news/Show.vue'
+import NewsNew from '@/views/news/New.vue'
+import NewsIndex from '@/views/news/Index.vue'
+import NewsShow from '@/views/news/Show.vue'
+import NewsEdit from '@/views/news/Edit.vue'
 
 const routes = [
   // トップページ
@@ -108,6 +109,12 @@ const routes = [
     path: '/news/:id',
     name: 'NewsShow',
     component: NewsShow
+  },
+  // お知らせ編集
+  {
+    path: '/news/:id/edit',
+    name: 'NewsEdit',
+    component: NewsEdit
   },
   /***********************/
   /* 管理者用VIEW         */
