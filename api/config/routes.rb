@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :news, only: [:index, :show, :create, :update, :destroy]
+    
     # 管理者用機能
     namespace :admin do
       resources :users, only: [:index]

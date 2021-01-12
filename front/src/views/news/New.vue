@@ -1,12 +1,12 @@
 <template>
   <div class="double-container">
     <div class="double-container--left">
-      <SideBar :select-menu-prop="103"/>
+      <SideBar :select-menu-prop="105"/>
     </div>
     <div class="double-container--right">
-      <h1 class="main-title text-center">イベント登録</h1>
+      <h1 class="main-title text-center">お知らせの登録</h1>
       <ErrMsg :error-messages-prop="apiErrorMessages"/>
-      <EventForm :event-prop="event" @post-event="postNewEvent"/>
+      <NewsForm :news-prop="news" :modal-msg-prop="modalMsg" @post-news="postNewNews"/>
     </div>
   </div>
 </template>
@@ -15,48 +15,44 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
-import EventForm from "@/components/EventForm.vue";
+import NewsForm from "@/components/NewsForm.vue";
 import ErrMsg from "@/components/ErrMsg.vue";
 
 export default {
   components: {
     SideBar,
-    EventForm,
+    NewsForm,
     ErrMsg
   },
   data() {
     return {
-      event: {
-        event_type: 0,
+      news: {
         title: "",
         details: "",
-        start_date: "",
-        start_hour: "",
-        start_min: "",
-        end_hour: "",
-        end_min: "",
-        place: "",
-        fee: "",
-        max_entry: 0,
         line_msg_push: true
       },
-      apiErrorMessages: []
+      modalMsg: {
+        title: "お知らせの登録",
+        message: 'お知らせを登録します。よろしいですか？',
+        btn: "登録"
+      },
+      apiErrorMessages: ""
     }
   },
   methods: {
-    postNewEvent: function(event) {
+    postNewNews: function(news) {
       axios.post(
-        `http://${g.hostName}/api/events`,
+        `http://${g.hostName}/api/news`,
         {
           user_id: this.$store.getters['user/id'],
-          event: event
+          news: news
         }
       )
       .then((response) => {
         this.apiErrorMessages = []
         console.log(response);
         this.$router.push({
-          name: "EventShow",
+          name: "NewsShow",
           params: {
             id: response.data.id
           }
@@ -69,9 +65,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-.event-time {
-  width: 50px;
-}
-</style>

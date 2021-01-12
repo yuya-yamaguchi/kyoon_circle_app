@@ -13,6 +13,7 @@ services:
       - bundle:/usr/local/bundle
     tty: true
     stdin_open: true
+    env_file: ./api/.sec_env
   db:
     image: mysql:5.7
     volumes:

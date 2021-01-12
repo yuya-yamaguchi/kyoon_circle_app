@@ -32,8 +32,8 @@ class Api::Studio::ReservesController < ApplicationController
     user_reserve = UserReserve.find(params[:id])
     now = Time.now.in_time_zone
     if user_reserve.date <= now.to_date &&
-       user_reserve.start_time < (now.hour.to_s + now.min.to_s).to_i
-      render status: 500, json: { error_message: "開始時刻を過ぎているため取消できません" }
+       user_reserve.start_time < (format("%02d" ,now.hour) + format("%02d" ,now.min)).to_i
+      render status: 500, json: { error_message: "開始日時を過ぎているため取消できません" }
       return
     end
     studio_reserves = StudioReserve.where(studio_id: params[:studio_id])

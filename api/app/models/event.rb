@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
-  
-  has_many :event_entries
+  require 'line/bot'
+
+  has_many :event_entries, dependent: :destroy
   
   validates :title, presence: true
   validates :title, length: { maximum: 40, message: "は40文字以下で入力してください" }, allow_blank: true
@@ -45,5 +46,20 @@ class Event < ApplicationRecord
       end_hour:   self.end_datetime.strftime("%H"),
       end_min:    self.end_datetime.strftime("%M")
     }
+  end
+
+  # ラインへの通知
+  def push_line
+    group_id = "Cf3d1c27541003b233c4177ab4cb98680"
+    message = {
+      type: 'text',
+      text: "新しいイベントが投稿されました！
+#{self.title}"
+    }
+    client = Line::Bot::Client.new { |config|
+        config.channel_secret = ENV['LINE_CHANNEL_SECRET']
+        config.channel_token = ENV['LINE_CHANNEL_TOKEN']
+    }
+    response = client.push_message(group_id, message)
   end
 end

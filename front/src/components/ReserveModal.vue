@@ -238,6 +238,7 @@ function calcReserveTime(selected) {
   width: 70%;
   margin: 0 auto;
   background: #FFF;
+  max-width: 700px;
   h1 {
     margin: 30px;
   }
