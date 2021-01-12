@@ -1,5 +1,8 @@
 <template>
   <div class="single-container">
+    <ConfirmModal v-show="modalFlg"
+        :modal-msg-prop="modalMsg"
+        @process-confirm="deleteNews"/>
     <h1 class="main-title">{{ news.title }}</h1>
     <div v-show="$store.getters['user/adminType']>0">
       <router-link :to="`/news/${news.id}/edit`" class="edit-btn">編集する</router-link>
@@ -18,11 +21,21 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 export default {
+  components: {
+    ConfirmModal
+  },
   data() {
     return {
-      news: ""
+      news: "",
+      modalFlg: false,
+      modalMsg: {
+        title: "お知らせの削除",
+        message: "お知らせの削除を行います。<br>削除したお知らせは元へは戻せません。よろしいですか？",
+        btn: "削除"
+      }
     }
   },
   methods: {
@@ -37,13 +50,38 @@ export default {
         console.log(error);
       });
     },
+    deleteNews: function(confirm) {
+      this.modalFlg = false;
+      if (confirm) {
+        axios.delete(
+          `http://${g.hostName}/api/news/${this.news.id}`
+        )
+        .then(() => {
+          this.$store.dispatch(
+            "flash/create",
+            { message: "お知らせを削除しました",
+              type:    1
+            }
+          );
+          this.$router.push({ 
+            name: "NewsIndex"
+          })
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      }
+    },
     formatDate: function(date) {
       var dateFormat = ""
       if (date != undefined) {
         dateFormat = date.substr(0, 4) + '/' + date.substr(5, 2) + '/' + date.substr(8, 2) + ' ' + date.substr(11, 8)
       }
       return dateFormat
-    }
+    },
+    displayConfirmModal: function() {
+      this.modalFlg = true;
+    },
   },
   mounted() {
     this.getNews();

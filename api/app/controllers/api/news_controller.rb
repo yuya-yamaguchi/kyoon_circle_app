@@ -30,6 +30,15 @@ class Api::NewsController < ApplicationController
       render status: 500, json: news.errors.full_messages
     end
   end
+
+  def destroy
+    news = News.find(params[:id])
+    if news.destroy
+      render status: 200
+    else
+      render status: 500, json: news.errors.full_messages
+    end
+  end
   
   private
   def news_params
