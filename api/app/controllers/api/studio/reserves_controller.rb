@@ -77,18 +77,18 @@ class Api::Studio::ReservesController < ApplicationController
   end
 
   def user_check
-    user = User.where(id: params[:user_id]).first
-    # ユーザ存在チェック
-    if user.nil?
+    # ユーザIDチェック
+    if params[:user_id] == 0
       render status: 500, json:{ error_message: "会員登録（またはログイン）を行ってください" }
       return
     end
     # ユーザトークンチェック
-    err_msg = user.auth_check(params[:token])
-    if err_msg.present?
-      render status: 500, json:{ error_message: err_msg }
+    user = User.find_by(token: request.headers['Authorization'])
+    if user == nil
+      render status: 500, json:{ error_message: "認証に失敗しました。再度ログインしてお試しください。" }
       return
     end
+    return
   end
 end
  

@@ -90,8 +90,12 @@ export default {
       axios.post(
         `http://${g.hostName}/api/events/${this.$route.params.id}/entry`,
         {
-          user_id: this.$store.getters['user/id'],
-          token:   this.$store.getters['user/secureToken']
+          user_id: this.$store.getters['user/id']
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
         }
       )
       .then((response) => {
@@ -111,8 +115,12 @@ export default {
       axios.post(
         `http://${g.hostName}/api/events/${this.$route.params.id}/entry_cancel`,
         {
-          user_id: this.$store.getters['user/id'],
-          token:   this.$store.getters['user/secureToken']
+          user_id: this.$store.getters['user/id']
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
         }
       )
       .then((response) => {

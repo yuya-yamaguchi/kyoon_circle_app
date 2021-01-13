@@ -162,13 +162,17 @@ export default {
         `http://${g.hostName}/api/studios/${this.$route.params.id}/reserves`,
         {
           user_id: this.$store.getters["user/id"],
-          token:   this.$store.getters["user/secureToken"],
           studio_reserve: {
             date: this.selected.year + '-' + this.selected.month + '-' + this.selected.day,
             start_hour: this.selected.start_hour,
             start_min:  this.selected.start_min,
             end_hour:   this.selected.end_hour,
             end_min:    this.selected.end_min
+          }
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
           }
         }
       )

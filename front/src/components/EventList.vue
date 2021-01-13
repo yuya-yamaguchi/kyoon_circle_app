@@ -40,7 +40,8 @@ export default {
       var today = new Date();
       var holdDate = new Date(startDate.substr(0, 4),
                               Number(startDate.substr(5, 2))-1,
-                              startDate.substr(8, 2))
+                              startDate.substr(8, 2),
+                              23, 59, 59)
       if ( holdDate < today ) {
         return true
       }
