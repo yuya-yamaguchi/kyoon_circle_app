@@ -8,7 +8,7 @@
     <div class="studio-introduction">
       <div class="studio-introduction--left">
         <p>{{ studio.name }}</p>
-        <img src="@/assets/pictures/studio7.jpg">
+        <img src="/studio/studio7.jpg">
       </div>
       <div class="studio-introduction--right">
         <div studio-introduction--right--explain>

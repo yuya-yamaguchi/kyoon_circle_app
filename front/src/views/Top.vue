@@ -1,7 +1,7 @@
 <template>
   <div class="top-page">
     <div class="top-image-container">
-      <img src="@/assets/pictures/studio7.jpg">
+      <img src="/studio/studio7.jpg">
       <h1 class="top-page-title">Kyo-ON</h1>
     </div>
     <div class="single-container">
@@ -20,7 +20,7 @@
         <p class="main-title">スタジオ</p>
         <div class="about-studio">
           <div class="about-studio--left">
-            <img src="@/assets/pictures/studio3.jpg">
+            <img src="/studio/studio3.jpg"/>
           </div>
           <div class="about-studio--right">
             <p class="about-studio--right--explain">
@@ -44,7 +44,7 @@
             <button class="about-stay--left--btn default-button">Comming<br>Soon...</button>
           </div>
           <div class="about-stay--right">
-            <img src="@/assets/pictures/studio5.jpg">
+            <img src="/studio/studio5.jpg">
           </div>
         </div>
       </div>

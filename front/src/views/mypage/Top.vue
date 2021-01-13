@@ -5,7 +5,7 @@
     </div>
     <div class="double-container--right">
       <div class="mypage-user-icon">
-        <img src="@/assets/person.png">
+        <img src="/person.png">
         <p class="main-title">{{ $store.getters['user/name'] }}</p>
       </div>
       <div class="user-profile">{{ user.profile }}</div>
