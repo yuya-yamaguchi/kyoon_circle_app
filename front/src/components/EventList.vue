@@ -63,7 +63,6 @@ export default {
   background: #FFF;
   display: flex;
   justify-content: flex-start;
-
   text-decoration: none;
   box-shadow:  2px 2px 0 0 rgba(0,0,0,0.3);
   position: relative;

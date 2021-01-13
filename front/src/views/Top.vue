@@ -14,7 +14,7 @@
         <p class="main-title">開催予定のイベント</p>
         <Loading v-if="loading"/>
         <EventList v-if="events.length!=0" :events-prop="events"/>
-        <router-link to="/events" class="events-all">すべてのイベントを見る</router-link>
+        <router-link :to="{name: 'EventIndex', query: {page: 1}}" class="events-all">すべてのイベントを見る</router-link>
       </div>
       <div class="top-container">
         <p class="main-title">スタジオ</p>

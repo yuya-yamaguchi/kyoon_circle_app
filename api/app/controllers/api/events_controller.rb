@@ -1,14 +1,16 @@
 class Api::EventsController < ApplicationController
+  include Pagy::Backend
   
   before_action :user_check, only: [:entry, :entry_cancel]
 
   def index
     out_params = []
-    events = Event.order('start_datetime DESC')
+    pagy, events = pagy(Event.all.order('start_datetime DESC'), items: 5)
+    # binding.pry
     events.each do |event|
       out_params << event.set_out_params
     end
-    render json: out_params
+    render json: { events: out_params, pagy: pagy_metadata(pagy) }
   end
 
   def show

@@ -71,7 +71,7 @@ export default {
       axios.get(
         `http://${g.hostName}/api/events/${this.$route.params.id}`,
         {
-          params:{
+          params: {
             user_id: this.$store.getters['user/id']
           }
         }
