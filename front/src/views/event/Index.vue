@@ -42,7 +42,6 @@ export default {
       .then((response) => {
         this.events = response.data.events;
         this.pagy = response.data.pagy;
-        console.log(this.pagy);
       })
       .catch(function(error) {
         console.log(error);

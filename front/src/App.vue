@@ -12,6 +12,7 @@
 <script>
 import "@/assets/reset.css";
 import "@/assets/style/_global.scss";
+import "@/assets/style/_transition.scss";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import FlashMsg from "@/components/FlashMsg.vue";

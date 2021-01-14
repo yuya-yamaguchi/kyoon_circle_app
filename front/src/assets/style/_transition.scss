@@ -1,0 +1,25 @@
+.fade-default-enter-from,
+.fade-default-leave-to {
+  opacity: 0;
+}
+.fade-default-enter-active,
+.fade-default-leave-active {
+  transition: opacity .5s;
+}
+.fade-default-enter-to,
+.fade-default-leave-from {
+  opacity: 1;
+}
+
+.fade-slow-enter-from,
+.fade-slow-leave-to {
+  opacity: 0;
+}
+.fade-slow-enter-active,
+.fade-slow-leave-active {
+  transition: opacity 1.5s;
+}
+.fade-slow-enter-to,
+.fade-slow-leave-from {
+  opacity: 1;
+}

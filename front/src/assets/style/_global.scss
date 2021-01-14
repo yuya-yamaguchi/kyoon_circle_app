@@ -13,14 +13,12 @@
   padding: 0 10px;
   &--left {
     width: 25%;
-    background: var(--main_color);
     box-sizing: border-box;
     padding: 10px;
     background: #FFF;
   }
   &--right {
     width: 73%;
-    background: var(--main_color);
     box-sizing: border-box;
     padding: 10px;
     background: #FFF;
@@ -60,6 +58,9 @@
   color: #FFF;
   text-decoration: none;
   cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .cancel-button {
@@ -171,6 +172,12 @@
   align-items: center;
   justify-content: center;
 }
+
 .default-icon {
   width: 30px;
+}
+
+.small-icon {
+  width: 12px;
+  display: inline-block;
 }

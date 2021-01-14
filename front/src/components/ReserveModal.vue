@@ -47,7 +47,7 @@
             料金 : ¥{{ paymentFee }}
           </div>
           <div class="reserve-form--btn">
-            <button @click="closeModal()" class="default-button back-btn">戻る</button>
+            <div @click="closeModal()" class="default-button back-btn">戻る</div>
             <button :disabled="disabledFlg" :class="{ 'reserve-disable': disabledFlg }" class="default-button reserve-btn">予約する</button>
           </div>
         </form>
@@ -273,11 +273,12 @@ function calcReserveTime(selected) {
       .reserve-btn {
         width: 150px;
       }
-      
       .back-btn {
         width: 150px;
         color: #333;
         background: #FFF;
+        box-sizing: border-box;
+        border: 2px solid;
       }
       .reserve-disable {
         cursor: not-allowed;

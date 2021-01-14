@@ -1,9 +1,11 @@
 <template>
   <div class="top-page">
-    <div class="top-image-container">
-      <img src="/studio/studio7.jpg">
-      <h1 class="top-page-title">Kyo-ON</h1>
-    </div>
+    <transition name="fade-slow" appear>
+      <div class="top-image-container">
+        <img src="/studio/studio7.jpg">
+        <h1 class="top-page-title">Kyo-ON</h1>
+      </div>
+    </transition>
     <div class="single-container">
       <div class="top-container">
         <p class="main-title">お知らせ</p>
@@ -28,7 +30,7 @@
               広さ30畳でライブもできる広々スタジオです。<br>
               バンド練習やライブなどにご利用ください！
             </p>
-            <router-link to="/studios/1" class="about-studio--right--btn default-button">スタジオ予約</router-link>
+            <router-link to="/studios/1?week=0" class="about-studio--right--btn default-button">スタジオ予約</router-link>
           </div>
         </div>
       </div>
@@ -39,7 +41,8 @@
             <p class="about-stay--left--explain">
               会員が利用可能な宿泊部屋です！<br>
               2部屋利用可能です。<br>
-              遠方からお越しの方など、下記よりご予約の上ご利用ください！
+              遠方からお越しの方など、下記よりご予約の上ご利用ください！<br>
+              ※準備中、しばらくお待ちください
             </p>
             <button class="about-stay--left--btn default-button">Comming<br>Soon...</button>
           </div>
