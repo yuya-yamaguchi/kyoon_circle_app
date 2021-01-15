@@ -85,7 +85,7 @@ export default {
     padding: 20px;
     font-weight: bold;
     text-align: center;
-    background: orange;
+    background: var(--accent-color);
     &--date {
       font-size: 24px;
     }

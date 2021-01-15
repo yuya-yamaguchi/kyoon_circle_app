@@ -46,7 +46,7 @@ export default {
     cursor: pointer;
   }
   .active-page {
-    background: #13b1c0;
+    background: var(--accent-color);
     color: #FFF;
     border: 2px solid #333;
   }

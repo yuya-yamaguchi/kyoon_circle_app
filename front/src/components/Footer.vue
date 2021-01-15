@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <p>&copy;kyoon_circle_app_2020</p>
+    <p>&copy;kyoon circle 2021</p>
   </footer>
 </template>
 

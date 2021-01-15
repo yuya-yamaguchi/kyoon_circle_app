@@ -41,7 +41,8 @@
     </div>
     <div class="studio-explain">
       ※本日から60日後までご予約いただけます<br>
-      ※キャンセルは「マイページ > スタジオ予約一覧」から可能です（開始時刻まで）
+      ※キャンセルは「マイページ > スタジオ予約一覧」から可能です（開始時刻まで）<br>
+      ※お支払いは現地にてお支払いください（予約時点ではお支払いは不要です）
     </div>
     <Loading v-if="loading"/>
     <div v-else class="studio-reserve-container">
@@ -263,7 +264,7 @@ export default {
     background: #FFF;
     cursor: pointer;
     &:hover{
-      background: orange;
+      background: var(--accent-color);
       transition: .3s;
     }
   }

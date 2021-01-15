@@ -47,10 +47,10 @@ export default {
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   .success-msg {
-    color: #333;
+    color: #FFF;
     font-size: 20px;
     padding: 5px 20px;
-    background: rgba(109, 106, 106, 0.7);
+    background: rgba(109, 106, 106, 0.8);
   }
   .error-msg {
     color: red;

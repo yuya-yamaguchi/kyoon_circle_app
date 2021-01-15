@@ -189,7 +189,7 @@ export default {
     text-align: center;
     margin-right: 20px;
     &--value {
-      color: #13b1c0;
+      color: var(--accent-color);
       font-size: 1.2rem;
       font-weight: bold;
     }
@@ -199,6 +199,7 @@ export default {
   background: #FFF;
   margin: 20px auto;
   padding: 10px;
+  white-space: pre-wrap;
 }
 .edit-btn {
   display: inline-block;
@@ -209,7 +210,7 @@ export default {
   text-decoration: none;
   color: #FFF;
   cursor: pointer;
-  background: orange;
+  background: var(--accent-color);
 }
 .delete-btn {
   display: inline-block;

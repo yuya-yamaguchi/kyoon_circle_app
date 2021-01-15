@@ -36,6 +36,6 @@ export default {
   padding-left: 20px;
 }
 .select-menu {
-  color: #13b1c0;
+  color: var(--accent-color);
 }
 </style>
