@@ -105,6 +105,8 @@ header{
   display: flex;
   justify-content: space-between;
   color: #FFF;
+  position: fixed;
+  z-index: 2;
   .site-title {
     text-align: left;
     line-height: 60px;

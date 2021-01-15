@@ -10,7 +10,7 @@
       <div class="about-news">
         <p class="main-title">お知らせ</p>
         <NewsList v-if="news.length!=0" :news-prop="news"/>
-        <router-link to="/news" class="all-view-link">すべてのお知らせを見る</router-link>
+        <router-link to="/news?page=1" class="all-view-link">すべてのお知らせを見る</router-link>
       </div>
       <div class="about-event">
         <p class="main-title">開催予定のイベント</p>

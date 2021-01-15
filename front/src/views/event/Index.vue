@@ -1,12 +1,15 @@
 <template>
-  <div class="single-container">
-    <h1 class="main-title">イベント一覧</h1>
-    <p class="event-explain">
-      セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
-      お気軽にご参加ください！
-    </p>
-    <EventList v-if="events.length!=0" :events-prop="events"/>
-    <Pagination :pagy-prop="pagy" @chage-page="changePage"/>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="single-container">
+      <h1 class="main-title">イベント一覧</h1>
+      <p class="event-explain">
+        セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
+        お気軽にご参加ください！
+      </p>
+      <EventList v-if="events.length!=0" :events-prop="events"/>
+      <Pagination :pagy-prop="pagy" @chage-page="changePage"/>
+    </div>
   </div>
 </template>
 
@@ -15,16 +18,33 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import EventList from '@/components/EventList.vue';
 import Pagination from '@/components/Pagination.vue';
+import BreadCrumbs from "@/components/BreadCrumbs.vue";
 
 export default {
   components: {
     EventList,
-    Pagination
+    Pagination,
+    BreadCrumbs
   },
   data() {
     return {
       events: [],
       pagy: ""
+    }
+  },
+  computed: {
+    breadCrumbs() {
+      var breadCrumbsLists = [
+        {
+          name: 'トップ',
+          path: '/'
+        },
+        {
+          name: 'イベント一覧',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
     }
   },
   watch: {
