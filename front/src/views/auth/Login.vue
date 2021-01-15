@@ -1,6 +1,9 @@
 <template>
   <div class="auth-container">
-    <h1 class="main-title text-center">ログイン</h1>
+    <div class="text-center some-updown-center">
+      <span class="main-title">ログイン</span>
+      <fa icon="sign-in-alt" class="default-icon"></fa>
+    </div>
     <ul v-if="errorMessages" class="error-messages">
       <li v-for="(error, i) in errorMessages" :key="i">
         {{ error }}

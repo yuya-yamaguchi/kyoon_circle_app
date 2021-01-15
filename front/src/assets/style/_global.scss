@@ -13,17 +13,13 @@
   padding: 0 10px;
   &--left {
     width: 25%;
-    background: var(--main_color);
     box-sizing: border-box;
     padding: 10px;
-    background: #FFF;
   }
   &--right {
     width: 73%;
-    background: var(--main_color);
     box-sizing: border-box;
     padding: 10px;
-    background: #FFF;
   }
 }
 
@@ -56,10 +52,13 @@
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
-  background: linear-gradient(70deg, rgb(85, 85, 236), #13b1c0);
+  background: linear-gradient(70deg, rgb(238, 120, 91), var(--accent-color));
   color: #FFF;
   text-decoration: none;
   cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .cancel-button {
@@ -106,7 +105,7 @@
     border-bottom: 2px solid;
   }
   input:focus {
-    border-bottom: 2px solid #13b1c0;
+    border-bottom: 2px solid var(--accent-color);
   }
   textarea {
     display: block;
@@ -155,7 +154,7 @@
   &--tab.active {
     background: #FFF;
     color: #333;
-    border-top: 2px solid #13b1c0;
+    border-top: 2px solid var(--accent-color);
   }
 }
 
@@ -164,4 +163,19 @@
   color: #888;
   text-align: center;
   padding: 20px;
+}
+
+.some-updown-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.default-icon {
+  width: 30px;
+}
+
+.small-icon {
+  width: 12px;
+  display: inline-block;
 }

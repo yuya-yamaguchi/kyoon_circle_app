@@ -12,7 +12,7 @@
       <router-link to="/users" :class="{'select-menu': selectMenuProp==101}" class="side-menu">登録ユーザ一覧</router-link>
       <router-link to="/studio/1/edit" :class="{'select-menu': selectMenuProp==102}" class="side-menu">スタジオ内容編集</router-link>
       <router-link to="/event/new" :class="{'select-menu': selectMenuProp==103}" class="side-menu">イベントの登録</router-link>
-      <router-link to="/event/editlist" :class="{'select-menu': selectMenuProp==104}" class="side-menu">イベントの編集</router-link>
+      <router-link to="/event/editlist?page=1" :class="{'select-menu': selectMenuProp==104}" class="side-menu">イベントの編集</router-link>
       <router-link to="/news/new" :class="{'select-menu': selectMenuProp==105}" class="side-menu">お知らせの作成</router-link>
     </div>
   </div>
@@ -36,6 +36,6 @@ export default {
   padding-left: 20px;
 }
 .select-menu {
-  color: #13b1c0;
+  color: var(--accent-color);
 }
 </style>

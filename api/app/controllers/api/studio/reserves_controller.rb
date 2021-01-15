@@ -25,6 +25,7 @@ class Api::Studio::ReservesController < ApplicationController
     (sa * 2).to_i.times do |i|
       StudioReserve.create!(set_create_params(reserves_params, i))
     end
+    @studio = Studio.find(reserves_params[:studio_id])
     UserReserve.create!(set_user_reserve_params(reserves_params))
   end
 
@@ -66,29 +67,35 @@ class Api::Studio::ReservesController < ApplicationController
   end
 
   def set_user_reserve_params(reserves_params)
+    zikan = @end_time.to_i - @start_time.to_i
+    sho = zikan.div(100)
+    amari = zikan % 100
+    half = amari == 0 ? 0 : 0.5
+    payment_fee = (sho * @studio.fee) + (half * @studio.fee)
     user_reserve_params = {
       user_id: reserves_params[:user_id],
       studio_id: reserves_params[:studio_id],
       date: reserves_params[:date],
       start_time: @start_time.to_i,
-      end_time: @end_time.to_i
+      end_time: @end_time.to_i,
+      payment_fee: payment_fee
     }
     return user_reserve_params
   end
 
   def user_check
-    user = User.where(id: params[:user_id]).first
-    # ユーザ存在チェック
-    if user.nil?
+    # ユーザIDチェック
+    if params[:user_id] == 0
       render status: 500, json:{ error_message: "会員登録（またはログイン）を行ってください" }
       return
     end
     # ユーザトークンチェック
-    err_msg = user.auth_check(params[:token])
-    if err_msg.present?
-      render status: 500, json:{ error_message: err_msg }
+    user = User.find_by(token: request.headers['Authorization'])
+    if user == nil
+      render status: 500, json:{ error_message: "認証に失敗しました。再度ログインしてお試しください。" }
       return
     end
+    return
   end
 end
  

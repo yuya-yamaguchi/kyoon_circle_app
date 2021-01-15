@@ -71,7 +71,7 @@ export default {
       axios.get(
         `http://${g.hostName}/api/events/${this.$route.params.id}`,
         {
-          params:{
+          params: {
             user_id: this.$store.getters['user/id']
           }
         }
@@ -90,8 +90,12 @@ export default {
       axios.post(
         `http://${g.hostName}/api/events/${this.$route.params.id}/entry`,
         {
-          user_id: this.$store.getters['user/id'],
-          token:   this.$store.getters['user/secureToken']
+          user_id: this.$store.getters['user/id']
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
         }
       )
       .then((response) => {
@@ -111,8 +115,12 @@ export default {
       axios.post(
         `http://${g.hostName}/api/events/${this.$route.params.id}/entry_cancel`,
         {
-          user_id: this.$store.getters['user/id'],
-          token:   this.$store.getters['user/secureToken']
+          user_id: this.$store.getters['user/id']
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
         }
       )
       .then((response) => {
@@ -181,7 +189,7 @@ export default {
     text-align: center;
     margin-right: 20px;
     &--value {
-      color: #13b1c0;
+      color: var(--accent-color);
       font-size: 1.2rem;
       font-weight: bold;
     }
@@ -191,6 +199,7 @@ export default {
   background: #FFF;
   margin: 20px auto;
   padding: 10px;
+  white-space: pre-wrap;
 }
 .edit-btn {
   display: inline-block;
@@ -201,7 +210,7 @@ export default {
   text-decoration: none;
   color: #FFF;
   cursor: pointer;
-  background: orange;
+  background: var(--accent-color);
 }
 .delete-btn {
   display: inline-block;

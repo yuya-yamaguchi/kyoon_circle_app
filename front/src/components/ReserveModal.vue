@@ -47,7 +47,7 @@
             料金 : ¥{{ paymentFee }}
           </div>
           <div class="reserve-form--btn">
-            <button @click="closeModal()" class="default-button back-btn">戻る</button>
+            <div @click="closeModal()" class="default-button back-btn">戻る</div>
             <button :disabled="disabledFlg" :class="{ 'reserve-disable': disabledFlg }" class="default-button reserve-btn">予約する</button>
           </div>
         </form>
@@ -162,13 +162,17 @@ export default {
         `http://${g.hostName}/api/studios/${this.$route.params.id}/reserves`,
         {
           user_id: this.$store.getters["user/id"],
-          token:   this.$store.getters["user/secureToken"],
           studio_reserve: {
             date: this.selected.year + '-' + this.selected.month + '-' + this.selected.day,
             start_hour: this.selected.start_hour,
             start_min:  this.selected.start_min,
             end_hour:   this.selected.end_hour,
             end_min:    this.selected.end_min
+          }
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
           }
         }
       )
@@ -269,11 +273,12 @@ function calcReserveTime(selected) {
       .reserve-btn {
         width: 150px;
       }
-      
       .back-btn {
         width: 150px;
         color: #333;
         background: #FFF;
+        box-sizing: border-box;
+        border: 2px solid;
       }
       .reserve-disable {
         cursor: not-allowed;

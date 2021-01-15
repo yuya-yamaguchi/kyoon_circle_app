@@ -40,7 +40,8 @@ export default {
       var today = new Date();
       var holdDate = new Date(startDate.substr(0, 4),
                               Number(startDate.substr(5, 2))-1,
-                              startDate.substr(8, 2))
+                              startDate.substr(8, 2),
+                              23, 59, 59)
       if ( holdDate < today ) {
         return true
       }
@@ -63,7 +64,6 @@ export default {
   background: #FFF;
   display: flex;
   justify-content: flex-start;
-
   text-decoration: none;
   box-shadow:  2px 2px 0 0 rgba(0,0,0,0.3);
   position: relative;
@@ -85,7 +85,7 @@ export default {
     padding: 20px;
     font-weight: bold;
     text-align: center;
-    background: orange;
+    background: var(--accent-color);
     &--date {
       font-size: 24px;
     }

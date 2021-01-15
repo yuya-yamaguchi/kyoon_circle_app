@@ -1,50 +1,58 @@
 <template>
   <div class="top-page">
-    <div class="top-image-container">
-      <img src="@/assets/pictures/studio7.jpg">
-      <h1 class="top-page-title">Kyo-ON</h1>
-    </div>
-    <div class="single-container">
-      <div class="top-container">
+    <transition name="fade-slow" appear>
+      <div class="top-image-container">
+        <img src="/studio/studio7.jpg">
+        <h1 class="top-page-title">Kyo-ON</h1>
+      </div>
+    </transition>
+    <div class="top-container">
+      <div class="about-news">
         <p class="main-title">お知らせ</p>
         <NewsList v-if="news.length!=0" :news-prop="news"/>
-        <router-link to="/news" class="events-all">すべてのお知らせを見る</router-link>
+        <router-link to="/news" class="all-view-link">すべてのお知らせを見る</router-link>
       </div>
-      <div class="top-container">
+      <div class="about-event">
         <p class="main-title">開催予定のイベント</p>
-        <Loading v-if="loading"/>
-        <EventList v-if="events.length!=0" :events-prop="events"/>
-        <router-link to="/events" class="events-all">すべてのイベントを見る</router-link>
+        <div class="about-event--content">
+          <Loading v-if="loading"/>
+          <EventList v-if="events.length!=0" :events-prop="events"/>
+          <router-link :to="{name: 'EventIndex', query: {page: 1}}" class="all-view-link">すべてのイベントを見る</router-link>
+        </div>
       </div>
-      <div class="top-container">
+      <div class="about-studio">
         <p class="main-title">スタジオ</p>
-        <div class="about-studio">
-          <div class="about-studio--left">
-            <img src="@/assets/pictures/studio3.jpg">
+        <div class="about-studio--content">
+          <div class="about-studio--content--left">
+            <img src="/studio/studio3.jpg"/>
           </div>
-          <div class="about-studio--right">
-            <p class="about-studio--right--explain">
+          <div class="about-studio--content--right">
+            <p class="about-studio--content--right--explain">
               会員が利用可能なスタジオです！<br>
               広さ30畳でライブもできる広々スタジオです。<br>
               バンド練習やライブなどにご利用ください！
             </p>
-            <router-link to="/studios/1" class="about-studio--right--btn default-button">スタジオ予約</router-link>
+            <router-link to="/studios/1?week=0" class="about-studio--content--right--btn default-button">
+              <p>予約はこちら</p>
+              <fa icon="play-circle"></fa>
+            </router-link>
           </div>
         </div>
       </div>
-      <div class="top-container">
+      <div class="about-stay">
         <p class="main-title">宿泊</p>
-        <div class="about-stay">
-          <div class="about-stay--left">
-            <p class="about-stay--left--explain">
+        <div class="about-stay--content">
+          <div class="about-stay--content--left">
+            <p class="about-stay--content--left--explain">
               会員が利用可能な宿泊部屋です！<br>
               2部屋利用可能です。<br>
-              遠方からお越しの方など、下記よりご予約の上ご利用ください！
+              遠方からお越しの方など、下記よりご予約の上ご利用ください！<br>
+              ※準備中、しばらくお待ちください
             </p>
-            <button class="about-stay--left--btn default-button">Comming<br>Soon...</button>
+            <button class="about-stay--content--left--btn default-button">Comming<br>Soon...</button>
           </div>
-          <div class="about-stay--right">
-            <img src="@/assets/pictures/studio5.jpg">
+          <div class="about-stay--content--right">
+            <img src="/studio/studio5.jpg">
           </div>
         </div>
       </div>
@@ -109,11 +117,82 @@ export default {
   }
 }
 
+
 .top-container {
-  margin: auto;
   margin-bottom: 100px;
-  width: 95%;
-  .events-all {
+  margin: 0 10px;
+  .about-news {
+    padding: 50px 20px;
+  }
+  .about-event {
+    padding: 50px 20px;
+  }
+  .about-studio {
+    padding: 50px 20px;
+    &--content {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      &--left {
+        width: 60%;
+        img{
+          width: 100%;
+          filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.6));
+          vertical-align: bottom;
+        }
+      }
+      &--right {
+        width: 40%;
+        margin-left: 20px;
+        &--explain {
+          font-size: 18px;
+          line-height: 30px;
+        }
+        &--btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          white-space: nowrap;
+          text-align: center;
+          width: 150px;
+          svg {
+            width: 20px;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+  .about-stay {
+    padding: 50px 20px;
+    &--content {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      &--left {
+        width: 40%;
+        margin-right: 20px;
+        &--explain {
+          font-size: 18px;
+          line-height: 30px;
+        }
+        &--btn {
+          white-space: nowrap;
+          background: #888;
+          cursor: not-allowed;
+        }
+      }
+      &--right {
+        width: 60%;
+        img {
+          width: 100%;
+          filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.6));
+          vertical-align: bottom;
+        }
+      }
+    }
+  }
+  .all-view-link {
     display: block;
     text-decoration: none;
     margin: 0 auto;
@@ -122,58 +201,6 @@ export default {
     font-size: 20px;
     font-weight: bold;
   }
-  .about-studio {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    &--left {
-      width: 60%;
-      img{
-        width: 100%;
-        filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.6));
-        vertical-align: bottom;
-      }
-    }
-    &--right {
-      width: 40%;
-      margin-left: 20px;
-      &--explain {
-        font-size: 18px;
-        line-height: 30px;
-      }
-      &--btn {
-        display: block;
-        white-space: nowrap;
-        text-align: center;
-        width: 150px;
-      }
-    }
-  }
-  .about-stay {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    &--left {
-      width: 40%;
-      margin-right: 20px;
-      &--explain {
-        font-size: 18px;
-        line-height: 30px;
-      }
-      &--btn {
-        white-space: nowrap;
-        background: #888;
-        cursor: not-allowed;
-      }
-    }
-    &--right {
-      width: 60%;
-      img {
-        width: 100%;
-        filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.6));
-        vertical-align: bottom;
-      }
-    }
-  }
 }
+
 </style>

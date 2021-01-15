@@ -3,9 +3,9 @@
     <router-link to="/" class="site-title">京音</router-link>
     <div class="header-menus">
       <div class="header-menus">
-        <router-link to="/events" class="header-menu">イベント一覧</router-link>
-        <router-link to="/studios/1" class="header-menu">スタジオ予約</router-link>
-        <a class="header-menu">宿泊予約</a>
+        <router-link to="/events?page=1" class="header-menu">イベント</router-link>
+        <router-link to="/studios/1?week=0" class="header-menu">スタジオ</router-link>
+        <a class="header-menu">宿泊</a>
       </div>
       <template v-if='!$store.getters["user/id"]'>
         <router-link to="/signup" class="sign-btn">新規会員登録</router-link>
@@ -101,7 +101,7 @@ export default {
 header{
   width: 100%;
   height: 60px;
-  background: #333;
+  background: var(--main-color);
   display: flex;
   justify-content: space-between;
   color: #FFF;
@@ -150,7 +150,7 @@ header{
       color:#FFF;
       font-size: 12px;
       font-weight: bold;
-      background: linear-gradient(70deg, rgb(85, 85, 236), #13b1c0);
+      background: linear-gradient(70deg, rgb(85, 85, 236), var(--accent-color));
       border: 1px solid;
       margin: 0 10px;
       margin-top: 15px;

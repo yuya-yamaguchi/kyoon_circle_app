@@ -4,11 +4,23 @@
       <SideBar :select-menu-prop="1"/>
     </div>
     <div class="double-container--right">
-      <div class="mypage-user-icon">
-        <img src="@/assets/person.png">
-        <p class="main-title">{{ $store.getters['user/name'] }}</p>
+      <div class="my-page">
+        <div class="my-page--top">
+          <div class="my-page--top--img">
+            <img src="/person.png">
+          </div>
+          <div class="my-page--top--name">
+            <div class="my-page main-title">{{ user.name }}</div>
+          </div>
+        </div>
+        <div class="my-page--profile">
+          <router-link to="/mypage/profile" class="my-page--profile--edit some-updown-center">
+            <fa icon="edit"></fa>
+            <span>プロフィール編集する</span>
+          </router-link>
+          <div class="my-page--profile--contents">{{ user.profile }}</div>
+        </div>
       </div>
-      <div class="user-profile">{{ user.profile }}</div>
     </div>
   </div>
 </template>
@@ -47,23 +59,59 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.mypage-user-icon {
-  text-align: center;
-  display: flex;
-  justify-content: flex-start;
-  img {
-    display: block;
-    border: 1px solid;
-    border-radius: 100%;
-    width: 100px;
+.my-page {
+  background: var(--base-color);
+  &--top {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    z-index: 1;
+    &--img {
+      position: absolute;
+      background: var(--base-color);
+      border-radius: 100%;
+      width: 120px;
+      height: 120px;
+      border-radius: 100%;
+      z-index: 2;
+      img {
+        display: block;
+        border: 1px solid;
+        border-radius: 100%;
+        width: 100px;
+        margin: 10px;
+        background: rgb(241, 209, 144);
+      }
+    }
+    &--name {
+      margin: 10px 0 0 140px;
+    }
   }
-  p {
+  &--profile {
+    background: #FFF;
+    padding: 20px;
     margin-left: 30px;
-    bottom: 0;
+    &--edit {
+      display: block;
+      text-align: right;
+      font-size: 14px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #333;
+      svg {
+        width: 14px;
+      }
+      &:hover {
+        color: var(--accent-color)
+      }
+    }
+    &--contents {
+      margin-top: 50px;
+      font-size: 14px;
+      box-sizing: border-box;
+      background: #FFF;
+      white-space: pre-wrap;
+    }
   }
-}
-
-.user-profile {
-  margin: 20px;
 }
 </style>

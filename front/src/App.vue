@@ -11,7 +11,9 @@
 
 <script>
 import "@/assets/reset.css";
+import "@/assets/style/_variable.scss";
 import "@/assets/style/_global.scss";
+import "@/assets/style/_transition.scss";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import FlashMsg from "@/components/FlashMsg.vue";
@@ -31,7 +33,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background: rgb(245, 245, 245);
+  background: var(--base-color);
 }
 
 .base-container{

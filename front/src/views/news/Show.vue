@@ -111,7 +111,7 @@ export default {
   text-decoration: none;
   color: #FFF;
   cursor: pointer;
-  background: orange;
+  background: var(--accent-color);
 }
 
 .delete-btn {
