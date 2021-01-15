@@ -1,41 +1,44 @@
 <template>
-  <div class="single-container">
-    <Loading v-if="loading"/>
-    <div v-else>
-      <h1 class="main-title">{{ event.title }}</h1>
-      <div v-show="$store.getters['user/adminType']>0">
-        <router-link :to="`/event/${event.id}/edit`" class="edit-btn">編集する</router-link>
-        <a @click="displayConfirmModal" class="delete-btn">削除する</a>
-      </div>
-      <ConfirmModal v-show="modalFlg"
-        :modal-msg-prop="modalMsg"
-        @process-confirm="deleteEvent"/>
-      <p v-show="entryFlg" class="entry-now-msg">このイベントに参加しました</p>
-      <div class="event-top-info">
-        <div class="number-info">
-          <p class="number-info--title">参加費</p>
-          <p class="number-info--value">{{ event.fee }}</p>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="single-container">
+      <Loading v-if="loading"/>
+      <div v-else>
+        <h1 class="main-title">{{ event.title }}</h1>
+        <div v-show="$store.getters['user/adminType']>0">
+          <router-link :to="`/event/${event.id}/edit`" class="edit-btn">編集する</router-link>
+          <a @click="displayConfirmModal" class="delete-btn">削除する</a>
         </div>
-        <div class="number-info">
-          <p class="number-info--title">参加人数</p>
-          <p class="number-info--value">
-            <span>{{ entryCnt }}人</span>
-            <span v-show="event.max_entry>0"> / {{ event.max_entry }}人</span>
-          </p>
+        <ConfirmModal v-show="modalFlg"
+          :modal-msg-prop="modalMsg"
+          @process-confirm="deleteEvent"/>
+        <p v-show="entryFlg" class="entry-now-msg">このイベントに参加しました</p>
+        <div class="event-top-info">
+          <div class="number-info">
+            <p class="number-info--title">参加費</p>
+            <p class="number-info--value">{{ event.fee }}</p>
+          </div>
+          <div class="number-info">
+            <p class="number-info--title">参加人数</p>
+            <p class="number-info--value">
+              <span>{{ entryCnt }}人</span>
+              <span v-show="event.max_entry>0"> / {{ event.max_entry }}人</span>
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="event-middle-info">開催日時 {{ holdStart(event.start_date) }}〜{{ holdStart(event.end_date) }}</div>
-      <div class="event-middle-info">開催場所 {{ event.place }}</div>
-      <div class="event-details">{{ event.details }}</div>
-      <div>
-        <button v-if="!entryFlg"
-                @click="postEventEntry()"
-                class="default-button">参加する
-        </button>
-        <button v-if="entryFlg"
-                @click="postCancelEventEntry()"
-                class="cancel-button">参加をやめる
-        </button>
+        <div class="event-middle-info">開催日時 {{ holdStart(event.start_date) }}〜{{ holdStart(event.end_date) }}</div>
+        <div class="event-middle-info">開催場所 {{ event.place }}</div>
+        <div class="event-details">{{ event.details }}</div>
+        <div>
+          <button v-if="!entryFlg"
+                  @click="postEventEntry()"
+                  class="default-button">参加する
+          </button>
+          <button v-if="entryFlg"
+                  @click="postCancelEventEntry()"
+                  class="cancel-button">参加をやめる
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -46,11 +49,13 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import Loading from '@/components/Loading.vue';
 import ConfirmModal from "@/components/ConfirmModal.vue";
+import BreadCrumbs from "@/components/BreadCrumbs.vue";
 
 export default {
   components: {
     Loading,
-    ConfirmModal
+    ConfirmModal,
+    BreadCrumbs
   },
   data() {
     return {
@@ -64,6 +69,25 @@ export default {
         message: "イベントの取消を行います。<br>削除したイベントは元へは戻せません。よろしいですか？",
         btn: "削除"
       }
+    }
+  },
+  computed: {
+    breadCrumbs() {
+      var breadCrumbsLists = [
+        {
+          name: 'トップ',
+          path: '/'
+        },
+        {
+          name: 'イベント一覧',
+          path: '/events?page=1'
+        },
+        {
+          name: this.event.title,
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
     }
   },
   methods: {

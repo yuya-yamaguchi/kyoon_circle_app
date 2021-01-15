@@ -1,83 +1,86 @@
 <template>
-  <div class="single-container">
-    <transition name="fade-default" appear>
-      <ReserveModal v-if="clickReserve!=''"
-        :click-reserve-prop="clickReserve"
-        :studio-prop="studio"
-        @from-child="closeModal()"
-        @reserve-success="getStudio($route.query.week)"/>
-    </transition>
-    <div class="studio-introduction">
-      <div class="studio-introduction--left">
-        <p>{{ studio.name }}</p>
-        <img src="/studio/studio7.jpg">
+  <div>
+  <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="single-container">
+      <transition name="fade-default" appear>
+        <ReserveModal v-if="clickReserve!=''"
+          :click-reserve-prop="clickReserve"
+          :studio-prop="studio"
+          @from-child="closeModal()"
+          @reserve-success="getStudio($route.query.week)"/>
+      </transition>
+      <div class="studio-introduction">
+        <div class="studio-introduction--left">
+          <p>{{ studio.name }}</p>
+          <img src="/studio/studio7.jpg">
+        </div>
+        <div class="studio-introduction--right">
+          <div studio-introduction--right--explain>
+            24時間利用可能なスタジオです。30分からご予約いただけます。
+            バンド練習、個人練習などににご利用ください。
+          </div>
+          <table>
+            <tr>
+              <th>料金</th>
+              <td>
+                ¥{{ studio.fee }}（1 Hour）<br>
+                （30分単位で予約可）
+              </td>
+            </tr>
+            <tr>
+              <th>機材</th>
+              <td>
+                <ul>
+                  <li>Marshall JCM2000</li>
+                  <li>Roland JC-120</li>
+                  <li>HARTKE HA2500+HX810</li>
+                  <li>CANOPUS Japanese Sword</li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
-      <div class="studio-introduction--right">
-        <div studio-introduction--right--explain>
-          24時間利用可能なスタジオです。30分からご予約いただけます。
-          バンド練習、個人練習などににご利用ください。
+      <div class="studio-explain">
+        ※本日から60日後までご予約いただけます<br>
+        ※キャンセルは「マイページ > スタジオ予約一覧」から可能です（開始時刻まで）<br>
+        ※お支払いは現地にてお願いします（予約時点ではお支払いは不要です）
+      </div>
+      <Loading v-if="loading"/>
+      <div v-else class="studio-reserve-container">
+        <div class="week-bar">
+          <div class="prev-week some-updown-center" @click="changeWeek(Number($route.query.week) - 1)">
+            <fa icon="chevron-left" class="small-icon"></fa>
+            <p>前の1週間</p>
+          </div>
+          <div class="today-week" @click="changeWeek(0)">本日週へ</div>
+          <div class="next-week some-updown-center" @click="changeWeek(Number($route.query.week) + 1)">
+            <p>次の1週間</p>
+            <fa icon="chevron-right" class="small-icon"></fa>
+          </div>
         </div>
         <table>
           <tr>
-            <th>料金</th>
-            <td>
-              ¥{{ studio.fee }}（1 Hour）<br>
-              （30分単位で予約可）
-            </td>
+            <th></th>
+            <th v-for="(week, w) in weeks" :key="w">
+              {{ formatDate(week, 'MM月DD日') }}
+              （{{ setWeek(week) }}）
+            </th>
           </tr>
-          <tr>
-            <th>機材</th>
-            <td>
-              <ul>
-                <li>Marshall JCM2000</li>
-                <li>Roland JC-120</li>
-                <li>HARTKE HA2500+HX810</li>
-                <li>CANOPUS Japanese Sword</li>
-              </ul>
+          <tr v-for="(reserve, i) in reserves" :key="i">
+            <td class="reserve-time">
+              <span>{{ Math.floor(i/2) }}：</span>
+              <span v-if="i%2==0">00</span>
+              <span v-else>30</span>
             </td>
+            <template v-for="(r, j) in reserve" :key="j">
+              <td v-if="r.reserve_type==1" class="already-reserved">×</td>
+              <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
+              <td v-else @click="displayReserveModal(r)"  class="can-reserve"></td>
+            </template>
           </tr>
         </table>
       </div>
-    </div>
-    <div class="studio-explain">
-      ※本日から60日後までご予約いただけます<br>
-      ※キャンセルは「マイページ > スタジオ予約一覧」から可能です（開始時刻まで）<br>
-      ※お支払いは現地にてお願いします（予約時点ではお支払いは不要です）
-    </div>
-    <Loading v-if="loading"/>
-    <div v-else class="studio-reserve-container">
-      <div class="week-bar">
-        <div class="prev-week some-updown-center" @click="changeWeek(Number($route.query.week) - 1)">
-          <fa icon="chevron-left" class="small-icon"></fa>
-          <p>前の1週間</p>
-        </div>
-        <div class="today-week" @click="changeWeek(0)">本日週へ</div>
-        <div class="next-week some-updown-center" @click="changeWeek(Number($route.query.week) + 1)">
-          <p>次の1週間</p>
-          <fa icon="chevron-right" class="small-icon"></fa>
-        </div>
-      </div>
-      <table>
-        <tr>
-          <th></th>
-          <th v-for="(week, w) in weeks" :key="w">
-            {{ formatDate(week, 'MM月DD日') }}
-            （{{ setWeek(week) }}）
-          </th>
-        </tr>
-        <tr v-for="(reserve, i) in reserves" :key="i">
-          <td class="reserve-time">
-            <span>{{ Math.floor(i/2) }}：</span>
-            <span v-if="i%2==0">00</span>
-            <span v-else>30</span>
-          </td>
-          <template v-for="(r, j) in reserve" :key="j">
-            <td v-if="r.reserve_type==1" class="already-reserved">×</td>
-            <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
-            <td v-else @click="displayReserveModal(r)"  class="can-reserve"></td>
-          </template>
-        </tr>
-      </table>
     </div>
   </div>
 </template>
@@ -88,13 +91,15 @@ import moment from "moment";
 import g from "@/variable/variable.js";
 import ReserveModal from '@/components/ReserveModal.vue';
 import Loading from '@/components/Loading.vue';
+import BreadCrumbs from "@/components/BreadCrumbs.vue";
 
 const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 
 export default {
   components: {
     ReserveModal,
-    Loading
+    Loading,
+    BreadCrumbs
   },
   data() {
     return {
@@ -104,6 +109,21 @@ export default {
       // Modal関連
       clickReserve: "",
       loading: true
+    }
+  },
+  computed: {
+    breadCrumbs() {
+      var breadCrumbsLists = [
+        {
+          name: 'トップ',
+          path: '/'
+        },
+        {
+          name: 'スタジオ',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
     }
   },
   watch: {
@@ -235,6 +255,7 @@ export default {
     }
   }
   table {
+    width: 100%;
     border: 1px solid;
     margin: 0 auto;
   }

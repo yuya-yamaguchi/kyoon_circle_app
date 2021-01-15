@@ -38,7 +38,7 @@ export default {
 
 .base-container{
   width: 100%;
-  min-height: calc(100vh - 190px);
+  padding-top: 60px;
   margin: 0 auto;
   box-sizing: border-box;
 }

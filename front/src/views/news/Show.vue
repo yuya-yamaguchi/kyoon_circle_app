@@ -1,19 +1,22 @@
 <template>
-  <div class="single-container">
-    <ConfirmModal v-show="modalFlg"
-        :modal-msg-prop="modalMsg"
-        @process-confirm="deleteNews"/>
-    <h1 class="main-title">{{ news.title }}</h1>
-    <div v-show="$store.getters['user/adminType']>0">
-      <router-link :to="`/news/${news.id}/edit`" class="edit-btn">編集する</router-link>
-      <a @click="displayConfirmModal" class="delete-btn">削除する</a>
-    </div>
-    <div class="news-date">
-      <p>投稿日時：{{ formatDate(news.created_at) }}</p>
-      <p>更新日時：{{ formatDate(news.updated_at) }}</p>
-    </div>
-    <div class="news-details">
-      {{ news.details }}
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="single-container">
+      <ConfirmModal v-show="modalFlg"
+          :modal-msg-prop="modalMsg"
+          @process-confirm="deleteNews"/>
+      <h1 class="main-title">{{ news.title }}</h1>
+      <div v-show="$store.getters['user/adminType']>0">
+        <router-link :to="`/news/${news.id}/edit`" class="edit-btn">編集する</router-link>
+        <a @click="displayConfirmModal" class="delete-btn">削除する</a>
+      </div>
+      <div class="news-date">
+        <p>投稿日時：{{ formatDate(news.created_at) }}</p>
+        <p>更新日時：{{ formatDate(news.updated_at) }}</p>
+      </div>
+      <div class="news-details">
+        {{ news.details }}
+      </div>
     </div>
   </div>
 </template>
@@ -22,10 +25,12 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/ConfirmModal.vue";
+import BreadCrumbs from "@/components/BreadCrumbs.vue";
 
 export default {
   components: {
-    ConfirmModal
+    ConfirmModal,
+    BreadCrumbs
   },
   data() {
     return {
@@ -36,6 +41,25 @@ export default {
         message: "お知らせの削除を行います。<br>削除したお知らせは元へは戻せません。よろしいですか？",
         btn: "削除"
       }
+    }
+  },
+  computed: {
+    breadCrumbs() {
+      var breadCrumbsLists = [
+        {
+          name: 'トップ',
+          path: '/'
+        },
+        {
+          name: 'お知らせ一覧',
+          path: '/news'
+        },
+        {
+          name: this.news.title,
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
     }
   },
   methods: {

@@ -225,7 +225,7 @@ function calcReserveTime(selected) {
 
 <style scoped lang="scss">
 #overlay {
-  z-index:1;
+  z-index: 99;
   position:fixed;
   top:0;
   left:0;
