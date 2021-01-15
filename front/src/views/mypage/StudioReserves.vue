@@ -17,7 +17,7 @@
         </div>
       </div>
       <div v-show="currentTab === 1" class="studio-reserves">
-        <StudioReservedList :reserves-prop="futureReserves" :cancel-flg-prop="true" @delete-success="getStudioReserves()"/>
+        <StudioReservedList :reserves-prop="futureReserves" :cancel-flg-prop="true"/>
       </div>
       <div v-show="currentTab === 2" class="studio-reserves">
         <StudioReservedList :reserves-prop="historyReserves" :cancel-flg-prop="false"/>
