@@ -5,10 +5,18 @@
       <ConfirmModal v-show="modalFlg"
           :modal-msg-prop="modalMsg"
           @process-confirm="deleteNews"/>
-      <h1 class="main-title">{{ news.title }}</h1>
-      <div v-show="$store.getters['user/adminType']>0">
-        <router-link :to="`/news/${news.id}/edit`" class="edit-btn">編集する</router-link>
-        <a @click="displayConfirmModal" class="delete-btn">削除する</a>
+      <div class="space-between">
+        <h1 class="main-title">{{ news.title }}</h1>
+        <div v-show="$store.getters['user/adminType']>0">
+          <router-link :to="`/news/${news.id}/edit`" class="edit-btn some-updown-center">
+            <fa icon="edit"></fa>
+            <span>編集する</span>
+          </router-link>
+          <a @click="displayConfirmModal" class="delete-btn some-updown-center">
+            <fa icon="trash"></fa>
+            <span>削除する</span>
+          </a>
+        </div>
       </div>
       <div class="news-date">
         <p>投稿日時：{{ formatDate(news.created_at) }}</p>
@@ -73,7 +81,7 @@ export default {
         this.news = response.data;
       })
       .catch((error) => {
-        this.apiErrors();
+        this.apiErrors(error.response.status);
       });
     },
     deleteNews: function(confirm) {
@@ -126,29 +134,5 @@ export default {
   padding: 10px;
   background: #FFF;
   white-space: pre-wrap;
-}
-
-.edit-btn {
-  display: inline-block;
-  padding: 2px 15px;
-  margin: 10px;
-  border-radius: 10px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #FFF;
-  cursor: pointer;
-  background: var(--accent-color);
-}
-
-.delete-btn {
-  display: inline-block;
-  padding: 2px 15px;
-  margin: 10px;
-  border-radius: 10px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #FFF;
-  cursor: pointer;
-  background: red;
 }
 </style>

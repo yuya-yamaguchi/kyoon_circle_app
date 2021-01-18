@@ -4,15 +4,23 @@
     <div class="single-container">
       <Loading v-if="loading"/>
       <div v-else>
-        <h1 class="main-title">{{ event.title }}</h1>
-        <div v-show="$store.getters['user/adminType']>0">
-          <router-link :to="`/event/${event.id}/edit`" class="edit-btn">編集する</router-link>
-          <a @click="displayConfirmModal" class="delete-btn">削除する</a>
+         <div class="space-between">
+          <h1 class="main-title">{{ event.title }}</h1>
+          <div v-show="$store.getters['user/adminType']>0">
+            <router-link :to="`/event/${event.id}/edit`" class="edit-btn some-updown-center">
+              <fa icon="edit"></fa>
+              <span>編集する</span>
+            </router-link>
+            <a @click="displayConfirmModal" class="delete-btn some-updown-center">
+              <fa icon="trash"></fa>
+              <span>削除する</span>
+            </a>
+          </div>
         </div>
         <ConfirmModal v-show="modalFlg"
           :modal-msg-prop="modalMsg"
           @process-confirm="deleteEvent"/>
-        <p v-show="entryFlg" class="entry-now-msg">このイベントに参加しました</p>
+        <p v-show="entryFlg" class="entry-now-msg">このイベントに参加しています</p>
         <div class="event-top-info">
           <div class="number-info">
             <p class="number-info--title">参加費</p>
@@ -231,27 +239,5 @@ export default {
   margin: 20px auto;
   padding: 10px;
   white-space: pre-wrap;
-}
-.edit-btn {
-  display: inline-block;
-  padding: 2px 15px;
-  margin: 10px;
-  border-radius: 10px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #FFF;
-  cursor: pointer;
-  background: var(--accent-color);
-}
-.delete-btn {
-  display: inline-block;
-  padding: 2px 15px;
-  margin: 10px;
-  border-radius: 10px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #FFF;
-  cursor: pointer;
-  background: red;
 }
 </style>

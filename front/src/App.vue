@@ -48,7 +48,7 @@ export default {
 }
 
 .base-container{
-  max-width: 1400px;
+  /* max-width: 1400px; */
   width: 100%;
   padding-top: 60px;
   margin: 0 auto;

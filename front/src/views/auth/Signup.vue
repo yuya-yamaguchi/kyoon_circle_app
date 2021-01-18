@@ -1,38 +1,50 @@
 <template>
-  <div class="auth-container">
-    <h1 class="main-title text-center">新規会員登録</h1>
-    <ul class="error-messages">
-      <li v-for="(error, i) in errorMessages" :key="i">
-        {{ error }}
-      </li>
-    </ul>
-    <form v-on:submit.prevent="signUp()">
-      <div class="form-item">
-        <p>ユーザ名</p>
-        <input type="text" v-model="userName" placeholder="ユーザ名" class="default-input">
+  <div class="single-container">
+    <div class="auth-container">
+      <div class="text-center some-updown-center">
+        <h1 class="main-title text-center">新規会員登録</h1>
+        <fa icon="user" class="default-icon"></fa>
       </div>
-      <div class="form-item">
-        <p>メールアドレス</p>
-        <input type="text" v-model="email" placeholder="a@gmail.com" class="default-input">
+      <ul class="error-messages">
+        <li v-for="(error, i) in errorMessages" :key="i">
+          {{ error }}
+        </li>
+      </ul>
+      <form v-on:submit.prevent="signUp()" class="form-container">
+        <div class="form-item">
+          <p>ユーザ名</p>
+          <input type="text" v-model="userName" placeholder="ユーザ名" class="default-input">
+        </div>
+        <div class="form-item">
+          <p>メールアドレス</p>
+          <input type="text" v-model="email" placeholder="a@gmail.com" class="default-input">
+        </div>
+        <div class="form-item">
+          <p>パスワード</p>
+          <input type="password" v-model="password" class="default-input">
+        </div>
+        <div class="form-item">
+          <p>確認用パスワード</p>
+          <input type="password" v-model="passwordConfirmation" class="default-input">
+        </div>
+        <button class="default-button">会員登録する</button>
+      </form>
+      <div class="other-sign-links">
+        <SignLinks/>
       </div>
-      <div class="form-item">
-        <p>パスワード</p>
-        <input type="password" v-model="password" class="default-input">
-      </div>
-      <div class="form-item">
-        <p>確認用パスワード</p>
-        <input type="password" v-model="passwordConfirmation" class="default-input">
-      </div>
-      <button class="default-button">会員登録する</button>
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import SignLinks from "@/components/SignLinks.vue";
 
 export default {
+  components: {
+    SignLinks
+  },
   data() {
     return {
       userName: "",
@@ -88,5 +100,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+svg {
+  margin-left: 10px;
+}
+.other-sign-links {
+  border-top: 1px solid #888;
+  margin: 20px 50px;
+}
 </style>

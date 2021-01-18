@@ -1,7 +1,7 @@
 <template>
   <div class="error-container">
     <div class="page-title some-updown-center">
-      <fa icon="exclamation-triangle"></fa>
+      <fa icon="exclamation-circle"></fa>
       <p>500 Internal Server Error</p>
     </div>
     <div class="message">
@@ -19,7 +19,6 @@
 export default {
   methods: {
     isHttpsProtocol() {
-      console.log(location.protocol);
       if (location.protocol === 'https') {
         return true
       }

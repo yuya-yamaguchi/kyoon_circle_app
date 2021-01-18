@@ -1,33 +1,42 @@
 <template>
-  <div class="auth-container">
-    <div class="text-center some-updown-center">
-      <span class="main-title">ログイン</span>
-      <fa icon="sign-in-alt" class="default-icon"></fa>
+  <div class="single-container">
+    <div class="auth-container">
+      <div class="text-center some-updown-center">
+        <span class="main-title">ログイン</span>
+        <fa icon="sign-in-alt" class="default-icon"></fa>
+      </div>
+      <ul v-if="errorMessages" class="error-messages">
+        <li v-for="(error, i) in errorMessages" :key="i">
+          {{ error }}
+        </li>
+      </ul>
+      <form v-on:submit.prevent="login()" class="form-container">
+        <div class="form-item">
+          <p>メールアドレス</p>
+          <input type="text" v-model="email" placeholder="a@gmail.com"  class="default-input">
+        </div>
+        <div class="form-item">
+          <p>パスワード</p>
+          <input type="password" v-model="password"  class="default-input">
+        </div>
+        <button class="default-button">ログイン</button>
+      </form>
+      <div class="other-sign-links">
+        <SignLinks/>
+      </div>
     </div>
-    <ul v-if="errorMessages" class="error-messages">
-      <li v-for="(error, i) in errorMessages" :key="i">
-        {{ error }}
-      </li>
-    </ul>
-    <form v-on:submit.prevent="login()">
-      <div class="form-item">
-        <p>メールアドレス</p>
-        <input type="text" v-model="email" placeholder="a@gmail.com"  class="default-input">
-      </div>
-      <div class="form-item">
-        <p>パスワード</p>
-        <input type="password" v-model="password"  class="default-input">
-      </div>
-      <button class="default-button">ログイン</button>
-    </form>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import SignLinks from "@/components/SignLinks.vue";
 
 export default {
+  components: {
+    SignLinks
+  },
   data() {
     return {
       email: "",
@@ -77,3 +86,10 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.other-sign-links {
+  border-top: 1px solid #888;
+  margin: 20px 50px;
+}
+</style>
