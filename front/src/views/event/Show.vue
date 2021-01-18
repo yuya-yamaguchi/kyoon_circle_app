@@ -109,7 +109,8 @@ export default {
         this.entryCnt = response.data.entry_cnt;
         this.loading = false;
       })
-      .catch(function(error) {
+      .catch((error) => {
+        this.loading = false;
         this.apiErrors(error.response.status);
       });
     },
