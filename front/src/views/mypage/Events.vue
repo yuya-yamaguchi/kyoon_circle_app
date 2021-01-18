@@ -33,8 +33,10 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import EventList from '@/components/EventList.vue';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     SideBar,
     EventList
@@ -61,7 +63,7 @@ export default {
         this.historyEvents  = response.data.history_events;
       })
       .catch(function(error) {
-        console.log(error);
+        this.apiErrors(error.response.status);
       });
     },
     changeTab: function(num) {

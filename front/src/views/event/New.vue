@@ -17,8 +17,10 @@ import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import EventForm from "@/components/EventForm.vue";
 import ErrMsg from "@/components/ErrMsg.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     SideBar,
     EventForm,
@@ -63,6 +65,7 @@ export default {
         })
       })
       .catch((error) => {
+        this.apiErrors(error.response.status);
         this.apiErrorMessages = error.response.data;
       });
     }

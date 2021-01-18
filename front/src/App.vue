@@ -1,9 +1,11 @@
 <template>
   <div id="nav">
     <Header/>
+    <FlashMsg v-if="$store.getters['flash/message'].length!=0"/>
     <div class="base-container">
-      <FlashMsg v-if="$store.getters['flash/message'].length!=0"/>
-      <router-view/>
+      <NotFound v-if="errorStatus==404"/>
+      <SystemError v-else-if="errorStatus==500"/>
+      <router-view v-else/>
     </div>
     <Footer/>
   </div>
@@ -17,12 +19,21 @@ import "@/assets/style/_transition.scss";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import FlashMsg from "@/components/FlashMsg.vue";
+import NotFound from "@/views/errors/NotFound.vue";
+import SystemError from "@/views/errors/SystemError.vue";
 
 export default {
   components: {
     Header,
     Footer,
-    FlashMsg
+    FlashMsg,
+    NotFound,
+    SystemError
+  },
+  computed: {
+    errorStatus() {
+      return this.$store.getters["response/status"]
+    }
   }
 }
 </script>
@@ -37,6 +48,7 @@ export default {
 }
 
 .base-container{
+  max-width: 1400px;
   width: 100%;
   padding-top: 60px;
   margin: 0 auto;

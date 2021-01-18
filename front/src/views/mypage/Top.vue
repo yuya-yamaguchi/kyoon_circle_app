@@ -29,8 +29,10 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     SideBar
   },
@@ -45,10 +47,10 @@ export default {
         `http://${g.hostName}/api/mypage/${this.$store.getters['user/id']}`
       )
       .then((response) => {
-        this.user   = response.data
+        this.user = response.data
       })
       .catch(function(error) {
-        console.log(error);
+        this.apiErrors(error.response.status);
       });
     }
   },

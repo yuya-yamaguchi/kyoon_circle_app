@@ -31,8 +31,10 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import StudioReservedList from "@/components/StudioReservedList.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     SideBar,
     StudioReservedList
@@ -60,7 +62,7 @@ export default {
         this.historyReserves = response.data.history_reserves
       })
       .catch((error) => {
-        console.log(error);
+        this.apiErrors(error.response.status);
       });
     },
     changeTab: function(num) {

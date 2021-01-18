@@ -66,7 +66,12 @@ export default {
       this.cancelFlg = false;
       if (cancelConfirmFlg) {
         axios.delete(
-          `http://${g.hostName}/api/studios/${this.selectedReserve.studio_id}/reserves/${this.selectedReserve.id}`
+          `http://${g.hostName}/api/studios/${this.selectedReserve.studio_id}/reserves/${this.selectedReserve.id}`,
+          {
+            headers: {
+              Authorization: this.$store.getters['user/secureToken']
+            }
+          }
         )
         .then(() => {
           this.reserves.splice(this.removeNo, 1)

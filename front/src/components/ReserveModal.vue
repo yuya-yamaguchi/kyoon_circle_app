@@ -88,11 +88,13 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import { commonMethods } from '@/mixins/commonMethods';
+import { errorMethods } from '@/mixins/errorMethods';
 
-const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 var today = new Date();
 
 export default {
+  mixins: [commonMethods, errorMethods],
   props: {
     clickReserveProp: {},
     studioProp: {},
@@ -136,11 +138,9 @@ export default {
       return [...Array(last_day).keys()].map(i => ++i)
     },
     setWeeks() {
-      var select_date = new Date(this.selected.year,
-                                 this.selected.month-1,
-                                 this.selected.day);
-      var week_no = select_date.getDay();
-      return WEEK[week_no];
+      return this.calcWeek(this.selected.year + '-' +
+                           ('00' + this.selected.month).slice( -2 ) + '-' +
+                           ('00' + this.selected.day).slice( -2 ), 1);
     },
     paymentFee() {
       var sa = calcReserveTime(this.selected);
@@ -164,10 +164,8 @@ export default {
           user_id: this.$store.getters["user/id"],
           studio_reserve: {
             date: this.selected.year + '-' + this.selected.month + '-' + this.selected.day,
-            start_hour: this.selected.start_hour,
-            start_min:  this.selected.start_min,
-            end_hour:   this.selected.end_hour,
-            end_min:    this.selected.end_min
+            start_time: String(this.selected.start_hour) + ( '00' + this.selected.start_min ).slice( -2 ),
+            end_time:   String(this.selected.end_hour) + ( '00' + this.selected.end_min ).slice( -2 )
           }
         },
         {
@@ -182,6 +180,7 @@ export default {
       })
       .catch((error) => {
         this.errorMessages.api = error.response.data.error_message;
+        this.apiErrors(error.response.status);
       });
     },
     changeDateTime: function() {

@@ -1,6 +1,6 @@
 <template>
   <div class="single-container">
-    <h1 class="main-title text-center">イベント編集</h1>
+    <h1 class="main-title text-center">お知らせ編集</h1>
     <ErrMsg :error-messages-prop="apiErrorMessages"/>
     <NewsForm v-if="news" :news-prop="news" :modal-msg-prop="modalMsg" @post-news="updateNews"/>
   </div>
@@ -11,8 +11,10 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import NewsForm from "@/components/NewsForm.vue";
 import ErrMsg from "@/components/ErrMsg.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     NewsForm,
     ErrMsg
@@ -37,7 +39,7 @@ export default {
         this.news = response.data;
       })
       .catch((error) => {
-        console.log(error);
+        this.apiErrors(error.response.status);
       });
     },
     updateNews: function(news) {
@@ -56,6 +58,7 @@ export default {
         })
       })
       .catch((error) => {
+        this.apiErrors(error.response.status);
         this.apiErrorMessages = error.response.data;
       });
     }
