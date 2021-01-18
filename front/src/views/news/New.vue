@@ -17,8 +17,10 @@ import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import NewsForm from "@/components/NewsForm.vue";
 import ErrMsg from "@/components/ErrMsg.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     SideBar,
     NewsForm,
@@ -50,7 +52,6 @@ export default {
       )
       .then((response) => {
         this.apiErrorMessages = []
-        console.log(response);
         this.$router.push({
           name: "NewsShow",
           params: {
@@ -59,6 +60,7 @@ export default {
         })
       })
       .catch((error) => {
+        this.apiErrors(error.response.status);
         this.apiErrorMessages = error.response.data;
       });
     }

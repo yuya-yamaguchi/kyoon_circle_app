@@ -34,8 +34,10 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import ErrMsg from "@/components/ErrMsg.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     SideBar,
     ErrMsg
@@ -56,7 +58,7 @@ export default {
         this.user = response.data
       })
       .catch(function(error) {
-        console.log(error.response);
+        this.apiErrors(error.response.status);
       });
     },
     // プロフィールの更新

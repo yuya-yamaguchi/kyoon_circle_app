@@ -62,9 +62,9 @@
         <table>
           <tr>
             <th></th>
-            <th v-for="(week, w) in weeks" :key="w">
-              {{ formatDate(week, 'MM月DD日') }}
-              （{{ setWeek(week) }}）
+            <th v-for="(day, w) in weeks" :key="w">
+              {{ fmtDate(day, 3) }}
+              （{{ calcWeek(day, 1) }}）
             </th>
           </tr>
           <tr v-for="(reserve, i) in reserves" :key="i">
@@ -87,15 +87,15 @@
 
 <script>
 import axios from 'axios';
-import moment from "moment";
 import g from "@/variable/variable.js";
 import ReserveModal from '@/components/ReserveModal.vue';
 import Loading from '@/components/Loading.vue';
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
-
-const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
+import { commonMethods } from '@/mixins/commonMethods';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [commonMethods, errorMethods],
   components: {
     ReserveModal,
     Loading,
@@ -128,7 +128,9 @@ export default {
   },
   watch: {
     '$route' (to) {
-      this.getStudio(to.query.week)
+      if ( to.query.week !== undefined ) {
+        this.getStudio(to.query.week)
+      }
     }
   },
   methods: {
@@ -143,7 +145,7 @@ export default {
         this.loading = false;
       })
       .catch((error) => {
-        console.log(error);
+        this.apiErrors(error.response.status);
       });
     },
     changeWeek: function(week) {
@@ -167,13 +169,6 @@ export default {
     },
     closeModal: function() {
       this.clickReserve = ''
-    },
-    formatDate(value, format) {
-      return moment(value).format(format);
-    },
-    setWeek(date) {
-      var show_date = new Date(date.substr(0, 4), date.substr(5, 2)-1, date.substr(8, 2));
-      return WEEK[show_date.getDay()];
     }
   },
   mounted: function() {

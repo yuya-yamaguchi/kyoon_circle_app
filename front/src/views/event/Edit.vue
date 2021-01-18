@@ -17,8 +17,10 @@ import g from "@/variable/variable.js";
 import SideBar from "@/components/SideBar.vue";
 import EventForm from "@/components/EventForm.vue";
 import ErrMsg from "@/components/ErrMsg.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     SideBar,
     EventForm,
@@ -39,7 +41,7 @@ export default {
         this.event = response.data
       })
       .catch((error) => {
-        console.log(error);
+        this.apiErrors(error.response.status);
       });
     },
     updateEvent: function(event) {
@@ -50,20 +52,19 @@ export default {
           event: event
         }
       )
-      .then((response) => {
+      .then(() => {
         this.apiErrorMessages = []
-        console.log(response);
         this.$router.push({
           name: "EventShow"
         })
       })
       .catch((error) => {
         this.apiErrorMessages = error.response.data;
+        this.apiErrors(error.response.status);
       });
     }
   },
   mounted() {
-    console.log(this.event.title);
     this.getEvent();
   }
 }

@@ -18,5 +18,6 @@ class News < ApplicationRecord
         config.channel_token = ENV['LINE_CHANNEL_TOKEN']
     }
     response = client.push_message(group_id, message)
+    return response
   end
 end

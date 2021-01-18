@@ -18,6 +18,9 @@ import NewsNew from '@/views/news/New.vue'
 import NewsIndex from '@/views/news/Index.vue'
 import NewsShow from '@/views/news/Show.vue'
 import NewsEdit from '@/views/news/Edit.vue'
+import NotFound from "@/views/errors/NotFound.vue";
+
+import store from '@/store'
 
 const routes = [
   // トップページ
@@ -136,12 +139,32 @@ const routes = [
     path: '/news/new',
     name: 'NewsNew',
     component: NewsNew
+  },
+  /***********************/
+  /* エラーVIEW           */
+  /***********************/
+  // NOTFOUND画面
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.afterEach(() => {
+  // NotFound画面から別画面に切り替えるための対応
+  // 他、上手くいく方法があれば変更する
+  if (store.getters["response/update"] != 0) {
+    store.dispatch(
+      "response/update",
+      { status: 0 }
+    );
+  }
 })
 
 export default router
