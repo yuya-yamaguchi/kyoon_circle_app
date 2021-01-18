@@ -15,22 +15,6 @@ class Event < ApplicationRecord
   validates :fee, presence: true
   validates :place, presence: true
   
-  def set_out_params
-    week = ['Sun', 'Mon', 'Tue', 'Web', 'Thu', 'Fri', 'Sat']
-    params = {
-      id:         self.id,
-      title:      self.title,
-      details:    self.details,
-      event_type: self.event_type,
-      fee:        self.fee,
-      place:      self.place,
-      max_entry:  self.max_entry,
-      start_date: self.start_datetime,
-      end_date:   self.end_datetime,
-      start_week: week[self.start_datetime.to_date.wday]
-    }
-  end
-
   def set_edit_params
     params = {
       id:         self.id,

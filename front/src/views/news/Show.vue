@@ -26,8 +26,10 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/ConfirmModal.vue";
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     ConfirmModal,
     BreadCrumbs
@@ -71,7 +73,7 @@ export default {
         this.news = response.data;
       })
       .catch((error) => {
-        console.log(error);
+        this.apiErrors();
       });
     },
     deleteNews: function(confirm) {

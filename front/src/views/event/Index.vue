@@ -19,8 +19,10 @@ import g from "@/variable/variable.js";
 import EventList from '@/components/EventList.vue';
 import Pagination from '@/components/Pagination.vue';
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     EventList,
     Pagination,
@@ -51,7 +53,9 @@ export default {
     // パラメータのみの変更はコンポーネントが再描画されないため、
     // $routeが変更されたことをパラメータが変更されたことをwatchにて検知する
     '$route' (to) {
-      this.getEvents(to.query.page)
+      if ( to.query.page != undefined ) {
+        this.getEvents(to.query.page)
+      }
     }
   },
   methods: {
@@ -64,7 +68,7 @@ export default {
         this.pagy = response.data.pagy;
       })
       .catch(function(error) {
-        console.log(error);
+        this.apiErrors(error.response.status);
       });
     },
     changePage: function(pageNo) {

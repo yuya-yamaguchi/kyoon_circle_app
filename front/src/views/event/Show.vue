@@ -26,7 +26,7 @@
             </p>
           </div>
         </div>
-        <div class="event-middle-info">開催日時 {{ holdStart(event.start_date) }}〜{{ holdStart(event.end_date) }}</div>
+        <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 2) }}</div>
         <div class="event-middle-info">開催場所 {{ event.place }}</div>
         <div class="event-details">{{ event.details }}</div>
         <div>
@@ -50,8 +50,11 @@ import g from "@/variable/variable.js";
 import Loading from '@/components/Loading.vue';
 import ConfirmModal from "@/components/ConfirmModal.vue";
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
+import { commonMethods } from '@/mixins/commonMethods';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [commonMethods, errorMethods],
   components: {
     Loading,
     ConfirmModal,
@@ -106,8 +109,9 @@ export default {
         this.entryCnt = response.data.entry_cnt;
         this.loading = false;
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch((error) => {
+        this.loading = false;
+        this.apiErrors(error.response.status);
       });
     },
     postEventEntry: function() {
@@ -127,12 +131,15 @@ export default {
         this.entryCnt = response.data;
       })
       .catch((error) => {
-        this.$store.dispatch(
-          "flash/create",
-          { message: error.response.data.error_message,
-            type:    2
-          }
-        );
+        if (error.response.status == 401) {
+          this.$store.dispatch(
+            "flash/create",
+            { message: error.response.data.error_message,
+              type:    2
+            }
+          );
+        }
+        this.apiErrors(error.response.status);
       });
     },
     postCancelEventEntry: function() {
@@ -152,12 +159,15 @@ export default {
         this.entryCnt = response.data;
       })
       .catch((error) => {
-        this.$store.dispatch(
-          "flash/create",
-          { message: error.response.data.error_message,
-            type:    2
-          }
-        );
+        if (error.response.status == 401) {
+          this.$store.dispatch(
+            "flash/create",
+            { message: error.response.data.error_message,
+              type:    2
+            }
+          );
+        }
+        this.apiErrors(error.response.status);
       });
     },
     deleteEvent: function(confirm) {
@@ -184,9 +194,6 @@ export default {
     },
     displayConfirmModal: function() {
       this.modalFlg = true;
-    },
-    holdStart: function(startDate) {
-      return startDate.substr(0, 4) + '/' + startDate.substr(5, 2) + '/' + startDate.substr(8, 2) + ' ' + startDate.substr(11, 5)
     }
   },
   mounted: function() {

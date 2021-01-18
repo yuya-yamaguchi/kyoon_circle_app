@@ -66,8 +66,10 @@ import g from "@/variable/variable.js";
 import NewsList from '@/components/NewsList.vue';
 import EventList from '@/components/EventList.vue';
 import Loading from '@/components/Loading.vue';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   components: {
     NewsList,
     EventList,
@@ -88,8 +90,9 @@ export default {
         this.news = response.data.news;
         this.loading = false;
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch((error) => {
+        this.loading = false;
+        this.apiErrors(error.response.status);
       });
     }
   },

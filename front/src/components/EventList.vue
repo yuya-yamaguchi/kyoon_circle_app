@@ -2,10 +2,10 @@
   <div>
     <div v-for="(event, i) in eventsProp" :key="i">
       <router-link :to="`/event/${event.id}`" class="event-card">
-        <div v-if="checkDateOver(event.start_date)" class="event-end">このイベントは終了しました</div>
+        <div v-if="checkDateOver(event.start_datetime)" class="event-end">このイベントは終了しました</div>
         <div class="event-card--left">
-          <p class="event-card--left--date">{{ holdDate(event.start_date) }}</p>
-          <p class="event-card--left--week">{{ event.start_week }}</p>
+          <p class="event-card--left--date">{{ fmtDate(event.start_datetime, 1) }}</p>
+          <p class="event-card--left--week">{{ calcWeek(event.start_datetime, 2) }}</p>
         </div>
         <div class="event-card--middle">
           <p class="event-card--middle--title">{{ event.title }}</p>
@@ -28,19 +28,19 @@
 </template>
 
 <script>
+import { commonMethods } from '@/mixins/commonMethods';
+
 export default {
+  mixins: [commonMethods],
   props: {
     eventsProp: {}
   },
   methods: {
-    holdDate: function(startDate) {
-      return Number(startDate.substr(5, 2)) + '/' + Number(startDate.substr(8, 2))
-    },
-    checkDateOver: function(startDate) {
+    checkDateOver: function(dateTime) {
       var today = new Date();
-      var holdDate = new Date(startDate.substr(0, 4),
-                              Number(startDate.substr(5, 2))-1,
-                              startDate.substr(8, 2),
+      var holdDate = new Date(dateTime.substr(0, 4),
+                              Number(dateTime.substr(5, 2))-1,
+                              dateTime.substr(8, 2),
                               23, 59, 59)
       if ( holdDate < today ) {
         return true
