@@ -48,6 +48,11 @@ export default {
         {
           user_id: this.$store.getters['user/id'],
           news: news
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
         }
       )
       .then((response) => {

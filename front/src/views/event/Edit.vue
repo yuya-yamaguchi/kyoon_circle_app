@@ -35,7 +35,12 @@ export default {
   methods: {
     getEvent: function() {
       axios.get(
-        `http://${g.hostName}/api/events/${this.$route.params.id}/edit`
+        `http://${g.hostName}/api/events/${this.$route.params.id}/edit`,
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
       )
       .then((response) => {
         this.event = response.data
@@ -50,6 +55,11 @@ export default {
         {
           user_id: this.$store.getters['user/id'],
           event: event
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
         }
       )
       .then(() => {

@@ -174,7 +174,12 @@ export default {
       this.modalFlg = false;
       if (confirm) {
         axios.delete(
-          `http://${g.hostName}/api/events/${this.event.id}`
+          `http://${g.hostName}/api/events/${this.event.id}`,
+          {
+            headers: {
+              Authorization: this.$store.getters['user/secureToken']
+            }
+          }
         )
         .then(() => {
           this.$store.dispatch(
@@ -184,11 +189,14 @@ export default {
             }
           );
           this.$router.push({ 
-            name: "EventEditList"
+            name: "EventEditList",
+            query: {
+              page: 1
+            }
           })
         })
         .catch(function(error) {
-          console.log(error);
+          this.apiErrors(error.response.status);
         });
       }
     },

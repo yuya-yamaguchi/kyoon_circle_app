@@ -1,19 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe News, type: :model do
+  let(:user) { FactoryBot.create(:user) }
   before do
-    @user = FactoryBot.create(:user)
+    user
   end
   
-  it "[S]すべての入力がある場合" do
-    expect(FactoryBot.create(:news, user_id: @user.id)).to be_valid
+  context 'can save' do
+    it "すべての入力あり" do
+      expect(FactoryBot.create(:news, user_id: user.id)).to be_valid
+    end
   end
 
-  it "[E]タイトルがない場合" do
-    expect(FactoryBot.build(:news, title: "", user_id: @user.id)).to be_invalid
-  end
+  context 'can not save' do
+    it "タイトルなし" do
+      expect(FactoryBot.build(:news, title: "", user_id: user.id)).to be_invalid
+    end
 
-  it "[E]内容がない場合" do
-    expect(FactoryBot.build(:news, details: "", user_id: @user.id)).to be_invalid
+    it "内容なし場合" do
+      expect(FactoryBot.build(:news, details: "", user_id: user.id)).to be_invalid
+    end
   end
 end

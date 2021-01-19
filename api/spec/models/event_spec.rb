@@ -1,51 +1,56 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
+  let(:user) { FactoryBot.create(:user) }
   before do
-    @user = FactoryBot.create(:user)
+    user
   end
   
-  it "[S]すべての入力がある場合" do
-    expect(FactoryBot.create(:event, user_id: @user.id)).to be_valid
-  end
-  
-  it "[S]終了時刻がない場合" do
-    expect(FactoryBot.create(:event, end_datetime: "", user_id: @user.id)).to be_valid
-  end
-
-  it "[E]タイトルがない場合" do
-    expect(FactoryBot.build(:event, title: "", user_id: @user.id)).to be_invalid
+  context 'can save' do
+    it "すべての入力あり" do
+      expect(FactoryBot.create(:event, user_id: user.id)).to be_valid
+    end
+    
+    it "終了時刻なし" do
+      expect(FactoryBot.create(:event, end_datetime: "", user_id: user.id)).to be_valid
+    end
   end
 
-  it "[E]タイトルが41文字以上の場合" do
-    expect(FactoryBot.build(:event, title: "a" * 41, user_id: @user.id)).to be_invalid
-  end
+  context 'can not save' do
+    it "タイトルなし" do
+      expect(FactoryBot.build(:event, title: "", user_id: user.id)).to be_invalid
+    end
 
-  it "[E]イベントの種類が下限値オーバーの場合" do
-    expect(FactoryBot.build(:event, event_type: 0, user_id: @user.id)).to be_invalid
-  end
+    it "タイトルが41文字以上" do
+      expect(FactoryBot.build(:event, title: "a" * 41, user_id: user.id)).to be_invalid
+    end
 
-  it "[E]イベントの種類が上限値オーバーの場合" do
-    expect(FactoryBot.build(:event, event_type: 5, user_id: @user.id)).to be_invalid
-  end
+    it "イベント種類が下限値オーバー" do
+      expect(FactoryBot.build(:event, event_type: 0, user_id: user.id)).to be_invalid
+    end
 
-  it "[E]内容がない場合" do
-    expect(FactoryBot.build(:event, details: "", user_id: @user.id)).to be_invalid
-  end
+    it "イベント種類が上限値オーバー" do
+      expect(FactoryBot.build(:event, event_type: 5, user_id: user.id)).to be_invalid
+    end
 
-  it "[E]内容が1001字以上の場合" do
-    expect(FactoryBot.build(:event, details: "a" * 1001, user_id: @user.id)).to be_invalid
-  end
+    it "内容なし" do
+      expect(FactoryBot.build(:event, details: "", user_id: user.id)).to be_invalid
+    end
 
-  it "[E]料金がない場合" do
-    expect(FactoryBot.build(:event, fee: "", user_id: @user.id)).to be_invalid
-  end
+    it "内容が1001字以上" do
+      expect(FactoryBot.build(:event, details: "a" * 1001, user_id: user.id)).to be_invalid
+    end
 
-  it "[E]場所がない場合" do
-    expect(FactoryBot.build(:event, place: "", user_id: @user.id)).to be_invalid
-  end
+    it "料金なし" do
+      expect(FactoryBot.build(:event, fee: "", user_id: user.id)).to be_invalid
+    end
 
-  it "[E]開始時刻がない場合" do
-    expect(FactoryBot.build(:event,  start_datetime: "", user_id: @user.id)).to be_invalid
+    it "場所なし" do
+      expect(FactoryBot.build(:event, place: "", user_id: user.id)).to be_invalid
+    end
+
+    it "開始時刻なし" do
+      expect(FactoryBot.build(:event,  start_datetime: "", user_id: user.id)).to be_invalid
+    end
   end
 end
