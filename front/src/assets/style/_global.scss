@@ -117,6 +117,13 @@
     width: 100%;
     min-height: 100px;
     padding: 5px;
+    outline: none;
+    min-height: 200px;
+    box-sizing: border-box;
+  }
+  textarea:focus {
+    border: 2px solid var(--accent-color);
+    
   }
   .checkbox {
     margin-left: 10px;

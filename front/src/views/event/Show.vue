@@ -21,6 +21,8 @@
           :modal-msg-prop="modalMsg"
           @process-confirm="deleteEvent"/>
         <p v-show="entryFlg" class="entry-now-msg">このイベントに参加しています</p>
+        <p v-if="isEventEnd()" class="cant-entry-msg">このイベントは終了しました</p>
+        <p v-else-if="isOverCapacity()" class="cant-entry-msg">このイベントは定員に達しました</p>
         <div class="event-top-info">
           <div class="number-info">
             <p class="number-info--title">参加費</p>
@@ -40,11 +42,15 @@
         <div>
           <button v-if="!entryFlg"
                   @click="postEventEntry()"
-                  class="default-button">参加する
+                  class="default-button"
+                  :disabled="cantEntry"
+                  :class="{ 'btn-disable': cantEntry}">参加する
           </button>
           <button v-if="entryFlg"
                   @click="postCancelEventEntry()"
-                  class="cancel-button">参加をやめる
+                  class="cancel-button"
+                  :disabled="cantCancel"
+                  :class="{ 'btn-disable': cantCancel}">参加をやめる
           </button>
         </div>
       </div>
@@ -61,6 +67,8 @@ import BreadCrumbs from "@/components/BreadCrumbs.vue";
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
+var today = new Date();
+
 export default {
   mixins: [commonMethods, errorMethods],
   components: {
@@ -75,6 +83,8 @@ export default {
       entryCnt: 0,
       loading: true,
       modalFlg: false,
+      cantEntry: false,
+      cantCancel: false,
       modalMsg: {
         title: "イベントの取消",
         message: "イベントの取消を行います。<br>削除したイベントは元へは戻せません。よろしいですか？",
@@ -139,16 +149,18 @@ export default {
         this.entryCnt = response.data;
       })
       .catch((error) => {
-        if (error.response.status == 401) {
+        if (error.response.status === 400 || error.response.status === 401) {
           this.$store.dispatch(
             "flash/create",
             { message: error.response.data.error_message,
               type:    2
             }
           );
-          this.$router.push({ 
-            name: "Login"
-          })
+          if (error.response.status === 401) {
+            this.$router.push({ 
+              name: "Login"
+            })
+          }
         }
         this.apiErrors(error.response.status);
       });
@@ -209,13 +221,32 @@ export default {
             }
           })
         })
-        .catch(function(error) {
+        .catch((error) => {
           this.apiErrors(error.response.status);
         });
       }
     },
     displayConfirmModal: function() {
       this.modalFlg = true;
+    },
+    isEventEnd: function()  {
+      var start_date = new Date(this.event.start_datetime.substr(0, 4), 
+                                Number(this.event.start_datetime.substr(5, 2)-1),
+                                this.event.start_datetime.substr(8, 2), 23, 59, 59);
+      if ( today > start_date ) {
+        this.cantEntry = true
+        this.cantCancel = true
+        return true
+      }
+      return false
+    },
+    isOverCapacity: function() {
+      if ( this.event.max_entry != 0 && 
+           this.event.max_entry <= this.entryCnt ) {
+        this.cantEntry = true
+        return true
+      }
+      return false
     }
   },
   mounted: function() {
@@ -227,6 +258,11 @@ export default {
 <style scoped lang="scss">
 .entry-now-msg {
   color: red;
+  font-weight: bold;
+  margin: 10px;
+}
+.cant-entry-msg {
+  color: #888;
   font-weight: bold;
   margin: 10px;
 }

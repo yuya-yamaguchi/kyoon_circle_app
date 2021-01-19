@@ -93,6 +93,7 @@ export default {
     background: #FFF;
     padding: 20px;
     margin-left: 30px;
+    min-height: 300px;
     &--edit {
       display: block;
       text-align: right;
