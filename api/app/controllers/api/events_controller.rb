@@ -1,8 +1,9 @@
 class Api::EventsController < ApplicationController
   include Pagy::Backend
   
-  before_action :user_check, only: [:entry, :entry_cancel]
-  before_action :set_event,  only: [:show, :edit, :update]
+  before_action :user_check, only: [:edit, :update, :create, :destroy, :entry, :entry_cancel]
+  before_action :admin_check, only: [:edit, :update, :create, :destroy]
+  before_action :set_event,  only: [:show, :edit, :update, :destroy]
 
   def index
     pagy, events = pagy(Event.all.order('start_datetime DESC'), items: 5)
@@ -55,7 +56,7 @@ class Api::EventsController < ApplicationController
     if @event.destroy
       render status: 204
     else
-      render status: 404, json: news.errors.full_messages
+      render status: 404, json: event.errors.full_messages
     end
   end
 
@@ -115,8 +116,12 @@ class Api::EventsController < ApplicationController
 
   def user_check
     return render status: 401, json:{ error_message: "会員登録（またはログイン）を行ってください" } if params[:user_id] == 0
-    user = User.find_by(token: request.headers['Authorization'])
-    return render status: 401, json:{ error_message: "認証に失敗しました。再度ログインしてお試しください。" } if user.nil?
+    @user = User.find_by(token: request.headers['Authorization'])
+    return render status: 401, json:{ error_message: "認証に失敗しました。再度ログインしてお試しください。" } if @user.nil?
+  end
+
+  def admin_check
+    return render status: 403, json:{ error_message: "操作権限がありません" } if @user.admin_type == 0
   end
 
   def set_event

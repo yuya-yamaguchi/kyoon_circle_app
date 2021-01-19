@@ -14,6 +14,7 @@ class Event < ApplicationRecord
   validates :details, length: { maximum: 1000, message: "は1000文字以下で入力してください" }, allow_blank: true
   validates :fee, presence: true
   validates :place, presence: true
+  validates :start_datetime, presence: true
   
   def set_edit_params
     params = {

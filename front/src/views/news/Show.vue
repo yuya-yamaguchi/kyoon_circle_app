@@ -73,14 +73,19 @@ export default {
         this.news = response.data;
       })
       .catch((error) => {
-        this.apiErrors();
+        this.apiErrors(error.response.status);
       });
     },
     deleteNews: function(confirm) {
       this.modalFlg = false;
       if (confirm) {
         axios.delete(
-          `http://${g.hostName}/api/news/${this.news.id}`
+          `http://${g.hostName}/api/news/${this.news.id}`,
+          {
+            headers: {
+              Authorization: this.$store.getters['user/secureToken']
+            }
+          }
         )
         .then(() => {
           this.$store.dispatch(
@@ -93,8 +98,8 @@ export default {
             name: "NewsIndex"
           })
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch((error) => {
+          this.apiErrors(error.response.status);
         });
       }
     },
