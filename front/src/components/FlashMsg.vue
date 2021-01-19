@@ -40,7 +40,7 @@ export default {
 
 .error-messages-container {
   z-index:1;
-  position: absolute;
+  position: fixed;
   top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);

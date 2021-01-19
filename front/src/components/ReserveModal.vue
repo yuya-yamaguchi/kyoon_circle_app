@@ -179,8 +179,21 @@ export default {
         this.$emit('reserve-success');
       })
       .catch((error) => {
-        this.errorMessages.api = error.response.data.error_message;
         this.apiErrors(error.response.status);
+        if (error.response.status === 401) {
+          this.$store.dispatch(
+            "flash/create",
+            { message: error.response.data.error_message,
+              type:    2
+            }
+          );
+          this.$router.push({ 
+            name: "Login"
+          })
+        }
+        else {
+          this.errorMessages.api = error.response.data.error_message;
+        }
       });
     },
     changeDateTime: function() {

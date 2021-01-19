@@ -146,6 +146,9 @@ export default {
               type:    2
             }
           );
+          this.$router.push({ 
+            name: "Login"
+          })
         }
         this.apiErrors(error.response.status);
       });
@@ -174,6 +177,9 @@ export default {
               type:    2
             }
           );
+          this.$router.push({ 
+            name: "Login"
+          })
         }
         this.apiErrors(error.response.status);
       });
