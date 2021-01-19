@@ -88,7 +88,12 @@ export default {
       this.modalFlg = false;
       if (confirm) {
         axios.delete(
-          `http://${g.hostName}/api/news/${this.news.id}`
+          `http://${g.hostName}/api/news/${this.news.id}`,
+          {
+            headers: {
+              Authorization: this.$store.getters['user/secureToken']
+            }
+          }
         )
         .then(() => {
           this.$store.dispatch(
@@ -101,8 +106,8 @@ export default {
             name: "NewsIndex"
           })
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch((error) => {
+          this.apiErrors(error.response.status);
         });
       }
     },
