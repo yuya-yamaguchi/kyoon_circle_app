@@ -1,14 +1,25 @@
 <template>
-  <div class="single-container">
-    <h1 class="main-title text-center">お知らせ編集</h1>
-    <ErrMsg :error-messages-prop="apiErrorMessages"/>
-    <NewsForm v-if="news" :news-prop="news" :modal-msg-prop="modalMsg" @post-news="updateNews"/>
+  <div class="double-container">
+    <div class="double-container--left">
+      <SideBar :select-menu-prop="104"/>
+    </div>
+    <div class="double-container--right">
+      <div class="news-edit-container">
+        <h1 class="main-title text-center">お知らせ編集</h1>
+        <ErrMsg :error-messages-prop="apiErrorMessages"/>
+        <NewsForm v-if="news" 
+          :news-prop="news"
+          :modal-msg-prop="modalMsg"
+          @post-news="updateNews"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import SideBar from "@/components/SideBar.vue";
 import NewsForm from "@/components/NewsForm.vue";
 import ErrMsg from "@/components/ErrMsg.vue";
 import { errorMethods } from '@/mixins/errorMethods';
@@ -16,6 +27,7 @@ import { errorMethods } from '@/mixins/errorMethods';
 export default {
   mixins: [errorMethods],
   components: {
+    SideBar,
     NewsForm,
     ErrMsg
   },
@@ -74,4 +86,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.news-edit-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  background: #FFF;
+}
 </style>

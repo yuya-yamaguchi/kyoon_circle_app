@@ -98,8 +98,11 @@ class Api::EventsController < ApplicationController
     month = event_params[:start_date][5, 2].to_i
     day   = event_params[:start_date][8, 2].to_i
     if year > 0 && month > 0 && day > 0
+      # DBの設定がUTCのため、9時間前を登録する
       start_datetime = DateTime.new(year, month, day, event_params[:start_hour].to_i, event_params[:start_min].to_i) - Rational(9, 24)
-      end_datetime = DateTime.new(year, month, day, event_params[:end_hour].to_i, event_params[:end_min].to_i) - Rational(9, 24)
+      if event_params[:end_hour] != "" && event_params[:end_min] != ""
+        end_datetime = DateTime.new(year, month, day, event_params[:end_hour].to_i, event_params[:end_min].to_i) - Rational(9, 24)
+      end
     end
     return_params = {
       user_id: event_params[:user_id],

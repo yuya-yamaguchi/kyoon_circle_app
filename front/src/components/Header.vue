@@ -151,7 +151,7 @@ header{
       color:#FFF;
       font-size: 12px;
       font-weight: bold;
-      background: linear-gradient(70deg, rgb(85, 85, 236), rgb(15, 169, 230));
+      background: linear-gradient(70deg, var(--gradation-color), var(--accent-color));
       border: 1px solid;
       margin: 0 10px;
       margin-top: 15px;

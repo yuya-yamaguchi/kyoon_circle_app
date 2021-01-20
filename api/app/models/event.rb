@@ -17,6 +17,13 @@ class Event < ApplicationRecord
   validates :start_datetime, presence: true
   
   def set_edit_params
+    # front側で編集する？
+    end_hour = ""
+    end_min = ""
+    if self.end_datetime.present?
+      end_hour = self.end_datetime.strftime("%H")
+      end_min  = self.end_datetime.strftime("%M")
+    end
     params = {
       id:         self.id,
       title:      self.title,
@@ -26,10 +33,10 @@ class Event < ApplicationRecord
       place:      self.place,
       max_entry:  self.max_entry,
       start_date: self.start_datetime.strftime("%Y-%m-%d"),
-      start_hour: self.start_datetime.strftime("%H"),
+      start_hour: self.start_datetime.strftime("%-H"),
       start_min:  self.start_datetime.strftime("%M"),
-      end_hour:   self.end_datetime.strftime("%H"),
-      end_min:    self.end_datetime.strftime("%M")
+      end_hour:   end_hour,
+      end_min:    end_min
     }
   end
 

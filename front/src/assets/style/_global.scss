@@ -57,12 +57,13 @@
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
-  background: linear-gradient(70deg, rgb(238, 120, 91), var(--accent-color));
+  background: linear-gradient(70deg, var(--gradation-color), var(--accent-color));
   color: #FFF;
   text-decoration: none;
   cursor: pointer;
   &:hover {
     opacity: 0.8;
+    
   }
 }
 

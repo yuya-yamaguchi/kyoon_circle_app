@@ -7,7 +7,7 @@
       <div class="event-new-container">
         <h1 class="main-title text-center">イベント登録</h1>
         <ErrMsg :error-messages-prop="apiErrorMessages"/>
-        <EventForm :event-prop="event" @post-event="postNewEvent"/>
+        <EventForm :event-prop="event" :modal-msg-prop="modalMsg" @post-event="postNewEvent"/>
       </div>
     </div>
   </div>
@@ -43,6 +43,11 @@ export default {
         fee: "",
         max_entry: 0,
         line_msg_push: true
+      },
+      modalMsg: {
+        title: "イベントの登録",
+        message: 'イベントを登録します。よろしいですか？',
+        btn: "登録"
       },
       apiErrorMessages: []
     }

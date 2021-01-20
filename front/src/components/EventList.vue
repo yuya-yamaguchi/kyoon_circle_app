@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(event, i) in eventsProp" :key="i">
-      <router-link :to="`/event/${event.id}`" class="event-card">
+      <router-link :to="transLinks(event.id)" class="event-card">
         <div v-if="checkDateOver(event.start_datetime)" class="event-end">このイベントは終了しました</div>
         <div class="event-card--left">
           <p class="event-card--left--date">{{ fmtDate(event.start_datetime, 1) }}</p>
@@ -16,11 +16,6 @@
           <p>参加費
             <span class="event-card--middle--fee">{{ event.fee }}</span>
           </p>
-        </div>
-        <div v-if="editLink()" class="event-card--right">
-          <router-link :to="`/event/${event.id}/edit`">
-            編集
-          </router-link>
         </div>
       </router-link>
     </div>
@@ -42,16 +37,10 @@ export default {
                               Number(dateTime.substr(5, 2))-1,
                               dateTime.substr(8, 2),
                               23, 59, 59)
-      if ( holdDate < today ) {
-        return true
-      }
-      return false
+      return (holdDate < today) ? true : false
     },
-    editLink: function() {
-      if (location.pathname == '/event/editlist') {
-        return true
-      }
-      return false
+    transLinks: function(eventId) {
+      return (location.pathname == '/events/editlist') ? `/event/${eventId}/edit` : `/event/${eventId}`
     }
   }
 }
