@@ -5,15 +5,18 @@
       @process-confirm="postNews"/>
     <form v-on:submit.prevent="displayConfirm()">
       <div class="form-item">
-        <p>タイトル</p>
-        <input type="text" v-model="news.title" placeholder="イベント名" class="default-input">
+        <p class="form-item--name">タイトル</p>
+        <input type="text" v-model="news.title" placeholder="イベント名" class="default-input" @blur="newsTitleChk()" @keyup="newsTitleChk()">
+        <p class="form-item--err-msg">{{ errMsg. title }}</p>
       </div>
       <div class="form-item">
-        <p>内容</p>
-        <textarea v-model="news.details"></textarea>
+        <p class="form-item--name">内容</p>
+        <textarea v-model="news.details" @blur="newsDetailsChk()" @keyup="newsDetailsChk()"></textarea>
+        <p class="form-item--err-msg">{{ errMsg.details }}</p>
       </div>
       <div class="form-item" v-if="displayLinePush()">
-        <p>グループLINEへの通知</p>
+        <p class="form-item--name">グループLINEへの通知</p>
+        <p class="form-item--addition">※現在は開発用に作成したグループに通知されます</p>
         <input type="checkbox" id="lineMsgFlg" class="checkbox" v-model="news.line_msg_push">
         <label for="lineMsgFlg">通知する</label>
       </div>
@@ -24,8 +27,10 @@
 
 <script>
 import ConfirmModal from "@/components/ConfirmModal.vue";
+import { commonCheck } from '@/mixins/commonCheck';
 
 export default {
+  mixins: [commonCheck],
   components: {
     ConfirmModal
   },
@@ -36,7 +41,11 @@ export default {
   data() {
     return {
       news: this.newsProp,
-      modalFlg: false
+      modalFlg: false,
+      errMsg: {
+        title: "",
+        details: ""
+      }
     }
   },
   methods: {
@@ -48,6 +57,12 @@ export default {
       if (confirm) {
         this.$emit('post-news', this.news);
       }
+    },
+    newsTitleChk: function() {
+      this.errMsg.title = this.formStrChk(this.news.title, 40);
+    },
+    newsDetailsChk: function() {
+      this.errMsg.details = this.formStrChk(this.news.details, 1000);
     },
     displayLinePush: function() {
       if (location.pathname == '/news/new') {

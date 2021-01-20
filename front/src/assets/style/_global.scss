@@ -95,10 +95,10 @@
   margin: 0 auto;
   margin-bottom: 40px;
   text-align: left;
-  p {
+  &--name {
     text-align: left;
     font-size: 20px;
-    margin: 5px;
+    margin: 5px 5px 5px 0;
   }
   .default-input {
     width: 100%;
@@ -123,13 +123,21 @@
   }
   textarea:focus {
     border: 2px solid var(--accent-color);
-    
   }
   .checkbox {
     margin-left: 10px;
   }
   label {
     margin-left: 10px;
+  }
+  &--addition {
+    font-size: 12px;
+    margin: 0 0 5px 5px;
+  }
+  &--err-msg {
+    margin-top: 5px;
+    font-size: 14px;
+    color: red;
   }
 }
 

@@ -109,7 +109,8 @@ export default {
         }
       ]
       return breadCrumbsLists
-    }
+    },
+    
   },
   methods: {
     getEvent: function() {
@@ -246,6 +247,7 @@ export default {
         this.cantEntry = true
         return true
       }
+      this.cantEntry = false
       return false
     }
   },

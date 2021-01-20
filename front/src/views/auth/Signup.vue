@@ -17,7 +17,7 @@
         </div>
         <div class="form-item">
           <p>メールアドレス</p>
-          <input type="text" v-model="email" placeholder="a@gmail.com" class="default-input">
+          <input type="text" v-model="email" placeholder="kyoon@example.com" class="default-input">
         </div>
         <div class="form-item">
           <p>パスワード</p>

@@ -17,10 +17,12 @@
         </div>
       </div>
       <div v-show="currentTab === 1" class="studio-reserves">
-        <StudioReservedList :reserves-prop="futureReserves" :cancel-flg-prop="true"/>
+        <StudioReservedList v-if="futureReserves.length!=0" :reserves-prop="futureReserves" :cancel-flg-prop="true"/>
+        <p v-else class="nothing-msg">予約中のスタジオはありません</p>
       </div>
       <div v-show="currentTab === 2" class="studio-reserves">
-        <StudioReservedList :reserves-prop="historyReserves" :cancel-flg-prop="false"/>
+        <StudioReservedList v-if="historyReserves.length!=0" :reserves-prop="historyReserves" :cancel-flg-prop="false"/>
+        <p v-else class="nothing-msg">過去に予約したスタジオはありません</p>
       </div>
     </div>
   </div>

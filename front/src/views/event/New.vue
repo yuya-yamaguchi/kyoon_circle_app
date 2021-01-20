@@ -4,9 +4,11 @@
       <SideBar :select-menu-prop="103"/>
     </div>
     <div class="double-container--right">
-      <h1 class="main-title text-center">イベント登録</h1>
-      <ErrMsg :error-messages-prop="apiErrorMessages"/>
-      <EventForm :event-prop="event" @post-event="postNewEvent"/>
+      <div class="event-new-container">
+        <h1 class="main-title text-center">イベント登録</h1>
+        <ErrMsg :error-messages-prop="apiErrorMessages"/>
+        <EventForm :event-prop="event" @post-event="postNewEvent"/>
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +54,11 @@ export default {
         {
           user_id: this.$store.getters['user/id'],
           event: event
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
         }
       )
       .then((response) => {
@@ -74,7 +81,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.event-time {
-  width: 50px;
+.event-new-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  background: #FFF;
+  .event-time {
+    width: 50px;
+  }
 }
 </style>

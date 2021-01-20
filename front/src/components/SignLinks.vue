@@ -2,7 +2,8 @@
   <div class="other-auth-links">
     <router-link v-show="isLinkShow('/signup')" to="/signup" class="other-auth-links--sign-up">会員登録はこちら</router-link>
     <router-link v-show="isLinkShow('/login')" to="/login" class="other-auth-links--login">ログインはこちら</router-link>
-    <a @click="guestLogin()" class="other-auth-links--guest-login">ゲストログイン</a>
+    <a @click="guestLogin('normal@example.com')" class="other-auth-links--guest-login">ゲストログイン(一般ユーザ)</a>
+    <a @click="guestLogin('admin@example.com')" class="other-auth-links--guest-login">ゲストログイン(管理ユーザ)</a>
   </div>
 </template>
 
@@ -18,10 +19,10 @@ export default {
       }
       return true
     },
-    guestLogin: function(){
+    guestLogin: function(email){
       axios.post(`http://${g.hostName}/api/auth/sign_in`,
         {
-          email: 'a@gmail.com',
+          email:     email,
           password: '12345678'
         }	
       )
@@ -61,7 +62,7 @@ export default {
 
 <style scoped lang="scss">
 .other-auth-links {
-  width: 240px;
+  width: 280px;
   margin: 30px auto;
   a {
     display: block;
