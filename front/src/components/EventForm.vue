@@ -71,7 +71,7 @@
         <input type="checkbox" id="lineMsgFlg" class="checkbox" v-model="event.line_msg_push">
         <label for="lineMsgFlg">通知する</label>
       </div>
-      <button class="default-button">登録</button>
+      <button class="default-button">{{ modalMsgProp.btn }}</button>
     </form>
   </div>
 </template>

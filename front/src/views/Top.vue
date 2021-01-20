@@ -148,6 +148,7 @@ export default {
         text-align: center;
         p {
           margin: 15px;
+          font-weight: lighter;
         }
       }
       &--link {
@@ -191,6 +192,7 @@ export default {
         text-align: center;
         p {
           margin: 15px;
+          font-weight: lighter;
         }
       }
       &--btn {
