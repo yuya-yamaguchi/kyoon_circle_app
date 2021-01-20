@@ -128,7 +128,7 @@ export default {
   margin-bottom: 100px;
   margin: 0 10px;
   .about-news {
-    padding: 50px 20px;
+    padding: 0 20px 50px 20px;
   }
   .about-event {
     padding: 50px 20px;

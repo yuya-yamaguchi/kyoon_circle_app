@@ -4,7 +4,7 @@
       <tr v-for="(news, i) in newsProp" :key="i">
         <td>{{ formatDate(news.created_at) }}</td>
         <td>
-          <router-link :to="`/news/${news.id}`" class="news-card">
+          <router-link :to="transLinks(news.id)" class="news-card">
             {{ news.title }}
           </router-link>
         </td>
@@ -22,6 +22,9 @@ export default {
     formatDate: function(createdAt) {
       var date = Number(createdAt.substr(0, 4)) + '年' + Number(createdAt.substr(5, 2)) + '月' + Number(createdAt.substr(8, 2)) + '日'
       return date
+    },
+    transLinks: function(newsId) {
+      return (location.pathname == '/news/editlist') ? `/news/${newsId}/edit` : `/news/${newsId}`
     }
   }
 }

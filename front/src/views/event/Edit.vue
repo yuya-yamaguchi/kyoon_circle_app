@@ -4,9 +4,14 @@
       <SideBar :select-menu-prop="104"/>
     </div>
     <div class="double-container--right">
-      <h1 class="main-title text-center">イベント編集</h1>
-      <ErrMsg :error-messages-prop="apiErrorMessages"/>
-      <EventForm v-if="event" :event-prop="event" @post-event="updateEvent"/>
+      <div class="event-edit-container">
+        <h1 class="main-title text-center">イベント編集</h1>
+        <ErrMsg :error-messages-prop="apiErrorMessages"/>
+        <EventForm v-if="event"
+          :event-prop="event"
+          :modal-msg-prop="modalMsg"
+          @post-event="updateEvent"/>
+      </div>
     </div>
   </div>
 </template>
@@ -29,6 +34,11 @@ export default {
   data() {
     return {
       event: '',
+      modalMsg: {
+        title: "イベント変更",
+        message: 'イベントの内容を変更します。よろしいですか？',
+        btn: "変更"
+      },
       apiErrorMessages: []
     }
   },
@@ -81,4 +91,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.event-edit-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  background: #FFF;
+}
 </style>

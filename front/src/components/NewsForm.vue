@@ -1,12 +1,14 @@
 <template>
   <div>
-    <ConfirmModal v-show="modalFlg"
-      :modal-msg-prop="modalMsgProp"
-      @process-confirm="postNews"/>
+    <transition name="fade-default" appear>
+      <ConfirmModal v-show="modalFlg"
+        :modal-msg-prop="modalMsgProp"
+        @process-confirm="postNews"/>
+    </transition>
     <form v-on:submit.prevent="displayConfirm()">
       <div class="form-item">
         <p class="form-item--name">タイトル</p>
-        <input type="text" v-model="news.title" placeholder="イベント名" class="default-input" @blur="newsTitleChk()" @keyup="newsTitleChk()">
+        <input type="text" v-model="news.title" placeholder="" class="default-input" @blur="newsTitleChk()" @keyup="newsTitleChk()">
         <p class="form-item--err-msg">{{ errMsg. title }}</p>
       </div>
       <div class="form-item">
@@ -50,7 +52,16 @@ export default {
   },
   methods: {
     displayConfirm: function() {
-      this.modalFlg = true;
+      this.newsTitleChk();
+      this.newsDetailsChk();
+      this.displayLinePush();
+      // エラーがある場合、確認モーダルを表示しない
+      for (var key in this.errMsg) {
+        if (this.errMsg[key] != "") {
+          return
+        }
+      }
+      this.modalFlg = true
     },
     postNews: function(confirm) {
       this.modalFlg = false;

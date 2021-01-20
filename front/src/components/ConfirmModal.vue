@@ -43,8 +43,8 @@ export default {
   height: 100%;
   background-color: rgba(0,0,0,0.5);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  // align-items: center;
+  // justify-content: center;
 }
 
 .confirm-container {
@@ -53,6 +53,10 @@ export default {
   margin: 0 auto;
   background: #FFF;
   max-width: 700px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%,-50%);
   h1 {
     margin: 30px;
     font-weight: bold;

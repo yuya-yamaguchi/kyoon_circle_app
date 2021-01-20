@@ -116,7 +116,7 @@ require 'pagy/extras/metadata'
 
 # Other Variables
 # See https://ddnexus.github.io/pagy/api/pagy#other-variables
-# Pagy::VARS[:size]       = [1,4,4,1]                       # default
+Pagy::VARS[:size]       = [1,2,2,1]                       # default
 # Pagy::VARS[:page_param] = :page                           # default
 # Pagy::VARS[:params]     = {}                              # default
 # Pagy::VARS[:anchor]     = '#anchor'                       # example

@@ -18,6 +18,7 @@ import NewsNew from '@/views/news/New.vue'
 import NewsIndex from '@/views/news/Index.vue'
 import NewsShow from '@/views/news/Show.vue'
 import NewsEdit from '@/views/news/Edit.vue'
+import NewsEditList from '@/views/news/EditList.vue'
 import NotFound from "@/views/errors/NotFound.vue";
 
 import store from '@/store'
@@ -85,7 +86,7 @@ const routes = [
   },
   // イベント編集一覧
   {
-    path: '/event/editlist',
+    path: '/events/editlist',
     name: 'EventEditList',
     component: EventEditList
   },
@@ -118,6 +119,12 @@ const routes = [
     path: '/news/:id/edit',
     name: 'NewsEdit',
     component: NewsEdit
+  },
+  // お知らせ編集一覧
+  {
+    path: '/news/editlist',
+    name: 'NewsEditList',
+    component: NewsEditList
   },
   /***********************/
   /* 管理者用VIEW         */

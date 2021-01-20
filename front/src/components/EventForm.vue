@@ -1,6 +1,11 @@
 <template>
   <div>
-    <form v-on:submit.prevent="postEvent()">
+    <transition name="fade-default" appear>
+      <ConfirmModal v-show="modalFlg"
+        :modal-msg-prop="modalMsgProp"
+        @process-confirm="postEvent"/>
+    </transition>
+    <form v-on:submit.prevent="displayConfirm()">
       <div class="form-item">
         <p class="form-item--name">イベントの種類</p>
         <select v-model="event.event_type" @change="eventTypeChk()">
@@ -72,16 +77,22 @@
 </template>
 
 <script>
+import ConfirmModal from "@/components/ConfirmModal.vue";
 import { commonCheck } from '@/mixins/commonCheck';
 
 export default {
   mixins: [commonCheck],
+  components: {
+    ConfirmModal
+  },
   props: {
-    eventProp: {}
+    eventProp: {},
+    modalMsgProp: {}
   },
   data() {
     return {
       event: this.eventProp,
+      modalFlg: false,
       errMsg: {
         event_type: "",
         title:      "",
@@ -104,7 +115,7 @@ export default {
     }
   },
   methods: {
-    postEvent: function() {
+    displayConfirm: function() {
       this.eventTypeChk();
       this.eventTitleChk();
       this.eventDetailsChk();
@@ -112,11 +123,20 @@ export default {
       this.eventTimeChk();
       this.eventPlaceChk();
       this.eventFeeChk();
-      // エラーが解消されていない場合、APIにpostしない
+      // エラーがある場合、確認モーダルを表示しない
       for (var key in this.errMsg) {
-        if (this.errMsg[key] != "") return;
+        if (this.errMsg[key] != "") {
+          return
+        }
       }
-      this.$emit('post-event', this.event);
+      this.modalFlg = true
+    },
+    postEvent: function(confirm) {
+      this.modalFlg = false;
+      // 確認モーダルで登録が押された場合、APIにデータをpost
+      if (confirm) {
+        this.$emit('post-event', this.event);
+      }
     },
     displayLinePush: function() {
       return location.pathname == '/event/new' ? true : false
@@ -137,6 +157,8 @@ export default {
       this.errMsg.details = this.formStrChk(this.event.details, 1000);
     },
     eventDateChk: function() {
+      this.errMsg.start_date = this.formStrChk(this.event.start_date, 0, "10");
+      if (this.errMsg.start_date != "") return
       this.errMsg.start_date = this.isAfterToday(this.event.start_date);
     },
     eventTimeChk: function() {
