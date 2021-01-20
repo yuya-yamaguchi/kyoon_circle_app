@@ -6,53 +6,55 @@
         <h1 class="top-page-title">Kyo-ON</h1>
       </div>
     </transition>
-    <div class="top-container">
-      <div class="about-news">
-        <p class="main-title">お知らせ</p>
-        <NewsList v-if="news.length!=0" :news-prop="news"/>
-        <router-link to="/news?page=1" class="all-view-link">すべてのお知らせを見る</router-link>
-      </div>
-      <div class="about-event">
-        <p class="main-title">開催予定のイベント</p>
-        <div class="about-event--content">
-          <Loading v-if="loading"/>
-          <EventList v-if="events.length!=0" :events-prop="events"/>
-          <router-link :to="{name: 'EventIndex', query: {page: 1}}" class="all-view-link">すべてのイベントを見る</router-link>
+    <div class="single-container">
+      <div class="top-container">
+        <div class="about-news">
+          <p class="main-title">お知らせ</p>
+          <NewsList v-if="news.length!=0" :news-prop="news"/>
+          <router-link to="/news?page=1" class="all-view-link">すべてのお知らせを見る</router-link>
         </div>
-      </div>
-      <div class="about-studio">
-        <p class="main-title">スタジオ</p>
-        <div class="about-studio--content">
-          <div class="about-studio--content--left">
-            <img src="/studio/studio3.jpg"/>
-          </div>
-          <div class="about-studio--content--right">
-            <p class="about-studio--content--right--explain">
-              会員が利用可能なスタジオです！<br>
-              広さ30畳でライブもできる広々スタジオです。<br>
-              バンド練習やライブなどにご利用ください！
-            </p>
-            <router-link to="/studios/1?week=0" class="about-studio--content--right--btn default-button">
-              <p>予約はこちら</p>
-              <fa icon="play-circle"></fa>
-            </router-link>
+        <div class="about-event">
+          <p class="main-title">開催予定のイベント</p>
+          <div class="about-event--content">
+            <Loading v-if="loading"/>
+            <EventList v-if="events.length!=0" :events-prop="events"/>
+            <router-link :to="{name: 'EventIndex', query: {page: 1}}" class="all-view-link">すべてのイベントを見る</router-link>
           </div>
         </div>
-      </div>
-      <div class="about-stay">
-        <p class="main-title">宿泊</p>
-        <div class="about-stay--content">
-          <div class="about-stay--content--left">
-            <p class="about-stay--content--left--explain">
-              会員が利用可能な宿泊部屋です！<br>
-              2部屋利用可能です。<br>
-              遠方からお越しの方など、下記よりご予約の上ご利用ください！<br>
-              ※準備中、しばらくお待ちください
-            </p>
-            <button class="about-stay--content--left--btn default-button">Comming<br>Soon...</button>
+        <div class="about-studio">
+          <p class="main-title">スタジオ</p>
+          <div class="about-studio--content">
+            <div class="about-studio--content--left">
+              <img src="/studio/studio3.jpg"/>
+            </div>
+            <div class="about-studio--content--right">
+              <p class="about-studio--content--right--explain">
+                会員が利用可能なスタジオです！<br>
+                広さ30畳でライブもできる広々スタジオです。<br>
+                バンド練習やライブなどにご利用ください！
+              </p>
+              <router-link to="/studios/1?week=0" class="about-studio--content--right--btn default-button">
+                <p>予約はこちら</p>
+                <fa icon="play-circle"></fa>
+              </router-link>
+            </div>
           </div>
-          <div class="about-stay--content--right">
-            <img src="/studio/studio5.jpg">
+        </div>
+        <div class="about-stay">
+          <p class="main-title">宿泊</p>
+          <div class="about-stay--content">
+            <div class="about-stay--content--left">
+              <p class="about-stay--content--left--explain">
+                会員が利用可能な宿泊部屋です！<br>
+                2部屋利用可能です。<br>
+                遠方からお越しの方など、下記よりご予約の上ご利用ください！<br>
+                ※準備中、しばらくお待ちください
+              </p>
+              <button class="about-stay--content--left--btn default-button">Comming<br>Soon...</button>
+            </div>
+            <div class="about-stay--content--right">
+              <img src="/studio/studio5.jpg">
+            </div>
           </div>
         </div>
       </div>
@@ -117,6 +119,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+    opacity: 0.8;
   }
 }
 

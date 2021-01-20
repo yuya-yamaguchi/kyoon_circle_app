@@ -10,7 +10,6 @@
       <template v-if='!$store.getters["user/id"]'>
         <router-link to="/signup" class="sign-btn">新規会員登録</router-link>
         <router-link to="/login" class="sign-btn">ログイン</router-link>
-        <a @click="testLogin" class="sign-btn">テストログイン</a>
       </template>
       <template v-else class="header-menus">
         <router-link to="/mypage" class="header-menu">{{ $store.getters["user/name"] }}</router-link>
@@ -152,7 +151,7 @@ header{
       color:#FFF;
       font-size: 12px;
       font-weight: bold;
-      background: linear-gradient(70deg, rgb(85, 85, 236), var(--accent-color));
+      background: linear-gradient(70deg, rgb(85, 85, 236), rgb(15, 169, 230));
       border: 1px solid;
       margin: 0 10px;
       margin-top: 15px;

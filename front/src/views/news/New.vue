@@ -4,9 +4,11 @@
       <SideBar :select-menu-prop="105"/>
     </div>
     <div class="double-container--right">
-      <h1 class="main-title text-center">お知らせの登録</h1>
-      <ErrMsg :error-messages-prop="apiErrorMessages"/>
-      <NewsForm :news-prop="news" :modal-msg-prop="modalMsg" @post-news="postNewNews"/>
+      <div class="news-new-container">
+        <h1 class="main-title text-center">お知らせの登録</h1>
+        <ErrMsg :error-messages-prop="apiErrorMessages"/>
+        <NewsForm :news-prop="news" :modal-msg-prop="modalMsg" @post-news="postNewNews"/>
+      </div>
     </div>
   </div>
 </template>
@@ -72,3 +74,12 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.news-new-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  background: #FFF;
+}
+</style>

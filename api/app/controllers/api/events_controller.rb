@@ -3,7 +3,7 @@ class Api::EventsController < ApplicationController
   
   before_action :user_check, only: [:edit, :update, :create, :destroy, :entry, :entry_cancel]
   before_action :admin_check, only: [:edit, :update, :create, :destroy]
-  before_action :set_event,  only: [:show, :edit, :update, :destroy]
+  before_action :set_event,  only: [:show, :edit, :update, :destroy, :entry]
 
   def index
     pagy, events = pagy(Event.all.order('start_datetime DESC'), items: 5)
@@ -61,8 +61,10 @@ class Api::EventsController < ApplicationController
   end
 
   def entry
+    message = @event.entry_check
+    return render status: 400, json:{ error_message: message } if message != ""
     EventEntry.create(user_id: params[:user_id], event_id: params[:id])
-    entry_cnt = EventEntry.where(event_id: params[:id]).count
+    entry_cnt = @event.event_entries.count
     render status: 200, json: entry_cnt
   end
 

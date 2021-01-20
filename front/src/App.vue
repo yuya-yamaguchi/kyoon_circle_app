@@ -15,6 +15,7 @@
 import "@/assets/reset.css";
 import "@/assets/style/_variable.scss";
 import "@/assets/style/_global.scss";
+import "@/assets/style/_add_class.scss";
 import "@/assets/style/_transition.scss";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
@@ -48,7 +49,7 @@ export default {
 }
 
 .base-container{
-  max-width: 1400px;
+  /* max-width: 1400px; */
   width: 100%;
   padding-top: 60px;
   margin: 0 auto;

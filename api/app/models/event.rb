@@ -47,4 +47,19 @@ class Event < ApplicationRecord
     }
     response = client.push_message(group_id, message)
   end
+
+  # イベントへのエントリーが可能かチェック
+  def entry_check
+    # 人数制限チェック
+    entered_num = self.event_entries.count
+    if self.max_entry != 0 && self.max_entry <= entered_num
+      return "このイベントは定員に達したため参加いただけません"
+    end
+    # 期限超過チェック
+    now = Time.now.in_time_zone
+    if self.start_datetime.to_date < now.to_date
+      return "期限を過ぎているため参加できません"
+    end
+    return ""
+  end
 end

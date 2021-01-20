@@ -1,5 +1,6 @@
 export const commonMethods = {
   methods: {
+    // 日付のフォーマット変換
     fmtDate: function(date, type) {
       switch (type) {
         // mm/dd(0トリム)
