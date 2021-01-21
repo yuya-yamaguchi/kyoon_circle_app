@@ -20,7 +20,6 @@
         <ConfirmModal v-show="modalFlg"
           :modal-msg-prop="modalMsg"
           @process-confirm="deleteEvent"/>
-        <p v-show="entryFlg" class="entry-now-msg">このイベントに参加しています</p>
         <p v-if="isEventEnd()" class="cant-entry-msg">このイベントは終了しました</p>
         <p v-else-if="isOverCapacity()" class="cant-entry-msg">このイベントは定員に達しました</p>
         <div class="event-top-info">
@@ -36,23 +35,33 @@
             </p>
           </div>
         </div>
-        <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 2) }}</div>
-        <div class="event-middle-info">開催場所 {{ event.place }}</div>
-        <div class="event-details">{{ event.details }}</div>
-        <div>
-          <button v-if="!entryFlg"
-                  @click="postEventEntry()"
-                  class="default-button"
-                  :disabled="cantEntry"
-                  :class="{ 'btn-disable': cantEntry}">参加する
-          </button>
-          <button v-if="entryFlg"
-                  @click="postCancelEventEntry()"
-                  class="cancel-button"
-                  :disabled="cantCancel"
-                  :class="{ 'btn-disable': cantCancel}">参加をやめる
-          </button>
+        <div class="space-between">
+          <div>
+            <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 2) }}</div>
+            <div class="event-middle-info">開催場所 {{ event.place }}</div>
+          </div>
+          <div class="entry-btns">
+            <div v-if="!entryFlg"
+                    @click="postEventEntry()"
+                    class="entry-btns--entry"
+                    :disabled="cantEntry"
+                    :class="{ 'btn-disable': cantEntry}">参加する
+            </div>
+            <!-- <p v-show="entryFlg" class="entry-now-msg">参加しています!</p> -->
+            <div v-if="entryFlg"
+                    @click="postCancelEventEntry()"
+                    class="entry-btns--cancel some-updown-center"
+                    :disabled="cantCancel"
+                    :class="{ 'btn-disable': cantCancel}">
+              <span>参加をやめる</span>
+              <fa icon="sad-tear"></fa>
+            </div>
+          </div>
         </div>
+        <div class="event-details">
+          {{ event.details }}
+        </div>
+        <EventComments/>
       </div>
     </div>
   </div>
@@ -64,6 +73,7 @@ import g from "@/variable/variable.js";
 import Loading from '@/components/Loading.vue';
 import ConfirmModal from "@/components/ConfirmModal.vue";
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
+import EventComments from "@/components/EventComments.vue";
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
@@ -74,7 +84,8 @@ export default {
   components: {
     Loading,
     ConfirmModal,
-    BreadCrumbs
+    BreadCrumbs,
+    EventComments
   },
   data() {
     return {
@@ -109,8 +120,7 @@ export default {
         }
       ]
       return breadCrumbsLists
-    },
-    
+    }
   },
   methods: {
     getEvent: function() {
@@ -259,7 +269,7 @@ export default {
 
 <style scoped lang="scss">
 .entry-now-msg {
-  color: red;
+  color: var(--accent-color);
   font-weight: bold;
   margin: 10px;
 }
@@ -286,10 +296,34 @@ export default {
     }
   }
 }
+.entry-btns {
+  margin-top: auto;
+  cursor: pointer;
+  color: #FFF;
+  width: 150px;
+  text-align: center;
+  font-weight: bold;
+  &--entry {
+    background: var(--accent-color);
+    padding: 5px 10px;
+  }
+  &--cancel {
+    background: orange;
+    padding: 5px 10px;
+    svg {
+      width: 18px;
+      margin-left: 5px;
+    }
+  }
+  :hover {
+    opacity: 0.8;
+  }
+}
 .event-details {
   background: #FFF;
   margin: 20px auto;
   padding: 10px;
   white-space: pre-wrap;
+  min-height: 200px;
 }
 </style>

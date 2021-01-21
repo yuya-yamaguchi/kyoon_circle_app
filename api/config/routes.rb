@@ -22,6 +22,9 @@ Rails.application.routes.draw do
         post :entry
         post :entry_cancel
       end
+      scope module: :event do
+        resources :comments, only: [:index, :create, :update, :destroy]
+      end
     end
 
     resources :news, only: [:index, :show, :create, :update, :destroy]
