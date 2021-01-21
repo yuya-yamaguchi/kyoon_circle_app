@@ -39,6 +39,36 @@
         <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 2) }}</div>
         <div class="event-middle-info">開催場所 {{ event.place }}</div>
         <div class="event-details">{{ event.details }}</div>
+        <div class="event-comments">
+          <form v-on:submit.prevent="displayConfirm()" class="event-comments--form">
+            <textarea
+              v-model="textareaVal"
+              @keydown="adjustHeight"
+              ref="adjustTextarea"
+              class="event-comments--form--textarea"
+              placeholder="コメントを入力..."/>
+            <div class="comment-btns">
+              <div class="comment-btns--cancel">キャンセル</div>
+              <button class="comment-btns--post">コメント</button>
+            </div>
+          </form>
+          <div class="event-comments--display">
+            <div v-for="message in eventMessages" :key="message" class="message-card">
+              <div class="message-card--left">
+                <div class="message-userimg">
+                  <img src="/person.png">
+                </div>
+              </div>
+              <div class="message-card--right">
+                <div class="message-info">
+                  <div class="message-info--username">ユーザ名</div>
+                  <div class="message-info--time">10分前</div>
+                </div>
+                <div class="message-text">{{ message.text }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div>
           <button v-if="!entryFlg"
                   @click="postEventEntry()"
@@ -85,11 +115,21 @@ export default {
       modalFlg: false,
       cantEntry: false,
       cantCancel: false,
+      eventMessage: {
+        text: ""
+      },
+      eventMessages: [{text: "a"},{text: "b"}],
       modalMsg: {
         title: "イベントの取消",
         message: "イベントの取消を行います。<br>削除したイベントは元へは戻せません。よろしいですか？",
         btn: "削除"
-      }
+      },
+      textareaVal: ""
+    }
+  },
+  watch: {
+    textareaVal() {
+      this.adjustHeight();
     }
   },
   computed: {
@@ -109,8 +149,7 @@ export default {
         }
       ]
       return breadCrumbsLists
-    },
-    
+    }
   },
   methods: {
     getEvent: function() {
@@ -249,6 +288,15 @@ export default {
       }
       this.cantEntry = false
       return false
+    },
+    adjustHeight: function(){
+      const textarea = this.$refs.adjustTextarea
+      const resetHeight = new Promise(function(resolve) {
+        resolve(textarea.style.height = '28px')
+      });
+      resetHeight.then(function(){
+        textarea.style.height = textarea.scrollHeight + 'px'
+      });
     }
   },
   mounted: function() {
@@ -291,5 +339,82 @@ export default {
   margin: 20px auto;
   padding: 10px;
   white-space: pre-wrap;
+}
+.event-comments {
+  margin: 20px;
+  &--form {
+    &--textarea {
+      width: 100%;
+      display: block;
+      border: none;
+      outline: none;
+      border-bottom: 1px solid #888;
+      height: 28px;
+      background: var(--base-color);
+
+    }
+    .comment-btns {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 5px;
+      color: #FFF;
+      &--cancel {
+        cursor: pointer;
+        width: 100px;
+        padding: 3px;
+        text-align: center;
+        background: #888;
+        margin-right: 10px;
+        font-size: 16px;
+      }
+      &--post {
+        border: none;
+        outline: none;
+        font-size: 16px;
+        color: #FFF;
+        cursor: pointer;
+        width: 100px;
+        padding: 3px;
+        text-align: center;
+        background: #888;
+        background: var(--accent-color);
+      }
+    }
+  }
+  &--display {
+    .message-card {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: flex-start;
+      &--left {
+        .message-userimg {
+          img {
+            width: 30px;
+            border: 1px solid;
+            border-radius: 100%;
+          }
+        }
+      }
+      &--right {
+        margin-left: 10px;
+        .message-info {
+          display: flex;
+          justify-content: flex-start;
+          font-size: 15px;
+          &--username {
+            margin-right: 10px;
+          }
+          &--time {
+            color: #888;
+          }
+        }
+        .message-text {
+          background: #FFF;
+          border-radius: 5px;
+          padding: 10px;
+        }
+      }
+    }
+  }
 }
 </style>
