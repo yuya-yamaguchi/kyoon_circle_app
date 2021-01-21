@@ -3,29 +3,40 @@
     <form v-on:submit.prevent="sendComment()" class="comments--form">
       <textarea
         v-model="textareaComment"
-        @keydown="adjustHeight"
+        @keydown="textareaChange"
         ref="adjustTextarea"
         class="comments--form--textarea"
         placeholder="コメントを入力..."/>
-      <div class="comment-btns">
-        <div class="comment-btns--cancel" @click="cancelComment()">キャンセル</div>
-        <button
-          :disabled="!textareaComment.match(/\S/g)"
-          :class="{ 'btn-disable': !textareaComment.match(/\S/g)}"
-          class="comment-btns--post">コメント</button>
+      <div class="space-between">
+        <div class="form-item--err-msg">
+          {{ errMsg.text }}
+        </div>
+        <div class="comment-btns">
+          <div class="comment-btns--cancel" @click="cancelComment()">キャンセル</div>
+          <button
+            :disabled="!textareaComment.match(/\S/g) || textareaComment.length > 200"
+            :class="{ 'btn-disable': !textareaComment.match(/\S/g) || textareaComment.length > 200}"
+            class="comment-btns--post">コメント</button>
+        </div>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import { commonCheck } from '@/mixins/commonCheck';
+
 export default {
+  mixins: [commonCheck],
   props: {
     commentProp: {}
   },
   data() {
     return {
-      textareaComment: this.commentProp
+      textareaComment: this.commentProp,
+      errMsg: {
+        text: ""
+      }
     }
   },
   watch: {
@@ -42,7 +53,11 @@ export default {
       this.$emit('doen-comment', "");
       this.textareaComment = ""
     },
-    adjustHeight: function(){
+    textareaChange: function(){
+      this.adjustHeight();
+      this.errMsg.text = this.formStrChk(this.textareaComment, 200, "01");
+    },
+    adjustHeight: function() {
       const textarea = this.$refs.adjustTextarea
       const resetHeight = new Promise(function(resolve) {
         resolve(textarea.style.height = '28px')
