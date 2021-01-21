@@ -1,3 +1,5 @@
+const today = new Date();
+
 export const commonMethods = {
   methods: {
     // 日付のフォーマット変換
@@ -31,6 +33,27 @@ export const commonMethods = {
           return ['Sun', 'Mon', 'Tue', 'Web', 'Thu', 'Fri', 'Sat'][dateJs.getDay()];
         default:
           return '-'
+      }
+    },
+    /* 本日からどれくらい前かを算出 */
+    howManyAgo: function(datetime) {
+      var jsDatetime = new Date(`${datetime.substr(0 ,4)}/${datetime.substr(5 ,2)}/${datetime.substr(8 ,2)} ${datetime.substr(11 ,8)}`)
+      var diff = today.getTime() - jsDatetime.getTime()
+      var elapsed = new Date(diff);
+      if (elapsed.getUTCFullYear() - 1970 < 0) {
+        return 'たった今'
+      } else if (elapsed.getUTCFullYear() - 1970) {
+        return elapsed.getUTCFullYear() - 1970 + '年前';
+      } else if (elapsed.getUTCMonth()) {
+        return elapsed.getUTCMonth() + 'ヶ月前';
+      } else if (elapsed.getUTCDate() - 1) {
+        return elapsed.getUTCDate() - 1 + '日前';
+      } else if (elapsed.getUTCHours()) {
+        return elapsed.getUTCHours() + '時間前';
+      } else if (elapsed.getUTCMinutes()) {
+        return elapsed.getUTCMinutes() + '分前';
+      } else {
+        return elapsed.getUTCSeconds() + '秒前';
       }
     }
   }

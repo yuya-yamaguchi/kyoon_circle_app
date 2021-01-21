@@ -1,7 +1,8 @@
 class Event < ApplicationRecord
   require 'line/bot'
 
-  has_many :event_entries, dependent: :destroy
+  has_many :event_entries,  dependent: :destroy
+  has_many :event_comments, dependent: :destroy
   
   validates :title, presence: true
   validates :title, length: { maximum: 40, message: "は40文字以下で入力してください" }, allow_blank: true

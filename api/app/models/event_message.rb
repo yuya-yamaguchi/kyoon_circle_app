@@ -1,2 +1,0 @@
-class EventMessage < ApplicationRecord
-end
