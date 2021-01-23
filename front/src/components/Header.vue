@@ -3,9 +3,10 @@
     <router-link to="/" class="site-title">京音</router-link>
     <div class="header-menus">
       <div class="header-menus">
-        <router-link to="/events?page=1" class="header-menu">イベント</router-link>
+        <router-link to="/news" class="header-menu">お知らせ</router-link>
         <router-link to="/studios/1?week=0" class="header-menu">スタジオ</router-link>
-        <a class="header-menu">宿泊</a>
+        <router-link to="/events?page=1" class="header-menu">イベント</router-link>
+        <!-- <a class="header-menu">宿泊</a> -->
       </div>
       <template v-if='!$store.getters["user/id"]'>
         <router-link to="/signup" class="sign-btn">新規会員登録</router-link>

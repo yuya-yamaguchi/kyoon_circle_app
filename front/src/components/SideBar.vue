@@ -11,7 +11,7 @@
       <p class="sub-title">管理者メニュー</p>
       <router-link to="/users" :class="{'select-menu': selectMenuProp==101}" class="side-menu">登録ユーザ一覧</router-link>
       <router-link to="/studio/1/edit" :class="{'select-menu': selectMenuProp==102}" class="side-menu">スタジオ内容編集</router-link>
-      <router-link to="/admin/studio/1/reserves?week=0" :class="{'select-menu': selectMenuProp==107}" class="side-menu">スタジオ予約</router-link>
+      <router-link to="/admin/studio/1/reserves?week=0" :class="{'select-menu': selectMenuProp==107}" class="side-menu">スタジオ予約確認</router-link>
       <router-link to="/event/new" :class="{'select-menu': selectMenuProp==103}" class="side-menu">イベント登録</router-link>
       <router-link to="/events/editlist?page=1" :class="{'select-menu': selectMenuProp==104}" class="side-menu">イベント編集</router-link>
       <router-link to="/news/new" :class="{'select-menu': selectMenuProp==105}" class="side-menu">お知らせ登録</router-link>
