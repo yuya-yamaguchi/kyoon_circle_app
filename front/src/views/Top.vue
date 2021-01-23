@@ -9,6 +9,7 @@
     <div class="top-container">
       <div class="about-news">
         <p class="top-each-title">NEWS</p>
+        <Loading v-if="loading"/>
         <NewsList v-if="news.length!=0" :news-prop="news"/>
         <router-link to="/news?page=1" class="all-view-link">すべてのお知らせを見る</router-link>
       </div>
@@ -22,7 +23,7 @@
               <p>ライブやバンド練習にご利用できます</p>
               <p>ご予約は下記から</p>
             </div>
-            <router-link to="/studios/1?week=0" class="studio-info--link default-button">
+            <router-link to="/studios/1?week=0" class="studio-info--link gorgeous-button">
               <p>予約はこちら</p>
               <fa icon="play-circle"></fa>
             </router-link>

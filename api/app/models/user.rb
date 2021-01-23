@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   has_secure_token
 
-  has_many :user_reserves
+  has_many :studio_reserves
   has_many :event_entries
   has_many :events, through: :event_entries
   has_many :event_comments

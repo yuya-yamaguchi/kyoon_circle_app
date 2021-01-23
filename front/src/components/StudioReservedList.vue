@@ -16,7 +16,7 @@
                   {{ formatTime(reserve.end_time) }}
               </div>
             </div>
-            <p>{{ reserve.payment_fee }}円</p>
+            <p>{{ reserve.fee }}円</p>
           </div>
           <a v-if="cancelFlgProp" @click="displayCancelModal(reserve, i)" class="reserve--cancel">
             <fa icon="trash"/>
@@ -98,8 +98,7 @@ export default {
              date.substr(8, 2) + "日"
     },
     formatTime: function(time) {
-      var padding_time = ( '0000' + time ).slice( -4 )
-      return Number(padding_time.substr(0, 2)) + "：" + padding_time.substr(2, 2)
+      return Number(time.substr(11, 2)) + "：" + time.substr(14, 2)
     }
   },
   updated() {

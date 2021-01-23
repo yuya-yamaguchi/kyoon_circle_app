@@ -1,0 +1,36 @@
+<template>
+  <div class="double-container">
+    <div class="double-container--left">
+      <SideBar :select-menu-prop="107"/>
+    </div>
+    <div class="double-container--right">
+      <div class="studio-reserves-container">
+        <StudioReservesTable :admin-prop="1"/>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import SideBar from "@/components/SideBar.vue";
+import StudioReservesTable from "@/components/StudioReservesTable.vue";
+
+export default {
+  components: {
+    SideBar,
+    StudioReservesTable
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.studio-reserves-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  background: #FFF;
+  h1 {
+    margin: 0 0 20px 20px;
+  }
+}
+</style>

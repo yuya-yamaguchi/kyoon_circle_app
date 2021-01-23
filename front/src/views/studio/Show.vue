@@ -1,86 +1,48 @@
 <template>
   <div>
-  <BreadCrumbs :breadCrumbs="breadCrumbs"/>
-    <div class="single-container">
-      <transition name="fade-default" appear>
-        <ReserveModal v-if="clickReserve!=''"
-          :click-reserve-prop="clickReserve"
-          :studio-prop="studio"
-          @from-child="closeModal()"
-          @reserve-success="getStudio($route.query.week)"/>
-      </transition>
-      <div class="studio-introduction">
-        <div class="studio-introduction--left">
-          <p>{{ studio.name }}</p>
-          <img src="/studio/studio7.jpg">
-        </div>
-        <div class="studio-introduction--right">
-          <div studio-introduction--right--explain>
-            24時間利用可能なスタジオです。30分からご予約いただけます。
-            バンド練習、個人練習などににご利用ください。
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="studio-top">
+      <img src="/studio/studio7.jpg">
+      <div class="studio-info">
+        <div>
+          <h1>{{ studio.name }}</h1>
+          <div class="studio-info--introduce">
+            <p>24時間利用可能なスタジオです。30分からご予約いただけます。</p>
+            <p>バンド練習、個人練習などににご利用ください。</p>
           </div>
-          <table>
-            <tr>
-              <th>料金</th>
-              <td>
-                ¥{{ studio.fee }}（1 Hour）<br>
-                （30分単位で予約可）
-              </td>
-            </tr>
-            <tr>
-              <th>機材</th>
-              <td>
-                <ul>
-                  <li>Marshall JCM2000</li>
-                  <li>Roland JC-120</li>
-                  <li>HARTKE HA2500+HX810</li>
-                  <li>CANOPUS Japanese Sword</li>
-                </ul>
-              </td>
-            </tr>
-          </table>
         </div>
       </div>
+    </div>
+    <Loading v-if="loading"/>
+    <div v-else class="studio-container">
       <div class="studio-explain">
-        ※ 本日から60日後までご予約いただけます<br>
-        ※ キャンセルは「マイページ > スタジオ予約一覧」から可能です（開始日時を過ぎた場合、取消できません）<br>
-        ※ お支払いは現地にてお願いします。予約時点でのお支払いは不要です
-      </div>
-      <Loading v-if="loading"/>
-      <div v-else class="studio-reserve-container">
-        <div class="week-bar">
-          <div class="prev-week some-updown-center" @click="changeWeek(Number($route.query.week) - 1)">
-            <fa icon="chevron-left" class="small-icon"></fa>
-            <p>前の1週間</p>
-          </div>
-          <div class="today-week" @click="changeWeek(0)">本日週へ</div>
-          <div class="next-week some-updown-center" @click="changeWeek(Number($route.query.week) + 1)">
-            <p>次の1週間</p>
-            <fa icon="chevron-right" class="small-icon"></fa>
-          </div>
-        </div>
         <table>
           <tr>
-            <th></th>
-            <th v-for="(day, w) in weeks" :key="w">
-              {{ fmtDate(day, 3) }}
-              （{{ calcWeek(day, 1) }}）
-            </th>
-          </tr>
-          <tr v-for="(reserve, i) in reserves" :key="i">
-            <td class="reserve-time">
-              <span>{{ Math.floor(i/2) }}：</span>
-              <span v-if="i%2==0">00</span>
-              <span v-else>30</span>
+            <th>料金</th>
+            <td>
+              ¥{{ studio.fee }}（1 Hour）<br>
+              （30分単位で予約可）
             </td>
-            <template v-for="(r, j) in reserve" :key="j">
-              <td v-if="r.reserve_type==1" class="already-reserved">×</td>
-              <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
-              <td v-else @click="displayReserveModal(r)"  class="can-reserve"></td>
-            </template>
+          </tr>
+          <tr>
+            <th>機材</th>
+            <td>
+              <ul>
+                <li>Marshall JCM2000</li>
+                <li>Roland JC-120</li>
+                <li>HARTKE HA2500+HX810</li>
+                <li>CANOPUS Japanese Sword</li>
+              </ul>
+            </td>
           </tr>
         </table>
+        <div class="studio-explain--caution">
+          ※ 本日から60日後までご予約いただけます<br>
+          ※ キャンセルは「マイページ > スタジオ予約一覧」から可能です（開始日時を過ぎた場合、取消できません）<br>
+          ※ お支払いは現地にてお願いします。予約時点でのお支払いは不要です
+        </div>
       </div>
+      <StudioReservesTable :admin-prop="0"/>
     </div>
   </div>
 </template>
@@ -88,26 +50,23 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import ReserveModal from '@/components/ReserveModal.vue';
 import Loading from '@/components/Loading.vue';
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
+import StudioReservesTable from "@/components/StudioReservesTable.vue";
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [commonMethods, errorMethods],
   components: {
-    ReserveModal,
+    // ReserveModal,
     Loading,
-    BreadCrumbs
+    BreadCrumbs,
+    StudioReservesTable
   },
   data() {
     return {
       studio: "",
-      reserves: [],
-      weeks: [],
-      // Modal関連
-      clickReserve: "",
       loading: true
     }
   },
@@ -126,81 +85,68 @@ export default {
       return breadCrumbsLists
     }
   },
-  watch: {
-    '$route' (to) {
-      if ( to.query.week !== undefined ) {
-        this.getStudio(to.query.week)
-      }
-    }
-  },
   methods: {
-    getStudio: function(week){
+    getStudio: function(){
       axios.get(
-        `http://${g.hostName}/api/studios/${this.$route.params.id}?week=${week}`
+        `http://${g.hostName}/api/studios/${this.$route.params.id}`
       )
       .then((response) => {
         this.studio = response.data.studio;
-        this.reserves = response.data.reserves;
-        this.weeks = response.data.weeks;
         this.loading = false;
       })
       .catch((error) => {
         this.apiErrors(error.response.status);
       });
-    },
-    changeWeek: function(week) {
-      this.$router.push({
-        name: "StudioShow",
-        query: {
-          week: week
-        }
-      })
-    },
-    // スタジオ予約のモーダルを表示する
-    displayReserveModal: function(reserve) {
-      reserve["end_hour"] = reserve.hour + 1;
-      if (reserve.hour == 23 && reserve.minutes == 30) {
-        reserve["end_minutes"] = 0;
-      }
-      else {
-        reserve["end_minutes"] = reserve.minutes
-      }
-      this.clickReserve = reserve;
-    },
-    closeModal: function() {
-      this.clickReserve = ''
     }
   },
   mounted: function() {
-    this.getStudio(this.$route.query.week);
+    this.getStudio();
   }
 }
 </script>
 
 <style scoped lang="scss">
-.studio-introduction {
-  display: flex;
-  justify-content: space-between;
-  &--left {
-    width: 60%;
-    position: relative;
-    p {
-      position: absolute;
-      bottom: 10px;
-      right: 20px;
-      font-size: 40px;
+.studio-top {
+  position: relative;
+  padding-top: 40px;
+  img {
+    width: 100%;
+    vertical-align: bottom;
+    filter: blur(2px);
+  }
+  .studio-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    h1 {
+      text-align: center;
+      font-size: 50px;
       font-weight: bold;
     }
-    img {
-      width: 100%;
-      opacity: 0.6;
+    &--introduce {
+      margin-top: 30px;
+      text-align: center;
+      p {
+        margin: 15px;
+        font-weight: lighter;
+      }
     }
   }
-  &--right {
-    width: 40%;
-    margin-left: 10px;
+}
+.studio-container {
+  margin: 40px 10px 0 10px;
+  .studio-explain {
+    display: flex;
+    justify-content: space-between;
     table {
-      margin-top: 20px;
+      width: 50%;
       border: 1px solid #333;
       th {
         border-bottom: 1px solid #FFF;
@@ -215,86 +161,13 @@ export default {
         line-height: 24px;
       }
     }
-  }
-}
-.studio-explain {
-  background: rgb(247, 234, 234);
-  border-radius: 10px;
-  margin: 10px;
-  padding: 10px;
-  font-size: .8rem;
-}
-.studio-reserve-container{
-  margin: 50px;
-  .week-bar {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
-    .prev-week {
-      font-weight: bold;
-      cursor: pointer;
-      p {
-        margin-left: 10px;
-      }
+    &--caution {
+      background: rgb(247, 234, 234);
+      border-radius: 10px;
+      padding: 10px;
+      margin-left: 20px;
+      font-size: .8rem;
     }
-    .today-week {
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .next-week {
-      font-weight: bold;
-      cursor: pointer;
-      p {
-        margin-right: 10px;
-      }
-    }
-  }
-  table {
-    width: 100%;
-    border: 1px solid;
-    margin: 0 auto;
-  }
-  th {
-    border-bottom: 1px dotted;
-    border-right: 1px dotted #FFF;
-    text-align: center;
-    width: 100px;
-    background: #333;
-    color: #FFF;
-  }
-  tr {
-    border: 1px dotted;
-    background: #333;
-    color: #FFF;
-  }
-  .reserve-time {
-    width: 45px;
-    height: 20px;
-    text-align: right;
-    padding-right: 5px;
-  }
-  .can-reserve {
-    border: 1px dotted #333;
-    width: 40px;
-    height: 20px;
-    background: #FFF;
-    cursor: pointer;
-    &:hover{
-      background: var(--accent-color);
-      transition: .3s;
-    }
-  }
-  .can-not-reserve {
-    background: lightgray;
-    color: #888;
-    text-align: center;
-    border: 1px dotted;
-  }
-  .already-reserved {
-    background: lightgray;
-    color: #888;
-    text-align: center;
-    border: 1px dotted;
   }
 }
 </style>

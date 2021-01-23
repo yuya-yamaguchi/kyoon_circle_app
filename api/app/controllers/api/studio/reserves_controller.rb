@@ -1,69 +1,47 @@
 class Api::Studio::ReservesController < ApplicationController
-  before_action :user_check
+  before_action :user_check, except: [:index]
   
+  def index
+    studio = Studio.find_by(id: params[:studio_id])
+    reserves_params, weeks = studio.week_reserve(params)
+    render status: 200, json: { studio: studio, reserves: reserves_params, weeks: weeks }
+  end
+
   def create
+    @studio = Studio.find(params[:studio_id])
     reserves_params = set_studio_reserves_params
     # 予約重複チェック
     reserve_cnt = StudioReserve.where(studio_id: reserves_params[:studio_id])
                                .where(date: reserves_params[:date])
-                               .where('time between ? and ?', reserves_params[:start_time].to_i, reserves_params[:end_time].to_i)
-                               .count
+                               .where('(start_time < ? AND end_time > ?) OR (start_time < ? AND end_time > ?)',
+                                  parse_time(reserves_params[:start_time]), parse_time(reserves_params[:start_time]),
+                                  parse_time(reserves_params[:end_time]), parse_time(reserves_params[:end_time])
+                               ).count
     return render status: 400, json: { error_message: "すでに予約されています。別の時間帯をご指定ください。" } if reserve_cnt > 0 
-    
-    reserve_block, how_hour = calc_reserves(reserves_params)
-    # トランザクション要
-    reserve_block.each_with_index do |reserve_time|
-      StudioReserve.create!(set_create_params(reserves_params, reserve_time))
-    end
-    @studio = Studio.find(reserves_params[:studio_id])
-    UserReserve.create!(set_user_reserve_params(reserves_params, how_hour))
+    StudioReserve.create!(reserves_params)
     render json: 200
   end
 
   def destroy
-    user_reserve = UserReserve.find(params[:id])
+    studio_reserve = StudioReserve.find(params[:id])
     now = Time.now.in_time_zone
-    if user_reserve.date <= now.to_date &&
-       user_reserve.start_time < (format("%02d" ,now.hour) + format("%02d" ,now.min)).to_i
+    if studio_reserve.date <= now.to_date &&
+       studio_reserve.start_time.strftime('%H%M') <= now.strftime('%H%M')
       render status: 400, json: { error_message: "開始日時を過ぎているため取消できません" }
       return
     end
-    studio_reserves = StudioReserve.where(studio_id: params[:studio_id])
-                                   .where(date: user_reserve.date)
-                                   .where('time between ? and ?', user_reserve.start_time, user_reserve.end_time)
-    user_reserve.destroy
-    studio_reserves.destroy_all
+    studio_reserve.destroy
     render json: 200
   end
 
   private
   def set_studio_reserves_params
+    hour = params[:studio_reserve][:end_time][0,2].to_i - params[:studio_reserve][:start_time][0,2].to_i
+    min = params[:studio_reserve][:end_time][3,2].to_i - params[:studio_reserve][:start_time][3,2].to_i
+    fee = ((hour * 60 + min) / 60.0) * @studio.fee
     params.require(:studio_reserve)
           .permit(:date, :start_time, :end_time)
-          .merge(studio_id: params[:studio_id], user_id: params[:user_id], reserve_type: 1)
-  end
-
-  def set_create_params(reserves_params, reserve_time)
-    create_params = {
-      studio_id: reserves_params[:studio_id],
-      user_id: reserves_params[:user_id],
-      date: reserves_params[:date],
-      time: reserve_time,
-      reserve_type: reserves_params[:reserve_type]
-    }
-    return create_params
-  end
-
-  def set_user_reserve_params(reserves_params, how_hour)
-    user_reserve_params = {
-      user_id: reserves_params[:user_id],
-      studio_id: reserves_params[:studio_id],
-      date: reserves_params[:date],
-      start_time: reserves_params[:start_time],
-      end_time: reserves_params[:end_time],
-      payment_fee: @studio.fee * how_hour.to_i
-    }
-    return user_reserve_params
+          .merge(studio_id: params[:studio_id], user_id: params[:user_id], reserve_type: 1, fee: fee.to_i)
   end
 
   def user_check
@@ -72,19 +50,8 @@ class Api::Studio::ReservesController < ApplicationController
     return render status: 401, json:{ error_message: "認証に失敗しました。再度ログインしてお試しください。" } if user.nil?
   end
 
-  # 予約する30分ごとの時間と予約時間を返却(ex. 600(6:00)〜730(7:30)の場合、[600, 630, 700], 1.5)
-  def calc_reserves(reserves_params)
-    how_time = reserves_params[:end_time].to_i - reserves_params[:start_time].to_i
-    hour = how_time.div(100)
-    half_hour = (how_time % 100) == 0 ? 0 : 0.5
-    how_hour = hour.to_f + half_hour
-    reserve_block = []
-    ((hour.to_f + half_hour) * 2).to_i.times do |i|
-      start_min = reserves_params[:start_time].last(2).to_i
-      elapsed_min = start_min + (i * 30)
-      reserve_block << (reserves_params[:start_time].to_i).round(-2) + ((elapsed_min / 60) * 100) + (elapsed_min % 60)
-    end
-    return reserve_block, how_hour
+  def parse_time(value)
+    (Time.parse(value) - 9*60*60).strftime('%H:%M:%S')
   end
 end
  

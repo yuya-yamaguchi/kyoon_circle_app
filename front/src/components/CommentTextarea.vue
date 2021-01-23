@@ -66,6 +66,9 @@ export default {
         textarea.style.height = textarea.scrollHeight + 'px'
       });
     }
+  },
+  mounted() {
+    this.adjustHeight();
   }
 }
 </script>

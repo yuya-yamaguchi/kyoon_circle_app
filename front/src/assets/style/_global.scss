@@ -54,6 +54,22 @@
   display: block;
   margin: 20px auto;
   padding: 10px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  background: orange;
+  color: #FFF;
+  text-decoration: none;
+  border: 1px solid;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.gorgeous-button{
+  display: block;
+  margin: 20px auto;
+  padding: 10px 30px;
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
@@ -63,7 +79,6 @@
   cursor: pointer;
   &:hover {
     opacity: 0.8;
-    
   }
 }
 

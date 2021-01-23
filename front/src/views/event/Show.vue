@@ -193,16 +193,18 @@ export default {
         this.entryCnt = response.data;
       })
       .catch((error) => {
-        if (error.response.status == 401) {
+        if (error.response.status === 400 || error.response.status === 401) {
           this.$store.dispatch(
             "flash/create",
             { message: error.response.data.error_message,
               type:    2
             }
           );
-          this.$router.push({ 
-            name: "Login"
-          })
+          if (error.response.status == 401) {
+            this.$router.push({ 
+              name: "Login"
+            })
+          }
         }
         this.apiErrors(error.response.status);
       });
@@ -325,5 +327,8 @@ export default {
   padding: 10px;
   white-space: pre-wrap;
   min-height: 200px;
+}
+.btn-disable {
+  background: #888;
 }
 </style>

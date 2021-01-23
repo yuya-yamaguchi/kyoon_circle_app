@@ -9,7 +9,7 @@
       <div class="form-item">
         <p class="form-item--name">タイトル</p>
         <input type="text" v-model="news.title" placeholder="" class="default-input" @blur="newsTitleChk()" @keyup="newsTitleChk()">
-        <p class="form-item--err-msg">{{ errMsg. title }}</p>
+        <p class="form-item--err-msg">{{ errMsg.title }}</p>
       </div>
       <div class="form-item">
         <p class="form-item--name">内容</p>
@@ -18,6 +18,7 @@
       </div>
       <div class="form-item" v-if="displayLinePush()">
         <p class="form-item--name">グループLINEへの通知</p>
+        <p class="line-explain">ラインには「タイトル」と「内容」が通知されます</p>
         <p class="form-item--addition">※現在は開発用に作成したグループに通知されます</p>
         <input type="checkbox" id="lineMsgFlg" class="checkbox" v-model="news.line_msg_push">
         <label for="lineMsgFlg">通知する</label>
@@ -86,4 +87,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.line-explain {
+  font-size: 12px;
+  color: var(--line-color);
+}
 </style>
