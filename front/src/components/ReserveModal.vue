@@ -78,7 +78,9 @@
             <td>¥{{ paymentFee }}</td>
           </tr>
         </table>
-        <p class="assist-message">※キャンセルはマイページから可能です</p>
+        <div class="assist-message">
+          ※キャンセルは「マイページ > スタジオ予約一覧」から可能です
+        </div>
         <button @click="closeModal()" class="default-button back-btn">閉じる</button>
       </template>
     </div>

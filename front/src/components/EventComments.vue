@@ -1,6 +1,8 @@
 <template>
   <div class="event-comments">
-    <CommentTextarea :comment-prop="''" @doen-comment="postEventComment"/>
+    <template v-if="$store.getters['user/id']!=0">
+      <CommentTextarea :comment-prop="''" @doen-comment="postEventComment"/>
+    </template>
     <div class="event-comments--display">
       <div v-for="(comment, i) in eventComments" :key="i" class="comment-card">
         <div class="comment-card--left">

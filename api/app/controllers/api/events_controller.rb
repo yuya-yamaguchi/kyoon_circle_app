@@ -69,7 +69,7 @@ class Api::EventsController < ApplicationController
   end
 
   def entry_cancel
-    message = @event.entry_check
+    message = @event.cancel_check
     return render status: 400, json:{ error_message: message } if message != ""
     event_entry = EventEntry.where(user_id: params[:user_id]).where(event_id: params[:id])
     event_entry.destroy_all

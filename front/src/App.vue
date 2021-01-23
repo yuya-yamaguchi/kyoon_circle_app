@@ -3,8 +3,8 @@
     <Header/>
     <FlashMsg v-if="$store.getters['flash/message'].length!=0"/>
     <div class="base-container">
-      <NotFound v-if="errorStatus==404"/>
-      <SystemError v-else-if="errorStatus==500"/>
+      <NotFound v-if="[404].includes(errorStatus)"/>
+      <Errors v-else-if="[403, 500].includes(errorStatus)" :error-status-prop="errorStatus"/>
       <router-view v-else/>
     </div>
     <Footer/>
@@ -21,7 +21,7 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import FlashMsg from "@/components/FlashMsg.vue";
 import NotFound from "@/views/errors/NotFound.vue";
-import SystemError from "@/views/errors/SystemError.vue";
+import Errors from "@/views/errors/Errors.vue";
 
 export default {
   components: {
@@ -29,7 +29,7 @@ export default {
     Footer,
     FlashMsg,
     NotFound,
-    SystemError
+    Errors
   },
   computed: {
     errorStatus() {
