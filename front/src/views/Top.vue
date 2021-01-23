@@ -48,7 +48,7 @@
               <p>遠方からお越しの際などにご利用ください</p>
               <p>※準備中、しばらくお待ちください</p>
             </div>
-            <button class="stay-info--btn default-button">Comming<br>Soon...</button>
+            <button class="stay-info--btn gorgeous-button">Comming<br>Soon...</button>
           </div>
         </div>
       </div>

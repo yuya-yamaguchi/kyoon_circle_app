@@ -93,7 +93,12 @@ export default {
     getStudioReserves: function(week) {
       var firstHalfUrl = (location.pathname.match(/admin/)) ? "api/admin/studios" : "api/studios"
       axios.get(
-        `http://${g.hostName}/${firstHalfUrl}/${this.$route.params.id}/reserves?week=${week}`
+        `http://${g.hostName}/${firstHalfUrl}/${this.$route.params.id}/reserves?week=${week}`,
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
       )
       .then((response) => {
         this.studio = response.data.studio;

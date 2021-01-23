@@ -49,48 +49,6 @@ const routes = [
     name: 'StudioShow',
     component: StudioShow
   },
-  // マイページ
-  {
-    path: '/mypage',
-    name: 'MypageTop',
-    component: MypageTop
-  },
-  // プロフィール編集
-  {
-    path: '/mypage/profile',
-    name: 'MypageProfile',
-    component: MypageProfile
-  },
-  // スタジオ予約一覧
-  {
-    path: '/mypage/studio/reserves',
-    name: 'MypageStudioReserves',
-    component: MypageStudioReserves
-  },
-  // 参加イベント一覧
-  {
-    path: '/mypage/events',
-    name: 'MypageEvents',
-    component: MypageEvents
-  },
-  // イベント登録
-  {
-    path: '/event/new',
-    name: 'EventNew',
-    component: EventNew
-  },
-  // イベント編集
-  {
-    path: '/event/:id/edit',
-    name: 'EventEdit',
-    component: EventEdit
-  },
-  // イベント編集一覧
-  {
-    path: '/events/editlist',
-    name: 'EventEditList',
-    component: EventEditList
-  },
   // イベント一覧
   {
     path: '/events',
@@ -115,44 +73,100 @@ const routes = [
     name: 'NewsShow',
     component: NewsShow
   },
-  // お知らせ編集
+  // マイページ
   {
-    path: '/news/:id/edit',
-    name: 'NewsEdit',
-    component: NewsEdit
+    path: '/mypage',
+    name: 'MypageTop',
+    component: MypageTop,
+    meta: { requiresAuth: true }
   },
-  // お知らせ編集一覧
+  // プロフィール編集
   {
-    path: '/news/editlist',
-    name: 'NewsEditList',
-    component: NewsEditList
+    path: '/mypage/profile',
+    name: 'MypageProfile',
+    component: MypageProfile,
+    meta: { requiresAuth: true }
+  },
+  // スタジオ予約一覧
+  {
+    path: '/mypage/studio/reserves',
+    name: 'MypageStudioReserves',
+    component: MypageStudioReserves,
+    meta: { requiresAuth: true }
+  },
+  // 参加イベント一覧
+  {
+    path: '/mypage/events',
+    name: 'MypageEvents',
+    component: MypageEvents,
+    meta: { requiresAuth: true }
   },
   /***********************/
   /* 管理者用VIEW         */
   /***********************/
-  // ユーザ一覧表示
+
+  // イベント登録
   {
-    path: '/users',
-    name: 'UsersIndex',
-    component: UsersIndex
+    path: '/event/new',
+    name: 'EventNew',
+    component: EventNew,
+    meta: { requiresAdmin: true }
   },
-  // スタジオ内容編集
+  // イベント編集
   {
-    path: '/studio/:id/edit',
-    name: 'StudioEdit',
-    component: StudioEdit
+    path: '/event/:id/edit',
+    name: 'EventEdit',
+    component: EventEdit,
+    meta: { requiresAdmin: true }
   },
-  // スタジオ予約一覧
+  // イベント編集一覧
   {
-    path: '/admin/studio/:id/reserves',
-    name: 'StudioReserves',
-    component: StudioReserves
+    path: '/events/editlist',
+    name: 'EventEditList',
+    component: EventEditList,
+    meta: { requiresAdmin: true }
   },
   // お知らせ新規作成
   {
     path: '/news/new',
     name: 'NewsNew',
-    component: NewsNew
+    component: NewsNew,
+    meta: { requiresAdmin: true }
+  },
+  // ユーザ一覧表示
+  {
+    path: '/users',
+    name: 'UsersIndex',
+    component: UsersIndex,
+    meta: { requiresAdmin: true }
+  },
+  // お知らせ編集
+  {
+    path: '/news/:id/edit',
+    name: 'NewsEdit',
+    component: NewsEdit,
+    meta: { requiresAdmin: true }
+  },
+  // お知らせ編集一覧
+  {
+    path: '/news/editlist',
+    name: 'NewsEditList',
+    component: NewsEditList,
+    meta: { requiresAdmin: true }
+  },
+  // スタジオ内容編集
+  {
+    path: '/studio/:id/edit',
+    name: 'StudioEdit',
+    component: StudioEdit,
+    meta: { requiresAdmin: true }
+  },
+  // スタジオ予約確認
+  {
+    path: '/admin/studio/:id/reserves',
+    name: 'StudioReserves',
+    component: StudioReserves,
+    meta: { requiresAdmin: true }
   },
   /***********************/
   /* エラーVIEW           */
@@ -169,6 +183,30 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  // ログイン（トークン認証）が必要なページの場合
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    !store.getters['user/secureToken'] ? next({ path: '/login' }) : next();
+  }
+  // 管理者権限が必要なページの場合
+  else if (to.matched.some(record => record.meta.requiresAdmin)) {
+    if (!store.getters['user/secureToken']) {
+      next({ path: '/login' });
+    }
+    else if (store.getters['user/adminType'] == 0) {
+      store.dispatch(
+        "response/update",
+        { status: 403 }
+      );
+    }
+    else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 router.afterEach(() => {
   // NotFound画面から別画面に切り替えるための対応
