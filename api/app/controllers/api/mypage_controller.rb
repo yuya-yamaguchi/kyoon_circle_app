@@ -15,11 +15,11 @@ class Api::MypageController < ApplicationController
 
   def studio_reserves
     now = Time.now.in_time_zone
-    future_reserves = @user.user_reserves
+    future_reserves = @user.studio_reserves
                       .where('date >= ?', now.to_date)
                       .order('date DESC')
                       .order('start_time DESC')
-    history_reserves = @user.user_reserves
+    history_reserves = @user.studio_reserves
                        .where('date < ?', now.to_date)
                        .order('date DESC')
                        .order('start_time DESC')

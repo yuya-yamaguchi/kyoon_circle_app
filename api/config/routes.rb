@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
     resources :studios, only: [:show] do
       scope module: :studio do
-        resources :reserves, only: [:create, :destroy]
+        resources :reserves, only: [:index, :create, :destroy]
       end
     end
 
@@ -32,7 +32,11 @@ Rails.application.routes.draw do
     # 管理者用機能
     namespace :admin do
       resources :users, only: [:index]
-      resources :studios, only: [:edit, :update]
+      resources :studios, only: [:edit, :update] do
+        scope module: :studio do
+          resources :reserves, only: [:index]
+        end
+      end
     end
   end
 end

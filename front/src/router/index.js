@@ -14,6 +14,7 @@ import EventIndex from '@/views/event/Index.vue'
 import EventShow from '@/views/event/Show.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
 import StudioEdit from '@/views/admin/studio/Edit.vue'
+import StudioReserves from '@/views/admin/studio/Reserves.vue'
 import NewsNew from '@/views/news/New.vue'
 import NewsIndex from '@/views/news/Index.vue'
 import NewsShow from '@/views/news/Show.vue'
@@ -137,9 +138,15 @@ const routes = [
   },
   // スタジオ内容編集
   {
-    path: '/studio/1/edit',
+    path: '/studio/:id/edit',
     name: 'StudioEdit',
     component: StudioEdit
+  },
+  // スタジオ予約一覧
+  {
+    path: '/admin/studio/:id/reserves',
+    name: 'StudioReserves',
+    component: StudioReserves
   },
   // お知らせ新規作成
   {

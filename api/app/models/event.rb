@@ -60,14 +60,20 @@ class Event < ApplicationRecord
   def entry_check
     # 人数制限チェック
     entered_num = self.event_entries.count
-    if self.max_entry != 0 && self.max_entry <= entered_num
-      return "このイベントは定員に達したため参加いただけません"
-    end
-    # 期限超過チェック
-    now = Time.now.in_time_zone
-    if self.start_datetime.to_date < now.to_date
-      return "期限を過ぎているため参加できません"
-    end
+    return "このイベントは定員に達したため参加いただけません" if self.max_entry != 0 && self.max_entry <= entered_num
+    # 開催日チェック
+    return "開催日を過ぎているため参加できません" if hold_date_chk
     return ""
+  end
+
+  def cancel_check
+    return "開催日を過ぎているためキャンセルできません" if hold_date_chk
+    return ""
+  end
+
+  private
+  def hold_date_chk
+    now = Time.now.in_time_zone
+    self.start_datetime.to_date < now.to_date ? true : false
   end
 end

@@ -164,8 +164,8 @@ export default {
           user_id: this.$store.getters["user/id"],
           studio_reserve: {
             date: this.selected.year + '-' + this.selected.month + '-' + this.selected.day,
-            start_time: String(this.selected.start_hour) + ( '00' + this.selected.start_min ).slice( -2 ),
-            end_time:   String(this.selected.end_hour) + ( '00' + this.selected.end_min ).slice( -2 )
+            start_time: ('00' + this.selected.start_hour).slice( -2 ) + ':' + ('00' + this.selected.start_min).slice( -2 ),
+            end_time:   ('00' + this.selected.end_hour).slice( -2 ) + ':' + ('00' + this.selected.end_min).slice( -2 )
           }
         },
         {
