@@ -7,6 +7,12 @@
         セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
         お気軽にご参加ください！
       </p>
+      <select v-model="searchEvent">
+        <option value="0">すべて</option>
+        <option v-for="option in options" :value="option.event_type" :key="option.event_type">
+          {{ option.name }}
+        </option>
+      </select>
       <EventList v-if="events.length!=0" :events-prop="events"/>
       <Pagination :pagy-prop="pagy" @chage-page="changePage"/>
     </div>
@@ -31,7 +37,14 @@ export default {
   data() {
     return {
       events: [],
-      pagy: ""
+      pagy: "",
+      searchEvent: 0,
+      options: [
+        { event_type: 1, name: 'セッション' },
+        { event_type: 2, name: '飲み会・懇親会' },
+        { event_type: 3, name: '合宿' },
+        { event_type: 4, name: 'その他' }
+      ]
     }
   },
   computed: {
