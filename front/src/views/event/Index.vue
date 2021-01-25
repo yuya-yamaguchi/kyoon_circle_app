@@ -7,14 +7,15 @@
         セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
         お気軽にご参加ください！
       </p>
-      <select v-model="searchEvent">
+      <select v-model="selectEventType" @change="searchEvents(value)">
         <option value="0">すべて</option>
         <option v-for="option in options" :value="option.event_type" :key="option.event_type">
           {{ option.name }}
         </option>
       </select>
       <EventList v-if="events.length!=0" :events-prop="events"/>
-      <Pagination :pagy-prop="pagy" @chage-page="changePage"/>
+      <div v-if="events.length==0" class="nothing-msg">該当のイベントはありません</div>
+      <Pagination v-if="events.length!=0" :pagy-prop="pagy" @chage-page="changePage"/>
     </div>
   </div>
 </template>
@@ -35,10 +36,11 @@ export default {
     BreadCrumbs
   },
   data() {
+    var selectEventType = (this.$route.query.event_type == undefined ) ? 0 : this.$route.query.event_type
     return {
       events: [],
       pagy: "",
-      searchEvent: 0,
+      selectEventType: selectEventType,
       options: [
         { event_type: 1, name: 'セッション' },
         { event_type: 2, name: '飲み会・懇親会' },
@@ -67,20 +69,26 @@ export default {
     // $routeが変更されたことをパラメータが変更されたことをwatchにて検知する
     '$route' (to) {
       if ( to.query.page != undefined ) {
-        this.getEvents(to.query.page)
+        this.getEvents(to.query.page, to.query.event_type)
       }
     }
   },
   methods: {
-    getEvents: function(pageNo) {
+    getEvents: function(pageNo, eventType) {
       axios.get(
-        `http://${g.hostName}/api/events?page=${pageNo}`
+        `http://${g.hostName}/api/events`,
+        {
+          params: {
+            page: pageNo,
+            event_type: eventType
+          }
+        }
       )
       .then((response) => {
         this.events = response.data.events;
         this.pagy = response.data.pagy;
       })
-      .catch(function(error) {
+      .catch((error) => {
         this.apiErrors(error.response.status);
       });
     },
@@ -88,13 +96,24 @@ export default {
       this.$router.push({
         name: "EventIndex",
         query: {
-          page: pageNo
+          page: pageNo,
+          event_type: this.selectEventType
+        }
+      })
+    },
+    searchEvents: function() {
+      this.$router.push({
+        name: "EventIndex",
+        query: {
+          page: 1,
+          event_type: this.selectEventType
         }
       })
     }
   },
   mounted: function() {
-    this.getEvents(this.$route.query.page);
+    // var eventType = this.$route.query.event_type == undefined ? this.$route.query.event_type : 0
+    this.getEvents(this.$route.query.page, this.$route.query.event_type);
   }
 }
 </script>
@@ -102,5 +121,8 @@ export default {
 <style scoped lang="scss">
 .event-explain {
   padding: 20px;
+}
+select {
+  margin-left: 20px;
 }
 </style>
