@@ -6,7 +6,8 @@ class Api::EventsController < ApplicationController
   before_action :set_event,  only: [:show, :edit, :update, :destroy, :entry, :entry_cancel]
 
   def index
-    pagy, events = pagy(Event.all.order('start_datetime DESC'), items: 5)
+    search_events = Event.search(params)
+    pagy, events = pagy(search_events, items: 5)
     render status: 200, json: { events: events, pagy: pagy_metadata(pagy) }
   end
 
@@ -76,7 +77,7 @@ class Api::EventsController < ApplicationController
     entry_cnt = EventEntry.where(event_id: params[:id]).count
     render status: 200,json: entry_cnt
   end
-
+  
   private
   def require_event_params
     params.require(:event)

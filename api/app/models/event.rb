@@ -71,6 +71,13 @@ class Event < ApplicationRecord
     return ""
   end
 
+  def self.search(event_params)
+    results = Event.all
+    results = results.where('event_type = ?', event_params[:event_type]) if event_params[:event_type] != nil && event_params[:event_type] != "0"
+    results = results.order('start_datetime DESC')
+    results
+  end
+
   private
   def hold_date_chk
     now = Time.now.in_time_zone
