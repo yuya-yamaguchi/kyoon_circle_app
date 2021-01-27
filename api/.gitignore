@@ -27,4 +27,3 @@
 /config/master.key
 
 .sec_env
-/config/database.yml
