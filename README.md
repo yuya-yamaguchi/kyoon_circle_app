@@ -5,12 +5,12 @@
 ### フロントエンド
 * Vue 3.0
 * Vue/CLI 4.5
-* <a src="https://github.com/yuya-yamaguchi/kyoon_circle_app/tree/master/front">使用プラグインはfrontのREADMEに記載</a>
+* <a href="https://github.com/yuya-yamaguchi/kyoon_circle_app/tree/master/front">使用プラグインはfrontのREADMEに記載</a>
 
 ### バックエンド
 * Ruby 2.7.2
 * Rails 6.0.3 (APIモードで使用)
-* <a src="https://github.com/yuya-yamaguchi/kyoon_circle_app/tree/master/api">使用GemfileはapiのREADMEに記載</a>
+* <a href="https://github.com/yuya-yamaguchi/kyoon_circle_app/tree/master/api">使用GemfileはapiのREADMEに記載</a>
 
 ### DB、インフラ
 * MySQL 5.7
