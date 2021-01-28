@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import NewsList from '@/components/NewsList.vue';
-import Loading from '@/components/Loading.vue';
+import NewsList from '@/components/organisms/news/NewsList.vue';
+import Loading from '@/components/organisms/common/Loading.vue';
 
 export default {
   props: {

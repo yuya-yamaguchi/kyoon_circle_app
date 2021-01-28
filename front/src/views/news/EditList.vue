@@ -12,8 +12,8 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import SideBar from "@/components/SideBar.vue";
-import NewsList from '@/components/NewsList.vue';
+import SideBar from "@/components/organisms/common/SideBar.vue";
+import NewsList from '@/components/organisms/news/NewsList.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {

@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import ConfirmModal from "@/components/ConfirmModal.vue";
+import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
 import { commonCheck } from '@/mixins/commonCheck';
 
 export default {
@@ -111,7 +111,6 @@ export default {
       ],
       hours: [...Array(24).keys()].map(i => i++),
        mins: [...Array(6).keys()].map(i => i*=10),
-
     }
   },
   methods: {

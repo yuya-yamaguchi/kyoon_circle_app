@@ -14,9 +14,9 @@
           </div>
         </div>
         <div class="my-page--profile">
-          <router-link to="/mypage/profile" class="my-page--profile--edit some-updown-center">
+          <router-link to="/mypage/edit" class="my-page--profile--edit some-updown-center">
             <fa icon="edit"></fa>
-            <span>プロフィール編集する</span>
+            <span>プロフィールを変更する</span>
           </router-link>
           <div class="my-page--profile--contents">{{ user.profile }}</div>
         </div>
@@ -28,7 +28,7 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import SideBar from "@/components/SideBar.vue";
+import SideBar from "@/components/organisms/common/SideBar.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {

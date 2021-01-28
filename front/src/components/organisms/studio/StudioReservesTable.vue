@@ -58,8 +58,8 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import ReserveModal from '@/components/ReserveModal.vue';
-import Loading from '@/components/Loading.vue';
+import ReserveModal from '@/components/organisms/studio/ReserveModal.vue';
+import Loading from '@/components/organisms/common/Loading.vue';
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 

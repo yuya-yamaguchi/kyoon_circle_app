@@ -1,12 +1,12 @@
 <template>
   <div class="double-container">
     <div class="double-container--left">
-      <SideBar :select-menu-prop="102"/>
+      <SideBar :select-menu-prop="2"/>
     </div>
     <div class="double-container--right">
-      <div class="studio-edit-container">
-        <h1 class="main-title">スタジオ内容の変更</h1>
-        <StudioForm/>
+      <div class="user-profile-container">
+        <h1 class="main-title">ユーザ情報変更</h1>
+        <UserEditForm/>
       </div>
     </div>
   </div>
@@ -14,18 +14,18 @@
 
 <script>
 import SideBar from "@/components/organisms/common/SideBar.vue";
-import StudioForm from "@/components/organisms/studio/StudioForm.vue";
+import UserEditForm from "@/components/organisms/user/UserEditForm.vue";
 
 export default {
   components: {
     SideBar,
-    StudioForm
+    UserEditForm
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.studio-edit-container {
+.user-profile-container {
   width: 100%;
   margin: 0 auto;
   padding: 20px 0;

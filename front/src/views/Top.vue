@@ -13,11 +13,11 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import TopImage from '@/components/molecules/top/TopImage.vue'
-import AboutNews from '@/components/molecules/top/AboutNews.vue'
-import AboutStudio from '@/components/molecules/top/AboutStudio.vue'
-import AboutEvent from '@/components/molecules/top/AboutEvent.vue'
-import AboutStay from '@/components/molecules/top/AboutStay.vue'
+import TopImage from '@/components/organisms/top/TopImage.vue'
+import AboutNews from '@/components/organisms/top/AboutNews.vue'
+import AboutStudio from '@/components/organisms/top/AboutStudio.vue'
+import AboutEvent from '@/components/organisms/top/AboutEvent.vue'
+import AboutStay from '@/components/organisms/top/AboutStay.vue'
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
@@ -37,8 +37,8 @@ export default {
     }
   },
   methods: {
-    async getTop() {
-      await axios.get(
+    getTop() {
+      axios.get(
         `http://${g.hostName}/api/top`
       )
       .then((response) => {
@@ -51,8 +51,8 @@ export default {
       });
     },
   },
-  async mounted() {
-    await this.getTop();
+  mounted() {
+    this.getTop();
   }
 }
 </script>

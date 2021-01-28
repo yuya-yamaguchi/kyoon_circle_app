@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import EventList from '@/components/EventList.vue';
-import Loading from '@/components/Loading.vue';
+import EventList from '@/components/organisms/events/EventList.vue';
+import Loading from '@/components/organisms/common/Loading.vue';
 
 export default {
   props: {

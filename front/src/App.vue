@@ -17,9 +17,9 @@ import "@/assets/style/_variable.scss";
 import "@/assets/style/_global.scss";
 import "@/assets/style/_add_class.scss";
 import "@/assets/style/_transition.scss";
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import FlashMsg from "@/components/FlashMsg.vue";
+import Header from "@/components/organisms/common/Header.vue";
+import Footer from "@/components/organisms/common/Footer.vue";
+import FlashMsg from "@/components/organisms/common/FlashMsg.vue";
 import NotFound from "@/views/errors/NotFound.vue";
 import Errors from "@/views/errors/Errors.vue";
 
@@ -49,7 +49,6 @@ export default {
 }
 
 .base-container{
-  /* max-width: 1400px; */
   width: 100%;
   padding-top: 60px;
   margin: 0 auto;

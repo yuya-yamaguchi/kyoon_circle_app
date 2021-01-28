@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ConfirmModal from "@/components/ConfirmModal.vue";
+import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
 import { commonCheck } from '@/mixins/commonCheck';
 
 export default {

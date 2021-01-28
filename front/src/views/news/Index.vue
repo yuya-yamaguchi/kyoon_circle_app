@@ -11,8 +11,8 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import NewsList from '@/components/NewsList.vue';
-import BreadCrumbs from "@/components/BreadCrumbs.vue";
+import NewsList from '@/components/organisms/news/NewsList.vue';
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {

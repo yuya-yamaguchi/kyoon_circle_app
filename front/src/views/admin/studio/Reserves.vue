@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import SideBar from "@/components/SideBar.vue";
-import StudioReservesTable from "@/components/StudioReservesTable.vue";
+import SideBar from "@/components/organisms/common/SideBar.vue";
+import StudioReservesTable from "@/components/organisms/studio/StudioReservesTable.vue";
 
 export default {
   components: {

@@ -7,12 +7,7 @@
         セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
         お気軽にご参加ください！
       </p>
-      <select v-model="selectEventType" @change="searchEvents(value)">
-        <option value="0">すべて</option>
-        <option v-for="option in options" :value="option.event_type" :key="option.event_type">
-          {{ option.name }}
-        </option>
-      </select>
+      <SearchEvent :searchSelectProp="searchSelect" @search-events="searchEvents"/>
       <EventList v-if="events.length!=0" :events-prop="events"/>
       <div v-if="events.length==0" class="nothing-msg">該当のイベントはありません</div>
       <Pagination v-if="events.length!=0" :pagy-prop="pagy" @chage-page="changePage"/>
@@ -23,15 +18,17 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import EventList from '@/components/EventList.vue';
-import Pagination from '@/components/Pagination.vue';
-import BreadCrumbs from "@/components/BreadCrumbs.vue";
+import EventList from '@/components/organisms/events/EventList.vue';
+import SearchEvent from '@/components/organisms/events/SearchEvent.vue';
+import Pagination from '@/components/organisms/common/Pagination.vue';
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
   components: {
     EventList,
+    SearchEvent,
     Pagination,
     BreadCrumbs
   },
@@ -40,13 +37,9 @@ export default {
     return {
       events: [],
       pagy: "",
-      selectEventType: selectEventType,
-      options: [
-        { event_type: 1, name: 'セッション' },
-        { event_type: 2, name: '飲み会・懇親会' },
-        { event_type: 3, name: '合宿' },
-        { event_type: 4, name: 'その他' }
-      ]
+      searchSelect: {
+        eventType: selectEventType
+      }
     }
   },
   computed: {
@@ -101,18 +94,17 @@ export default {
         }
       })
     },
-    searchEvents: function() {
+    searchEvents: function(searchSelect) {
       this.$router.push({
         name: "EventIndex",
         query: {
           page: 1,
-          event_type: this.selectEventType
+          event_type: searchSelect.eventType
         }
       })
     }
   },
   mounted: function() {
-    // var eventType = this.$route.query.event_type == undefined ? this.$route.query.event_type : 0
     this.getEvents(this.$route.query.page, this.$route.query.event_type);
   }
 }
@@ -121,8 +113,5 @@ export default {
 <style scoped lang="scss">
 .event-explain {
   padding: 20px;
-}
-select {
-  margin-left: 20px;
 }
 </style>
