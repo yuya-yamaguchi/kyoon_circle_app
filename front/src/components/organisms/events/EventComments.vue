@@ -1,33 +1,36 @@
 <template>
-  <div class="event-comments">
-    <template v-if="$store.getters['user/id']!=0">
-      <CommentTextarea :comment-prop="''" @doen-comment="postEventComment"/>
-    </template>
-    <div class="event-comments--display">
-      <div v-for="(comment, i) in eventComments" :key="i" class="comment-card">
-        <div class="comment-card--left">
-          <div class="comment-userimg">
-            <img src="/person.png">
+  <div>
+    <Loading v-if="loading"/>
+    <div v-else class="event-comments">
+      <template v-if="$store.getters['user/id']!=0">
+        <CommentTextarea :comment-prop="''" @doen-comment="postEventComment"/>
+      </template>
+      <div class="event-comments--display">
+        <div v-for="(comment, i) in eventComments" :key="i" class="comment-card">
+          <div class="comment-card--left">
+            <div class="comment-userimg">
+              <img src="/person.png">
+            </div>
           </div>
-        </div>
-        <div class="comment-card--right">
-          <div class="comment-info">
-            <div class="comment-info--username">{{ comment.user_name }}</div>
-            <div class="comment-info--time">{{ howManyAgo(comment.created_at) }}</div>
+          <div class="comment-card--right">
+            <div class="comment-info">
+              <div class="comment-info--username">{{ comment.user_name }}</div>
+              <div class="comment-info--time">{{ howManyAgo(comment.created_at) }}</div>
+            </div>
+            <p v-if="eventComments[i].text" class="comment-text">{{ comment.text }}</p>
+            <div v-else class="comment-edit">
+              <CommentTextarea :comment-prop="editComment.text" @doen-comment="putEventComment"/>
+            </div>
           </div>
-          <p v-if="eventComments[i].text" class="comment-text">{{ comment.text }}</p>
-          <div v-else class="comment-edit">
-            <CommentTextarea :comment-prop="editComment.text" @doen-comment="putEventComment"/>
-          </div>
-        </div>
-        <div v-if="$store.getters['user/id']==comment.user_id && eventComments[i].text" class="comment-card--btns">
-          <div @click="editEventComment(i)" class="comment-card--btns--edit some-updown-center">
-            <fa icon="edit" class="default-icon"></fa>
-            <span>編集</span>
-          </div>
-          <div @click="deleteEventComment(comment.id, i)" class="comment-card--btns--delete some-updown-center">
-            <fa icon="trash" class="default-icon"></fa>
-            <span>削除</span>
+          <div v-if="$store.getters['user/id']==comment.user_id && eventComments[i].text" class="comment-card--btns">
+            <div @click="editEventComment(i)" class="comment-card--btns--edit some-updown-center">
+              <fa icon="edit" class="default-icon"></fa>
+              <span>編集</span>
+            </div>
+            <div @click="deleteEventComment(comment.id, i)" class="comment-card--btns--delete some-updown-center">
+              <fa icon="trash" class="default-icon"></fa>
+              <span>削除</span>
+            </div>
           </div>
         </div>
       </div>
@@ -38,7 +41,8 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import CommentTextarea from "@/components/CommentTextarea.vue";
+import Loading from '@/components/organisms/common/Loading.vue';
+import CommentTextarea from "@/components/molecules/common/CommentTextarea.vue";
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
@@ -47,6 +51,7 @@ CommentTextarea
 export default {
   mixins: [commonMethods, errorMethods],
   components: {
+    Loading,
     CommentTextarea
   },
   data() {
@@ -59,7 +64,8 @@ export default {
         id:   0,
         text: "",
         i:    0 // 配列番号
-      }
+      },
+      loading: true
     }
   },
   watch: {
@@ -77,6 +83,9 @@ export default {
       })
       .catch((error) => {
         console.log(error)
+      })
+      .finally(() => {
+        this.loading = false;
       });
     },
     postEventComment: function(textareaComment) {

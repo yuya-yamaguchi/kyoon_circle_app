@@ -19,9 +19,9 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import SideBar from "@/components/SideBar.vue";
-import NewsForm from "@/components/NewsForm.vue";
-import ErrMsg from "@/components/ErrMsg.vue";
+import SideBar from "@/components/organisms/common/SideBar.vue";
+import NewsForm from "@/components/organisms/news/NewsForm.vue";
+import ErrMsg from "@/components/organisms/common/ErrMsg.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {

@@ -1,44 +1,34 @@
 <template>
-  <div class="double-container">
-    <div class="double-container--left">
-      <SideBar :select-menu-prop="2"/>
-    </div>
-    <div class="double-container--right">
-      <div class="user-profile-container">
-        <h1 class="main-title">プロフィール編集</h1>
-        <ErrMsg :error-messages-prop="apiErrorMessages"/>
-        <form v-on:submit.prevent="updateProfile">
-          <div class="form-item">
-            <p class="form-item--name">ユーザ名</p>
-            <input type="text" v-model="user.name" class="default-input" @blur="userNameChk()" @keyup="userNameChk()">
-            <p class="form-item--err-msg">{{ errMsg.name }}</p>
-          </div>
-          <div>
-            <div class="form-item">
-              <p class="form-item--name">プロフィール</p>
-              <textarea v-model="user.profile" @blur="userProfileChk()" @keyup="userProfileChk()"></textarea>
-              <p class="form-item--err-msg">{{ errMsg.profile }}</p>
-            </div>
-          </div>
-          <button class="default-button">変更する</button>
-        </form>
+  <div>
+    <ErrMsg :error-messages-prop="apiErrorMessages"/>
+    <form v-on:submit.prevent="updateProfile">
+      <div class="form-item">
+        <p class="form-item--name">ユーザ名</p>
+        <input type="text" v-model="user.name" class="default-input" @blur="userNameChk()" @keyup="userNameChk()">
+        <p class="form-item--err-msg">{{ errMsg.name }}</p>
       </div>
-    </div>
+      <div>
+        <div class="form-item">
+          <p class="form-item--name">プロフィール</p>
+          <textarea v-model="user.profile" @blur="userProfileChk()" @keyup="userProfileChk()"></textarea>
+          <p class="form-item--err-msg">{{ errMsg.profile }}</p>
+        </div>
+      </div>
+      <button class="default-button">変更する</button>
+    </form>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import SideBar from "@/components/SideBar.vue";
-import ErrMsg from "@/components/ErrMsg.vue";
+import ErrMsg from "@/components/organisms/common/ErrMsg.vue";
 import { commonCheck } from '@/mixins/commonCheck';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [commonCheck, errorMethods],
   components: {
-    SideBar,
     ErrMsg
   },
   data() {
@@ -102,15 +92,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.user-profile-container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px 0;
-  background: #FFF;
-  h1 {
-    margin: 0 0 20px 20px;
-  }
-}
-</style>

@@ -13,9 +13,9 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import SideBar from "@/components/SideBar.vue";
-import EventList from '@/components/EventList.vue';
-import Pagination from '@/components/Pagination.vue';
+import SideBar from "@/components/organisms/common/SideBar.vue";
+import EventList from '@/components/organisms/events/EventList.vue';
+import Pagination from '@/components/organisms/common/Pagination.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {

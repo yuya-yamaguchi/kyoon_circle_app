@@ -31,8 +31,8 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import SideBar from "@/components/SideBar.vue";
-import StudioReservedList from "@/components/StudioReservedList.vue";
+import SideBar from "@/components/organisms/common/SideBar.vue";
+import StudioReservedList from "@/components/organisms/studio/StudioReservedList.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {

@@ -3,7 +3,7 @@
     <div>
       <p class="sub-title">メニュー</p>
       <router-link to="/mypage" :class="{'select-menu': selectMenuProp==1}" class="side-menu">マイページトップ</router-link>
-      <router-link to="/mypage/profile" :class="{'select-menu': selectMenuProp==2}" class="side-menu">プロフィール編集</router-link>
+      <router-link to="/mypage/edit" :class="{'select-menu': selectMenuProp==2}" class="side-menu">ユーザ情報変更</router-link>
       <router-link to="/mypage/studio/reserves" :class="{'select-menu': selectMenuProp==3}" class="side-menu">スタジオ予約一覧</router-link>
       <router-link to="/mypage/events" :class="{'select-menu': selectMenuProp==4}" class="side-menu">参加イベント一覧</router-link>
     </div>

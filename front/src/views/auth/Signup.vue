@@ -5,30 +5,7 @@
         <h1 class="main-title text-center">新規会員登録</h1>
         <fa icon="user" class="default-icon"></fa>
       </div>
-      <ul class="error-messages">
-        <li v-for="(error, i) in errorMessages" :key="i">
-          {{ error }}
-        </li>
-      </ul>
-      <form v-on:submit.prevent="signUp()" class="form-container">
-        <div class="form-item">
-          <p>ユーザ名</p>
-          <input type="text" v-model="userName" placeholder="ユーザ名" class="default-input">
-        </div>
-        <div class="form-item">
-          <p>メールアドレス</p>
-          <input type="text" v-model="email" placeholder="kyoon@example.com" class="default-input">
-        </div>
-        <div class="form-item">
-          <p>パスワード</p>
-          <input type="password" v-model="password" class="default-input">
-        </div>
-        <div class="form-item">
-          <p>確認用パスワード</p>
-          <input type="password" v-model="passwordConfirmation" class="default-input">
-        </div>
-        <button class="default-button">会員登録する</button>
-      </form>
+      <SignUpForm/>
       <div class="other-sign-links">
         <SignLinks/>
       </div>
@@ -37,64 +14,13 @@
 </template>
 
 <script>
-import axios from 'axios';
-import g from "@/variable/variable.js";
-import SignLinks from "@/components/SignLinks.vue";
+import SignLinks from "@/components/organisms/auth/SignLinks.vue";
+import SignUpForm from "@/components/organisms/auth/SignUpForm.vue";
 
 export default {
   components: {
-    SignLinks
-  },
-  data() {
-    return {
-      userName: "",
-      email: "",
-      password: "",
-      passwordConfirmation: "",
-      errorMessages: []
-    }
-  },
-  methods: {
-    signUp: function(){
-      axios.post(
-        `http://${g.hostName}/api/auth`,
-        {
-          name:                  this.userName,
-          email:                 this.email,
-          password:              this.password,
-          password_confirmation: this.passwordConfirmation
-        }
-      )
-      .then((response) => {
-        this.$store.dispatch(
-          "user/updateUser",
-          {
-            id:     response.data.data.id,
-            name:   response.data.data.name,
-            email:  response.data.data.email,
-            token:  response.headers['access-token'],
-            uid:    response.headers['uid'],
-            client: response.headers['client'],
-            adminType: response.data.data.admin_type,
-            secureToken: response.data.data.token
-          }
-        );
-        this.$store.dispatch(
-          "flash/create",
-          { message: "会員登録が完了しました",
-            type:    1
-          }
-        );
-        this.$router.push({
-          name: "Top"
-        })
-      })
-      .catch((error) => {
-        if (error.response) {
-          this.errorMessages = error.response.data.errors.full_messages;
-        }
-      });
-    }
+    SignLinks,
+    SignUpForm
   }
 }
 </script>

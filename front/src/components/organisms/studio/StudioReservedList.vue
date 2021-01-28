@@ -31,7 +31,7 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import ConfirmModal from "@/components/ConfirmModal.vue";
+import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
 
 export default {
   components: {

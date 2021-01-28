@@ -4,7 +4,7 @@ import Signup from '@/views/auth/Signup.vue'
 import Login from '@/views/auth/Login.vue'
 import StudioShow from '@/views/studio/Show.vue'
 import MypageTop from '@/views/mypage/Top.vue'
-import MypageProfile from '@/views/mypage/Profile.vue'
+import MypageEdit from '@/views/mypage/Edit.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
 import MypageEvents from '@/views/mypage/Events.vue'
 import EventNew from '@/views/event/New.vue'
@@ -80,11 +80,11 @@ const routes = [
     component: MypageTop,
     meta: { requiresAuth: true }
   },
-  // プロフィール編集
+  // ユーザ情報変更
   {
-    path: '/mypage/profile',
-    name: 'MypageProfile',
-    component: MypageProfile,
+    path: '/mypage/edit',
+    name: 'MypageEdit',
+    component: MypageEdit,
     meta: { requiresAuth: true }
   },
   // スタジオ予約一覧
@@ -104,7 +104,6 @@ const routes = [
   /***********************/
   /* 管理者用VIEW         */
   /***********************/
-
   // イベント登録
   {
     path: '/event/new',
@@ -168,10 +167,7 @@ const routes = [
     component: StudioReserves,
     meta: { requiresAdmin: true }
   },
-  /***********************/
-  /* エラーVIEW           */
-  /***********************/
-  // NOTFOUND画面
+  // NOTFOUND画面(該当のURLが存在しない場合)
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
