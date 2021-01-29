@@ -3,6 +3,21 @@
     <ErrMsg :error-messages-prop="apiErrorMessages"/>
     <form v-on:submit.prevent="updateProfile">
       <div class="form-item">
+        <div class="avatar">
+          <div class="avatar--image">
+            <UserAvatar v-if="!loading" :avatar-prop="user.avatar"/>
+          </div>
+          <label id="select-avatar">
+            <input type="file" id="select-avatar" @change="changeAvatar" class="avatar-input">
+            <fa icon="edit" class="edit-icon"></fa>
+          </label>
+          <span>
+            <fa icon="trash" class="delete-icon" @click="deleteAvatar"></fa>
+          </span>
+        </div>
+        <p class="form-item--err-msg">{{ errMsg.avatar }}</p>
+      </div>
+      <div class="form-item">
         <p class="form-item--name">ユーザ名</p>
         <input type="text" v-model="user.name" class="default-input" @blur="userNameChk()" @keyup="userNameChk()">
         <p class="form-item--err-msg">{{ errMsg.name }}</p>
@@ -23,22 +38,22 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import ErrMsg from "@/components/organisms/common/ErrMsg.vue";
+import UserAvatar from "@/components/atoms/UserAvatar.vue";
 import { commonCheck } from '@/mixins/commonCheck';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [commonCheck, errorMethods],
   components: {
-    ErrMsg
+    ErrMsg,
+    UserAvatar
   },
   data() {
     return {
       user: {},
-      errMsg: {
-        name: "",
-        profile: ""
-      },
-      apiErrorMessages: []
+      errMsg: {},
+      apiErrorMessages: [],
+      loading: true
     }
   },
   methods: {
@@ -52,6 +67,9 @@ export default {
       })
       .catch(function(error) {
         this.apiErrors(error.response.status);
+      })
+      .finally(() => {
+        this.loading = false;
       });
     },
     // プロフィールの更新
@@ -59,10 +77,7 @@ export default {
       axios.put(
         `http://${g.hostName}/api/mypage/${this.$store.getters.['user/id']}`,
         {
-          user: {
-            name:    this.user.name,
-            profile: this.user.profile
-          }
+          user: this.user
         }
       )
       .then((response) => {
@@ -80,6 +95,35 @@ export default {
         this.apiErrorMessages = error.response.data;
       });
     },
+    changeAvatar: function(e) {
+      let files = e.target.files || e.dataTransfer.files;
+      if (this.checkFile(files[0])) {
+        this.createImage(files[0])
+      }
+    },
+    checkFile(file) {
+      const SIZE_LIMIT = 100 * 1024 // 100KB
+      if (file.type != 'image/jpeg' && file.type != 'image/png') {
+        this.errMsg.avatar = "jpegまたはpngの画像を選択してください"
+        return false
+      }
+      if (file.size > SIZE_LIMIT) {
+        this.errMsg.avatar = "100KB以下の画像を選択してください"
+        return false
+      }
+      this.errMsg.avatar = ""
+      return true
+    },
+    createImage(file) {
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        this.user.avatar = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    deleteAvatar: function() {
+      this.user.avatar = ""
+    },
     userNameChk: function() {
       this.errMsg.name = this.formStrChk(this.user.name, 20);
     },
@@ -92,3 +136,31 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.avatar {
+  display: flex;
+  justify-content: flex-start;
+  &--image {
+    width: 120px;
+    height: 120px;
+    margin-right: 10px;
+  }
+  .avatar-input {
+    display: none;
+  }
+  .delete-icon {
+    width: 20px;
+  }
+  .edit-icon {
+    width: 26px;
+  }
+  svg {
+    cursor: pointer;
+    margin: 0 10px;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+</style>

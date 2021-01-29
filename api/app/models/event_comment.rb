@@ -7,11 +7,12 @@ class EventComment < ApplicationRecord
 
   def set_out_params
     out_params = {
-      id:         self.id,
-      text:       self.text,
-      created_at: self.created_at,
-      user_id:    self.user.id,
-      user_name:  self.user.name
+      id:          self.id,
+      text:        self.text,
+      created_at:  self.created_at,
+      user_id:     self.user.id,
+      user_name:   self.user.name,
+      user_avatar: self.user.avatar
     }
   end
 end

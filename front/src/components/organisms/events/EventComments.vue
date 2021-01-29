@@ -9,7 +9,7 @@
         <div v-for="(comment, i) in eventComments" :key="i" class="comment-card">
           <div class="comment-card--left">
             <div class="comment-userimg">
-              <img src="/person.png">
+              <UserAvatar :avatar-prop="comment.user_avatar"/>
             </div>
           </div>
           <div class="comment-card--right">
@@ -43,6 +43,7 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import Loading from '@/components/organisms/common/Loading.vue';
 import CommentTextarea from "@/components/molecules/common/CommentTextarea.vue";
+import UserAvatar from "@/components/atoms/UserAvatar.vue";
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
@@ -52,7 +53,8 @@ export default {
   mixins: [commonMethods, errorMethods],
   components: {
     Loading,
-    CommentTextarea
+    CommentTextarea,
+    UserAvatar
   },
   data() {
     return {
@@ -198,11 +200,8 @@ export default {
       justify-content: flex-start;
       &--left {
         .comment-userimg {
-          img {
-            width: 30px;
-            border: 1px solid;
-            border-radius: 100%;
-          }
+          width: 45px;
+          height: 45px;
         }
       }
       &--right {

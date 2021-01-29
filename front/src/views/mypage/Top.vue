@@ -7,7 +7,7 @@
       <div class="my-page">
         <div class="my-page--top">
           <div class="my-page--top--img">
-            <img src="/person.png">
+            <UserAvatar v-if="!loading" :avatar-prop="user.avatar"/>
           </div>
           <div class="my-page--top--name">
             <div class="my-page main-title">{{ user.name }}</div>
@@ -29,16 +29,19 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/organisms/common/SideBar.vue";
+import UserAvatar from "@/components/atoms/UserAvatar.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
   components: {
-    SideBar
+    SideBar,
+    UserAvatar
   },
   data() {
     return {
-      user: ""
+      user: "",
+      loading: true
     }
   },
   methods: {
@@ -49,8 +52,11 @@ export default {
       .then((response) => {
         this.user = response.data
       })
-      .catch(function(error) {
+      .catch((error) => {
         this.apiErrors(error.response.status);
+      })
+      .finally(() => {
+        this.loading = false;
       });
     }
   },
@@ -76,14 +82,7 @@ export default {
       height: 120px;
       border-radius: 100%;
       z-index: 2;
-      img {
-        display: block;
-        border: 1px solid;
-        border-radius: 100%;
-        width: 100px;
-        margin: 10px;
-        background: rgb(241, 209, 144);
-      }
+      padding: 10px;
     }
     &--name {
       margin: 10px 0 0 140px;
