@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_22_214315) do
+ActiveRecord::Schema.define(version: 2021_01_29_020100) do
 
   create_table "event_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "event_id", null: false
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2021_01_22_214315) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "admin_type", default: 0
     t.string "token"
+    t.text "avatar"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
