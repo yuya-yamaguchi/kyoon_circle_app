@@ -19,7 +19,7 @@
 * AWS (EC2, ALB, Route53)
 
 # サイトURL
-https://studio-hummingbird.com/
+<a href="http://studio-hummingbird.com/" target="_blank" rel="noopener noreferrer">http://studio-hummingbird.com/</a>
 
 # サイト概要
 京都で活動している音楽サークルの専用サイト<br>
