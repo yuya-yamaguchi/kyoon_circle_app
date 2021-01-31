@@ -5,6 +5,8 @@ class News < ApplicationRecord
   validates :details, presence: true
   validates :details, length: { maximum: 1000, message: "は1000文字以下で入力してください" }, allow_blank: true
 
+  scope :recent, -> (count) { order('created_at DESC').limit(count) }
+
   def push_line
     group_id = "Cf3d1c27541003b233c4177ab4cb98680"
     message = {

@@ -47,7 +47,12 @@ export default {
   methods: {
     getMypageInfo: function() {
       axios.get(
-        `http://${g.hostName}/api/mypage/${this.$store.getters['user/id']}`
+        `http://${g.hostName}/api/mypage/${this.$store.getters['user/id']}`,
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
       )
       .then((response) => {
         this.user = response.data

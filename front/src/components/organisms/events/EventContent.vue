@@ -39,13 +39,13 @@
           <div class="event-middle-info">開催場所 {{ event.place }}</div>
         </div>
         <div class="entry-btns">
-          <div v-if="!entryFlg"
+          <div v-if="!isEntry"
                   @click="postEventEntry()"
                   class="entry-btns--entry"
                   :disabled="cantEntry"
                   :class="{ 'btn-disable': cantEntry}">参加する
           </div>
-          <div v-if="entryFlg"
+          <div v-if="isEntry"
                   @click="postCancelEventEntry()"
                   class="entry-btns--cancel some-updown-center"
                   :disabled="cantCancel"
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       event: "",
-      entryFlg: false,
+      isEntry: false,
       entryCnt: 0,
       loading: true,
       modalFlg: false,
@@ -106,7 +106,7 @@ export default {
       )
       .then((response) => {
         this.event = response.data.event;
-        this.entryFlg = response.data.entry_flg;
+        this.isEntry = response.data.is_entry;
         this.entryCnt = response.data.entry_cnt;
         this.$emit('set-event-title', this.event.title);
       })
@@ -130,14 +130,14 @@ export default {
         }
       )
       .then((response) => {
-        this.entryFlg = true;
+        this.isEntry = true;
         this.entryCnt = response.data;
       })
       .catch((error) => {
         if (error.response.status === 400 || error.response.status === 401) {
           this.$store.dispatch(
             "flash/create",
-            { message: error.response.data.error_message,
+            { message: error.response.data.error_message[0],
               type:    2
             }
           );
@@ -163,14 +163,14 @@ export default {
         }
       )
       .then((response) => {
-        this.entryFlg = false;
+        this.isEntry = false;
         this.entryCnt = response.data;
       })
       .catch((error) => {
         if (error.response.status === 400 || error.response.status === 401) {
           this.$store.dispatch(
             "flash/create",
-            { message: error.response.data.error_message,
+            { message: error.response.data.error_message[0],
               type:    2
             }
           );

@@ -14,9 +14,14 @@ ja:
         fee: 参加費
         place: 場所
         start_datetime: 開催日時
+      event_entry:
+        max_entry: ''
+        hold_date: ''
       news:
         title: タイトル
         details: 内容
+      studio_reserve:
+        date: ''
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'

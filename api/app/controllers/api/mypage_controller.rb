@@ -1,5 +1,5 @@
 class Api::MypageController < ApplicationController
-  before_action :set_user
+  before_action :auth_check
 
   def show
     render status: 200, json: @user
@@ -14,33 +14,19 @@ class Api::MypageController < ApplicationController
   end
 
   def studio_reserves
-    now = Time.now.in_time_zone
-    future_reserves = @user.studio_reserves
-                      .where('date >= ?', now.to_date)
-                      .order('date DESC')
-                      .order('start_time DESC')
-    history_reserves = @user.studio_reserves
-                       .where('date < ?', now.to_date)
-                       .order('date DESC')
-                       .order('start_time DESC')
+    future_reserves = @user.studio_reserves.after_today_desc
+    history_reserves = @user.studio_reserves.bofore_today_desc
     render status: 200, json: { future_reserves: future_reserves, history_reserves: history_reserves }
   end
 
   def events
-    now = Time.now.in_time_zone
-    future_events = @user.events.where('start_datetime >= ? ', now.to_date).order('start_datetime DESC')
-    history_events = @user.events.where('start_datetime < ? ', now.to_date).order('start_datetime DESC')
+    future_events = @user.events.after_today.desc
+    history_events = @user.events.before_today.desc
     render status: 200, json: { future_events: future_events, history_events: history_events }
   end
 
   private
   def user_params
     params.require(:user).permit(:name, :profile, :avatar)
-  end
-
-  def set_user
-    user_id = params[:user_id].present? ? params[:user_id] : params[:id]
-    @user = User.find_by(id: user_id)
-    render status: 404 if @user.nil?
   end
 end
