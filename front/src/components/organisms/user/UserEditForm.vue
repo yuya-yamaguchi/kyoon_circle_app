@@ -80,7 +80,7 @@ export default {
     // プロフィールの更新
     updateProfile: function() {
       axios.put(
-        `http://${g.hostName}/api/mypage/${this.$store.getters.['user/id']}`,
+        `http://${g.hostName}/api/mypage/${this.$store.getters['user/id']}`,
         {
           user: this.user
         },

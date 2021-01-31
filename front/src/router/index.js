@@ -3,6 +3,7 @@ import Top from '@/views/Top.vue'
 import Signup from '@/views/auth/Signup.vue'
 import Login from '@/views/auth/Login.vue'
 import StudioShow from '@/views/studio/Show.vue'
+import UserShow from '@/views/user/Show.vue'
 import MypageTop from '@/views/mypage/Top.vue'
 import MypageEdit from '@/views/mypage/Edit.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
@@ -72,6 +73,12 @@ const routes = [
     path: '/news/:id',
     name: 'NewsShow',
     component: NewsShow
+  },
+  // ユーザページ
+  {
+    path: '/users/:id',
+    name: 'UserShow',
+    component: UserShow
   },
   // マイページ
   {
