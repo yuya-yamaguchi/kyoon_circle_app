@@ -3,6 +3,7 @@ class Event < ApplicationRecord
 
   has_many :event_entries,  dependent: :destroy
   has_many :event_comments, dependent: :destroy
+  has_many :users, through: :event_entries
   
   validates :title, presence: true
   validates :title, length: { maximum: 40, message: "は40文字以下で入力してください" }, allow_blank: true
@@ -16,6 +17,16 @@ class Event < ApplicationRecord
   validates :fee, presence: true
   validates :place, presence: true
   validates :start_datetime, presence: true
+
+  scope :after_today,  -> { where('start_datetime >= ?', Time.now.in_time_zone.to_date) }
+  scope :before_today, -> { where('start_datetime <  ?', Time.now.in_time_zone.to_date) }
+  scope :asc, -> { order('start_datetime') }
+  scope :desc, -> { order('start_datetime DESC') }
+  scope :recent, -> (count) { after_today.asc.limit(count) }
+  scope :search, ->(event_type) do
+    return if event_type.nil? || event_type == "0"
+    where('event_type = ?', event_type)
+  end
   
   def set_edit_params
     # front側で編集する？
@@ -54,33 +65,5 @@ class Event < ApplicationRecord
         config.channel_token = ENV['LINE_CHANNEL_TOKEN']
     }
     response = client.push_message(group_id, message)
-  end
-
-  # イベントへのエントリーが可能かチェック
-  def entry_check
-    # 人数制限チェック
-    entered_num = self.event_entries.count
-    return "このイベントは定員に達したため参加いただけません" if self.max_entry != 0 && self.max_entry <= entered_num
-    # 開催日チェック
-    return "開催日を過ぎているため参加できません" if hold_date_chk
-    return ""
-  end
-
-  def cancel_check
-    return "開催日を過ぎているためキャンセルできません" if hold_date_chk
-    return ""
-  end
-
-  def self.search(event_params)
-    results = Event.all
-    results = results.where('event_type = ?', event_params[:event_type]) if event_params[:event_type] != nil && event_params[:event_type] != "0"
-    results = results.order('start_datetime DESC')
-    results
-  end
-
-  private
-  def hold_date_chk
-    now = Time.now.in_time_zone
-    self.start_datetime.to_date < now.to_date ? true : false
   end
 end

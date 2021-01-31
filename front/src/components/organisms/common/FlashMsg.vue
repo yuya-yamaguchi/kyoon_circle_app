@@ -1,6 +1,6 @@
 <template>
   <transition name="vshow">
-    <div v-show="showFlg" class="error-messages-container">
+    <div v-show="showFlg" class="messages-container">
       <div v-if="$store.getters['flash/type'] === 1" class="success-msg">{{ $store.getters['flash/message'] }}</div>
       <div v-if="$store.getters['flash/type'] === 2" class="error-msg">{{ $store.getters['flash/message'] }}</div>
     </div>
@@ -38,8 +38,8 @@ export default {
   opacity: 0;
 }
 
-.error-messages-container {
-  z-index:1;
+.messages-container {
+  z-index:99;
   position: fixed;
   top: 20%;
   left: 50%;

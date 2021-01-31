@@ -60,7 +60,12 @@ export default {
     // プロフィール情報の取得
     getProfile: function() {
       axios.get(
-        `http://${g.hostName}/api/mypage/${this.$store.getters['user/id']}`
+        `http://${g.hostName}/api/mypage/${this.$store.getters['user/id']}`,
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
       )
       .then((response) => {
         this.user = response.data
@@ -78,6 +83,11 @@ export default {
         `http://${g.hostName}/api/mypage/${this.$store.getters.['user/id']}`,
         {
           user: this.user
+        },
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
         }
       )
       .then((response) => {

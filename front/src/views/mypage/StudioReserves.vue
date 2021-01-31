@@ -56,6 +56,9 @@ export default {
         {
           params: {
             user_id: this.$store.getters['user/id']
+          },
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
           }
         }
       )

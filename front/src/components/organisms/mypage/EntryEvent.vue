@@ -48,6 +48,9 @@ export default {
         {
           params: {
             user_id: this.$store.getters['user/id']
+          },
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
           }
         }
       )
@@ -55,7 +58,7 @@ export default {
         this.futureEvents  = response.data.future_events;
         this.historyEvents  = response.data.history_events;
       })
-      .catch(function(error) {
+      .catch((error) => {
         this.apiErrors(error.response.status);
       });
     },

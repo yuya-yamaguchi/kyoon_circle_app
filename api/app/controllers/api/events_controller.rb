@@ -1,30 +1,24 @@
 class Api::EventsController < ApplicationController
   include Pagy::Backend
   
-  before_action :user_check, only: [:edit, :update, :create, :destroy, :entry, :entry_cancel]
+  before_action :auth_check, only: [:edit, :update, :create, :destroy, :entry, :entry_cancel]
   before_action :admin_check, only: [:edit, :update, :create, :destroy]
-  before_action :set_event,  only: [:show, :edit, :update, :destroy, :entry, :entry_cancel]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :entry, :entry_cancel]
 
   def index
-    search_events = Event.search(params)
+    search_events = Event.search(params[:event_type]).desc
     pagy, events = pagy(search_events, items: 5)
     render status: 200, json: { events: events, pagy: pagy_metadata(pagy) }
   end
 
   def show
-    # ログイン時はユーザがそのイベントに参加しているか状態を確認
-    entry_flg = false
+    is_entry = false
     if params[:user_id].to_i > 0
-      cnt = EventEntry.where(event_id: params[:id])
-                      .where(user_id: params[:user_id])
-                      .count
-      entry_flg = true if cnt > 0
+      is_entry = @event.event_entries.where(user_id: params[:user_id]).present?
     end
-    entry_cnt = EventEntry.where(event_id: params[:id]).count
+    entry_cnt = @event.event_entries.count
     render status: 200,
-           json: { event:     @event,
-                   entry_flg: entry_flg,
-                   entry_cnt: entry_cnt }
+           json: { event: @event, is_entry: is_entry, entry_cnt: entry_cnt }
   end
 
   def edit
@@ -62,20 +56,23 @@ class Api::EventsController < ApplicationController
   end
 
   def entry
-    message = @event.entry_check
-    return render status: 400, json:{ error_message: message } if message != ""
-    EventEntry.create(user_id: params[:user_id], event_id: params[:id])
-    entry_cnt = @event.event_entries.count
-    render status: 200, json: entry_cnt
+    event_entry = EventEntry.new(user_id: params[:user_id], event_id: params[:id])
+    if event_entry.save
+      entry_cnt = @event.event_entries.count
+      render status: 200, json: entry_cnt
+    else
+      render status: 400, json:{ error_message: event_entry.errors.full_messages }
+    end
   end
 
   def entry_cancel
-    message = @event.cancel_check
-    return render status: 400, json:{ error_message: message } if message != ""
-    event_entry = EventEntry.where(user_id: params[:user_id]).where(event_id: params[:id])
-    event_entry.destroy_all
-    entry_cnt = EventEntry.where(event_id: params[:id]).count
-    render status: 200,json: entry_cnt
+    event_entry = @event.event_entries.find_by(user_id: params[:user_id])
+    if event_entry.destroy
+      entry_cnt = @event.event_entries.count
+      render status: 200, json: entry_cnt
+    else
+      render status: 400, json:{ error_message: event_entry.errors.full_messages }
+    end
   end
   
   private
@@ -120,16 +117,6 @@ class Api::EventsController < ApplicationController
       line_msg_push: event_params[:line_msg_push]
     }
     return return_params
-  end
-
-  def user_check
-    return render status: 401, json:{ error_message: "会員登録（またはログイン）を行ってください" } if params[:user_id] == 0
-    @user = User.find_by(token: request.headers['Authorization'])
-    return render status: 401, json:{ error_message: "認証に失敗しました。再度ログインしてお試しください。" } if @user.nil?
-  end
-
-  def admin_check
-    return render status: 403, json:{ error_message: "操作権限がありません" } if @user.admin_type == 0
   end
 
   def set_event

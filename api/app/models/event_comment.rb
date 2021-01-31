@@ -5,6 +5,8 @@ class EventComment < ApplicationRecord
   validates :text, presence: true
   validates :text, length: { maximum: 200, message: "は200文字以下で入力してください" }, allow_blank: true
 
+  scope :recent, -> { order('created_at DESC') }
+
   def set_out_params
     out_params = {
       id:          self.id,
