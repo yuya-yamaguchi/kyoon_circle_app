@@ -1,4 +1,4 @@
-var hostName = "";
+let hostName = "";
 if (location.hostname == "localhost") {
   hostName = "localhost:3000"
 }

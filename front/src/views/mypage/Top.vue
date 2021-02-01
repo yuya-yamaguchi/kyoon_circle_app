@@ -4,7 +4,7 @@
       <SideBar :select-menu-prop="1"/>
     </div>
     <div class="double-container--right">
-      <UserInfo :user-prop="user" :loading="loading"/>
+      <UserInfo :user-prop="user" :userInstrumentsProp="userInstruments" :loading="loading"/>
     </div>
   </div>
 </template>
@@ -25,6 +25,7 @@ export default {
   data() {
     return {
       user: "",
+      userInstruments: [],
       loading: true
     }
   },
@@ -39,7 +40,8 @@ export default {
         }
       )
       .then((response) => {
-        this.user = response.data
+        this.user = response.data.user,
+        this.userInstruments = response.data.user_instruments
       })
       .catch((error) => {
         this.apiErrors(error.response.status);

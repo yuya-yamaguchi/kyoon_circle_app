@@ -137,7 +137,7 @@ export default {
         if (error.response.status === 400 || error.response.status === 401) {
           this.$store.dispatch(
             "flash/create",
-            { message: error.response.data.error_message[0],
+            { message: error.response.data.error_message,
               type:    2
             }
           );
@@ -170,7 +170,7 @@ export default {
         if (error.response.status === 400 || error.response.status === 401) {
           this.$store.dispatch(
             "flash/create",
-            { message: error.response.data.error_message[0],
+            { message: error.response.data.error_message,
               type:    2
             }
           );

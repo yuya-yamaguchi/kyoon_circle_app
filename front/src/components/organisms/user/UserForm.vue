@@ -18,6 +18,12 @@
         <p class="form-item--err-msg">{{ errMsg.avatar }}</p>
       </div>
       <div class="form-item">
+        <UserInstrumentEdit
+          v-if="userInstruments.length!=0"
+          :userInstrumentsProp="userInstruments"
+          @change-Instruments="changeUserInstruments"/>
+      </div>
+      <div class="form-item">
         <p class="form-item--name">ユーザ名</p>
         <input type="text" v-model="user.name" class="default-input" @blur="userNameChk()" @keyup="userNameChk()">
         <p class="form-item--err-msg">{{ errMsg.name }}</p>
@@ -39,6 +45,7 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import ErrMsg from "@/components/organisms/common/ErrMsg.vue";
 import UserAvatar from "@/components/atoms/UserAvatar.vue";
+import UserInstrumentEdit from "@/components/molecules/instruments/UserInstrumentEdit.vue";
 import { commonCheck } from '@/mixins/commonCheck';
 import { errorMethods } from '@/mixins/errorMethods';
 
@@ -46,11 +53,13 @@ export default {
   mixins: [commonCheck, errorMethods],
   components: {
     ErrMsg,
-    UserAvatar
+    UserAvatar,
+    UserInstrumentEdit
   },
   data() {
     return {
       user: {},
+      userInstruments: [],
       errMsg: {},
       apiErrorMessages: [],
       loading: true
@@ -68,9 +77,10 @@ export default {
         }
       )
       .then((response) => {
-        this.user = response.data
+        this.user = response.data.user,
+        this.userInstruments = response.data.user_instruments
       })
-      .catch(function(error) {
+      .catch((error) => {
         this.apiErrors(error.response.status);
       })
       .finally(() => {
@@ -133,6 +143,9 @@ export default {
     },
     deleteAvatar: function() {
       this.user.avatar = ""
+    },
+    changeUserInstruments: function(instrument_ids) {
+      this.user.instrument_ids = instrument_ids
     },
     userNameChk: function() {
       this.errMsg.name = this.formStrChk(this.user.name, 20);

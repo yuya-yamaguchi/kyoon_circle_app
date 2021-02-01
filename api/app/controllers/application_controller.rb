@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
   end
 
   def auth_check
+    return render status: 401, json:{ error_message: "ログインまたは会員登録を行ってください。" } if request.headers['Authorization'].blank?
     @user = set_user
     return render status: 401, json:{ error_message: "認証に失敗しました。再度ログインしてお試しください。" } if @user.nil?
   end

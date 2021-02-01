@@ -7,31 +7,37 @@
       <div class="user-info--top--name">
         <div class="user-info main-title">{{ userProp.name }}</div>
       </div>
-    </div>
-    <div class="user-info--profile">
-      <router-link v-if="isCurrentUser" to="/mypage/edit" class="user-info--profile--edit some-updown-center">
+      <router-link v-if="isMypage" to="/mypage/edit" class="user-info--top--edit some-updown-center">
         <fa icon="edit"></fa>
         <span>プロフィールを変更する</span>
       </router-link>
+    </div>
+    <div class="user-info--profile">
+      <div class="user-info--profile--instruments">
+        <UserInstrument :userInstrumentsProp="userInstrumentsProp"/>
+      </div>
       <div class="user-info--profile--contents">{{ userProp.profile }}</div>
     </div>
   </div>
 </template>
 
 <script>
+import UserInstrument from "@/components/molecules/instruments/UserInstrument.vue";
 import UserAvatar from "@/components/atoms/UserAvatar.vue";
 
 export default {
   components: {
-    UserAvatar
+    UserAvatar,
+    UserInstrument
   },
   props: {
     userProp: {},
+    userInstrumentsProp: {},
     loading: {}
   },
   computed: {
-    isCurrentUser() {
-      return this.$store.getters['user/id'] == this.$route.params.id ? true : false
+    isMypage() {
+      return (location.pathname === '/mypage') ? true : false
     }
   }
 }
@@ -58,14 +64,8 @@ export default {
     &--name {
       margin: 10px 0 0 140px;
     }
-  }
-  &--profile {
-    background: #FFF;
-    padding: 20px;
-    margin-left: 30px;
-    min-height: 300px;
     &--edit {
-      display: block;
+      margin-left:auto;
       text-align: right;
       font-size: 14px;
       font-weight: bold;
@@ -78,8 +78,17 @@ export default {
         color: var(--accent-color)
       }
     }
+  }
+  &--profile {
+    background: #FFF;
+    padding: 20px;
+    margin-left: 30px;
+    min-height: 300px;
+    &--instruments {
+      margin-left: 100px;
+    }
     &--contents {
-      margin-top: 80px;
+      margin-top: 70px;
       font-size: 14px;
       box-sizing: border-box;
       background: #FFF;

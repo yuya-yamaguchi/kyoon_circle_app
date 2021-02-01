@@ -6,7 +6,7 @@
     <div class="double-container--right">
       <div class="user-profile-container">
         <h1 class="main-title">ユーザ情報変更</h1>
-        <UserEditForm/>
+        <UserForm/>
       </div>
     </div>
   </div>
@@ -14,12 +14,12 @@
 
 <script>
 import SideBar from "@/components/organisms/common/SideBar.vue";
-import UserEditForm from "@/components/organisms/user/UserEditForm.vue";
+import UserForm from "@/components/organisms/user/UserForm.vue";
 
 export default {
   components: {
     SideBar,
-    UserEditForm
+    UserForm
   }
 }
 </script>

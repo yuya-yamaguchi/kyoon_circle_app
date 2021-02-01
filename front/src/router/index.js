@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Top from '@/views/Top.vue'
 import Signup from '@/views/auth/Signup.vue'
 import Login from '@/views/auth/Login.vue'
+import FirstIntroduction from '@/views/introduction/FirstIntroduction.vue'
 import StudioShow from '@/views/studio/Show.vue'
 import UserShow from '@/views/user/Show.vue'
 import MypageTop from '@/views/mypage/Top.vue'
@@ -43,6 +44,12 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  // 新規会員登録後の導入画面
+  {
+    path: '/first_introduction',
+    name: 'FirstIntroduction',
+    component: FirstIntroduction
   },
   // スタジオ詳細
   {

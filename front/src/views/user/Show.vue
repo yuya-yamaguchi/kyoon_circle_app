@@ -1,6 +1,9 @@
 <template>
   <div class="single-container">
-    <UserInfo :user-prop="user" :loading="loading"/>
+    <UserInfo
+      :user-prop="user"
+      :user-instruments-prop="userInstruments"
+      :loading="loading"/>
   </div>
 </template>
 
@@ -18,6 +21,7 @@ export default {
   data() {
     return {
       user: "",
+      userInstruments: [],
       loading: true
     }
   },
@@ -27,7 +31,8 @@ export default {
         `http://${g.hostName}/api/users/${this.$route.params.id}`
       )
       .then((response) => {
-        this.user = response.data
+        this.user = response.data.user
+        this.userInstruments = response.data.user_instruments
       })
       .catch((error) => {
         this.apiErrors(error.response.status);

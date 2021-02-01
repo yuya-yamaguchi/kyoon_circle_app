@@ -61,7 +61,7 @@ class Api::EventsController < ApplicationController
       entry_cnt = @event.event_entries.count
       render status: 200, json: entry_cnt
     else
-      render status: 400, json:{ error_message: event_entry.errors.full_messages }
+      render status: 400, json:{ error_message: event_entry.errors.full_messages[0] }
     end
   end
 
@@ -71,7 +71,7 @@ class Api::EventsController < ApplicationController
       entry_cnt = @event.event_entries.count
       render status: 200, json: entry_cnt
     else
-      render status: 400, json:{ error_message: event_entry.errors.full_messages }
+      render status: 400, json:{ error_message: event_entry.errors.full_messages[0] }
     end
   end
   
