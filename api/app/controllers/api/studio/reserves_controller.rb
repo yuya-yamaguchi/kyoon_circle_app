@@ -13,7 +13,7 @@ class Api::Studio::ReservesController < ApplicationController
     if studio_reserve.save
       render status: 200
     else
-      render status: 400, json: { error_message: studio_reserve.errors.full_messages }
+      render status: 400, json: { error_message: studio_reserve.errors.full_messages[0] }
     end
   end
 
@@ -22,7 +22,7 @@ class Api::Studio::ReservesController < ApplicationController
     if studio_reserve.destroy
       render status: 200
     else
-      render status: 400, json: { error_message: studio_reserve.errors.full_messages }
+      render status: 400, json: { error_message: studio_reserve.errors.full_messages[0] }
     end
   end
 

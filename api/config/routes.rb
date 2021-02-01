@@ -17,6 +17,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :users, only: [:show]
+
     resources :events, only: [:index, :show, :create, :edit, :update, :destroy] do
       member do
         post :entry

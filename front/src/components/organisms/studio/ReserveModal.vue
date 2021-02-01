@@ -194,7 +194,7 @@ export default {
           })
         }
         else {
-          this.errorMessages.api = error.response.data.error_message[0];
+          this.errorMessages.api = error.response.data.error_message;
         }
       });
     },

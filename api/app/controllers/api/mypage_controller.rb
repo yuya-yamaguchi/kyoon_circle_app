@@ -2,7 +2,8 @@ class Api::MypageController < ApplicationController
   before_action :auth_check
 
   def show
-    render status: 200, json: @user
+    user_instruments = @user.set_instruments
+    render status: 200, json: { user: @user, user_instruments: user_instruments }
   end
 
   def update
@@ -27,6 +28,6 @@ class Api::MypageController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:name, :profile, :avatar)
+    params.require(:user).permit(:name, :profile, :avatar, { :instrument_ids => [] })
   end
 end

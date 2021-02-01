@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_29_020100) do
+ActiveRecord::Schema.define(version: 2021_01_31_101357) do
 
   create_table "event_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "event_id", null: false
@@ -47,6 +47,12 @@ ActiveRecord::Schema.define(version: 2021_01_29_020100) do
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
+  create_table "instruments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "news", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", null: false
@@ -76,6 +82,15 @@ ActiveRecord::Schema.define(version: 2021_01_29_020100) do
     t.integer "fee", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_instruments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "instrument_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["instrument_id"], name: "index_user_instruments_on_instrument_id"
+    t.index ["user_id"], name: "index_user_instruments_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|

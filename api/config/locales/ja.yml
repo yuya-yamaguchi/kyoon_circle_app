@@ -4,6 +4,8 @@ ja:
     attributes:
       user:
         name: ユーザ名
+        password: パスワード
+        email: メールアドレス
       studio:
         name: スタジオ名
         fee:  料金
