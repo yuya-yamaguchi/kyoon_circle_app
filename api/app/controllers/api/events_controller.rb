@@ -6,9 +6,13 @@ class Api::EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :entry, :entry_cancel]
 
   def index
-    search_events = Event.search(params[:event_type]).desc
+    search_events = Event.search(params[:event_category_id]).desc
     pagy, events = pagy(search_events, items: 5)
-    render status: 200, json: { events: events, pagy: pagy_metadata(pagy) }
+    out_params = []
+    events.each do |event|
+      out_params << event.set_index_params
+    end
+    render status: 200, json: { events: out_params, pagy: pagy_metadata(pagy) }
   end
 
   def show
@@ -88,7 +92,7 @@ class Api::EventsController < ApplicationController
                   :place,
                   :fee,
                   :max_entry,
-                  :event_type,
+                  :event_category_id,
                   :line_msg_push)
           .merge(user_id: params[:user_id])
   end
@@ -113,7 +117,7 @@ class Api::EventsController < ApplicationController
       max_entry: event_params[:max_entry],
       start_datetime: start_datetime,
       end_datetime: end_datetime,
-      event_type: event_params[:event_type],
+      event_category_id: event_params[:event_category_id],
       line_msg_push: event_params[:line_msg_push]
     }
     return return_params

@@ -47,9 +47,10 @@ export default {
       )
       .then((response) => {
         this.events = response.data.events;
+        console.log(this.events)
         this.pagy = response.data.pagy;
       })
-      .catch(function(error) {
+      .catch((error) => {
         this.apiErrors(error.response.status);
       });
     },

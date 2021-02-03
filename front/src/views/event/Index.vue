@@ -7,7 +7,7 @@
         セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
         お気軽にご参加ください！
       </p>
-      <SearchEvent :searchSelectProp="searchSelect" @search-events="searchEvents"/>
+      <SearchEvent :selectEventCategoryProp="selectEventCategory" @search-events="searchEvents"/>
       <EventList v-if="events.length!=0" :events-prop="events"/>
       <div v-if="events.length==0" class="nothing-msg">該当のイベントはありません</div>
       <Pagination v-if="events.length!=0" :pagy-prop="pagy" @chage-page="changePage"/>
@@ -33,13 +33,11 @@ export default {
     BreadCrumbs
   },
   data() {
-    var selectEventType = (this.$route.query.event_type == undefined ) ? 0 : this.$route.query.event_type
+    let selectEventCategory = (this.$route.query.event_category == undefined ) ? 0 : this.$route.query.event_category
     return {
       events: [],
       pagy: "",
-      searchSelect: {
-        eventType: selectEventType
-      }
+      selectEventCategory: selectEventCategory
     }
   },
   computed: {
@@ -62,18 +60,18 @@ export default {
     // $routeが変更されたことをパラメータが変更されたことをwatchにて検知する
     '$route' (to) {
       if ( to.query.page != undefined ) {
-        this.getEvents(to.query.page, to.query.event_type)
+        this.getEvents(to.query.page, to.query.event_category)
       }
     }
   },
   methods: {
-    getEvents: function(pageNo, eventType) {
+    getEvents: function(pageNo, eventCategory) {
       axios.get(
         `http://${g.hostName}/api/events`,
         {
           params: {
             page: pageNo,
-            event_type: eventType
+            event_category_id: eventCategory
           }
         }
       )
@@ -90,22 +88,22 @@ export default {
         name: "EventIndex",
         query: {
           page: pageNo,
-          event_type: this.selectEventType
+          eventCategory: this.selectEventCategory
         }
       })
     },
-    searchEvents: function(searchSelect) {
+    searchEvents: function(selectEventCategory) {
       this.$router.push({
         name: "EventIndex",
         query: {
           page: 1,
-          event_type: searchSelect.eventType
+          event_category: selectEventCategory
         }
       })
     }
   },
   mounted: function() {
-    this.getEvents(this.$route.query.page, this.$route.query.event_type);
+    this.getEvents(this.$route.query.page, this.$route.query.event_category);
   }
 }
 </script>

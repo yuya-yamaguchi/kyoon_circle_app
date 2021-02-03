@@ -31,7 +31,6 @@ export default {
   data() {
     return {
       event: {
-        event_type: 0,
         title: "",
         details: "",
         start_date: "",
@@ -68,7 +67,6 @@ export default {
       )
       .then((response) => {
         this.apiErrorMessages = []
-        console.log(response);
         this.$router.push({
           name: "EventShow",
           params: {
