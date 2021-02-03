@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_31_101357) do
+ActiveRecord::Schema.define(version: 2021_02_02_095457) do
+
+  create_table "event_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "event_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "event_id", null: false
@@ -40,10 +46,11 @@ ActiveRecord::Schema.define(version: 2021_01_31_101357) do
     t.integer "max_entry", default: 0
     t.datetime "start_datetime"
     t.datetime "end_datetime"
-    t.integer "event_type", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "line_msg_push", default: false
+    t.bigint "event_category_id"
+    t.index ["event_category_id"], name: "index_events_on_event_category_id"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
@@ -122,4 +129,5 @@ ActiveRecord::Schema.define(version: 2021_01_31_101357) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "events", "event_categories"
 end

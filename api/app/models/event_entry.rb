@@ -22,8 +22,10 @@ class EventEntry < ApplicationRecord
 
   # 開催日を過ぎていないか（キャンセル時）
   def validate_hold_date_del
-    errors.add(:hold_date ,"開催日を過ぎているためキャンセルできません") if is_before_today
-    throw(:abort)
+    if is_before_today
+      errors.add(:hold_date ,"開催日を過ぎているためキャンセルできません")
+      throw(:abort)
+    end
   end
 
   def is_before_today

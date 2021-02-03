@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :event_categories, only: [:index]
+
     resources :news, only: [:index, :show, :create, :update, :destroy]
     
     # 管理者用機能

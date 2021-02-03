@@ -40,7 +40,7 @@
             <template v-if="adminProp==0">
               <td v-if="r.reserve_type==1"  class="already-reserved">×</td>
               <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
-              <td v-else @click="displayReserveModal(r)"  class="can-reserve"></td>
+              <td v-else @click="displayReserveModal(r)"  class="can-reserve">{{fmtDate(r.date,1)}} {{r.hour}}:{{('00' + r.minutes).slice( -2 )}}</td>
             </template>
             <template v-if="adminProp==1">
               <td v-if="r.reserve_type==1" class="reserved-user"
@@ -203,9 +203,12 @@ export default {
     width: 40px;
     height: 20px;
     background: #FFF;
+    font-size: 12px;
+    text-align: center;
     cursor: pointer;
     &:hover{
-      background: var(--accent-color);
+      background: rgb(231, 231, 231);
+      color: #888;
       transition: .3s;
     }
   }

@@ -8,13 +8,13 @@
     <form v-on:submit.prevent="displayConfirm()">
       <div class="form-item">
         <p class="form-item--name">イベントの種類</p>
-        <select v-model="event.event_type" @change="eventTypeChk()">
+        <select v-model="event.event_category_id" @change="eventTypeChk()">
           <option disabled value="">イベントの種類を選択して下さい</option>
-          <option v-for="option in options" :value="option.event_type" :key="option.id">
-            {{ option.name }}
+          <option v-for="eventCategory in eventCategories" :value="eventCategory.id" :key="eventCategory.id">
+            {{ eventCategory.name }}
           </option>
         </select>
-        <div class="form-item--err-msg">{{errMsg.event_type}}</div>
+        <div class="form-item--err-msg">{{errMsg.eventCategory}}</div>
       </div>
       <div class="form-item">
         <p class="form-item--name">イベント名</p>
@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
 import { commonCheck } from '@/mixins/commonCheck';
 
@@ -93,22 +95,8 @@ export default {
     return {
       event: this.eventProp,
       modalFlg: false,
-      errMsg: {
-        event_type: "",
-        title:      "",
-        details:    "",
-        start_date: "",
-        time:       "",
-        place:      "",
-        fee:        "",
-        max_entry:  ""
-      },
-      options: [
-        { event_type: 1, name: 'セッション' },
-        { event_type: 2, name: '飲み会・懇親会' },
-        { event_type: 3, name: '合宿' },
-        { event_type: 4, name: 'その他' }
-      ],
+      errMsg: {},
+      eventCategories: [],
       hours: [...Array(24).keys()].map(i => i++),
        mins: [...Array(6).keys()].map(i => i*=10),
     }
@@ -130,6 +118,17 @@ export default {
       }
       this.modalFlg = true
     },
+    getEventCategories: function() {
+      axios.get(
+        `http://${g.hostName}/api/event_categories`
+      )
+      .then((response) => {
+        this.eventCategories = response.data
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
     postEvent: function(confirm) {
       this.modalFlg = false;
       // 確認モーダルで登録が押された場合、APIにデータをpost
@@ -141,12 +140,15 @@ export default {
       return location.pathname == '/event/new' ? true : false
     },
     eventTypeChk: function() {
-      if (this.event.event_type < this.options[0].event_type ||
-          this.event.event_type > this.options.slice(-1)[0]) {
-        this.errMsg.event_type = "選択してください"
+      let eventCategoryIds = []
+      this.eventCategories.forEach(function(eventCategory) {
+        eventCategoryIds.push(eventCategory.id)
+      });
+      if (!eventCategoryIds.includes(this.event.event_category_id)) {
+        this.errMsg.eventCategory = "選択してください"
       }
       else {
-        this.errMsg.event_type = ""
+        this.errMsg.eventCategory = ""
       }
     },
     eventTitleChk: function() {
@@ -182,6 +184,9 @@ export default {
     eventFeeChk: function() {
       this.errMsg.fee = this.formStrChk(this.event.fee, 10);
     }
+  },
+  mounted() {
+    this.getEventCategories();
   }
 }
 </script>

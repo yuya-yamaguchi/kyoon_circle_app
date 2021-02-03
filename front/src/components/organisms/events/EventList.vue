@@ -9,10 +9,7 @@
         </div>
         <div class="event-card--middle">
           <p class="event-card--middle--title">{{ event.title }}</p>
-          <p v-if="event.event_type=='1'" class="event-card--middle--type">セッション</p>
-          <p v-else-if="event.event_type=='2'" class="event-card--middle--type">飲み会・懇親会</p>
-          <p v-else-if="event.event_type=='3'" class="event-card--middle--type">合宿</p>
-          <p v-else-if="event.event_type=='4'" class="event-card--middle--type">その他</p>
+          <p class="event-card--middle--type">{{ event.event_category }}</p>
           <p>参加費
             <span class="event-card--middle--fee">{{ event.fee }}</span>
           </p>
