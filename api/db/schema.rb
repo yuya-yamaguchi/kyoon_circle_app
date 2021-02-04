@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_02_095457) do
+ActiveRecord::Schema.define(version: 2021_02_03_064430) do
 
   create_table "event_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -35,6 +35,14 @@ ActiveRecord::Schema.define(version: 2021_02_02_095457) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_id"], name: "index_event_entries_on_event_id"
     t.index ["user_id"], name: "index_event_entries_on_user_id"
+  end
+
+  create_table "event_sessions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "max_musics", default: "0"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_event_sessions_on_event_id"
   end
 
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -70,6 +78,36 @@ ActiveRecord::Schema.define(version: 2021_02_02_095457) do
     t.index ["user_id"], name: "index_news_on_user_id"
   end
 
+  create_table "part_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "instrument_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["instrument_id"], name: "index_part_categories_on_instrument_id"
+  end
+
+  create_table "session_musics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.string "artist", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_session_musics_on_event_id"
+    t.index ["user_id"], name: "index_session_musics_on_user_id"
+  end
+
+  create_table "session_parts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "session_music_id", null: false
+    t.bigint "part_category_id", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["part_category_id"], name: "index_session_parts_on_part_category_id"
+    t.index ["session_music_id"], name: "index_session_parts_on_session_music_id"
+  end
+
   create_table "studio_reserves", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "studio_id", null: false
     t.bigint "user_id", null: false
@@ -89,6 +127,15 @@ ActiveRecord::Schema.define(version: 2021_02_02_095457) do
     t.integer "fee", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_entry_parts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "session_part_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["session_part_id"], name: "index_user_entry_parts_on_session_part_id"
+    t.index ["user_id"], name: "index_user_entry_parts_on_user_id"
   end
 
   create_table "user_instruments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|

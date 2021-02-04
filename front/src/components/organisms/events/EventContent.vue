@@ -3,61 +3,58 @@
     <ConfirmModal v-show="modalFlg"
       :modal-msg-prop="modalMsg"
       @process-confirm="deleteEvent"/>
-    <Loading v-if="loading"/>
-    <div v-else>
-      <div class="space-between">
-        <h1 class="main-title">{{ event.title }}</h1>
-        <div v-show="$store.getters['user/adminType']>0">
-          <router-link :to="`/event/${event.id}/edit`" class="edit-btn some-updown-center">
-            <fa icon="edit"></fa>
-            <span>編集する</span>
-          </router-link>
-          <a @click="displayConfirmModal" class="delete-btn some-updown-center">
-            <fa icon="trash"></fa>
-            <span>削除する</span>
-          </a>
+    <div class="space-between">
+      <h1 class="main-title">{{ event.title }}</h1>
+      <div v-show="$store.getters['user/adminType']>0">
+        <router-link :to="`/event/${event.id}/edit`" class="edit-btn some-updown-center">
+          <fa icon="edit"></fa>
+          <span>編集する</span>
+        </router-link>
+        <a @click="displayConfirmModal" class="delete-btn some-updown-center">
+          <fa icon="trash"></fa>
+          <span>削除する</span>
+        </a>
+      </div>
+    </div>
+    <p v-if="isEventEnd()" class="cant-entry-msg">このイベントは終了しました</p>
+    <p v-else-if="isOverCapacity()" class="cant-entry-msg">このイベントは定員に達しました</p>
+    <div class="event-top-info">
+      <div class="number-info">
+        <p class="number-info--title">参加費</p>
+        <p class="number-info--value">{{ event.fee }}</p>
+      </div>
+      <div class="number-info">
+        <p class="number-info--title">参加人数</p>
+        <p class="number-info--value">
+          <span>{{ entryCnt }}人</span>
+          <span v-show="event.max_entry>0"> / {{ event.max_entry }}人</span>
+        </p>
+      </div>
+    </div>
+    <div class="space-between">
+      <div>
+        <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 2) }}</div>
+        <div class="event-middle-info">開催場所 {{ event.place }}</div>
+      </div>
+      <div class="entry-btns">
+        <div v-if="!isEntry"
+                @click="postEventEntry()"
+                class="entry-btns--entry"
+                :disabled="cantEntry"
+                :class="{ 'btn-disable': cantEntry}">参加する
+        </div>
+        <div v-if="isEntry"
+                @click="postCancelEventEntry()"
+                class="entry-btns--cancel some-updown-center"
+                :disabled="cantCancel"
+                :class="{ 'btn-disable': cantCancel}">
+          <span>参加をやめる</span>
+          <fa icon="sad-tear"></fa>
         </div>
       </div>
-      <p v-if="isEventEnd()" class="cant-entry-msg">このイベントは終了しました</p>
-      <p v-else-if="isOverCapacity()" class="cant-entry-msg">このイベントは定員に達しました</p>
-      <div class="event-top-info">
-        <div class="number-info">
-          <p class="number-info--title">参加費</p>
-          <p class="number-info--value">{{ event.fee }}</p>
-        </div>
-        <div class="number-info">
-          <p class="number-info--title">参加人数</p>
-          <p class="number-info--value">
-            <span>{{ entryCnt }}人</span>
-            <span v-show="event.max_entry>0"> / {{ event.max_entry }}人</span>
-          </p>
-        </div>
-      </div>
-      <div class="space-between">
-        <div>
-          <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 2) }}</div>
-          <div class="event-middle-info">開催場所 {{ event.place }}</div>
-        </div>
-        <div class="entry-btns">
-          <div v-if="!isEntry"
-                  @click="postEventEntry()"
-                  class="entry-btns--entry"
-                  :disabled="cantEntry"
-                  :class="{ 'btn-disable': cantEntry}">参加する
-          </div>
-          <div v-if="isEntry"
-                  @click="postCancelEventEntry()"
-                  class="entry-btns--cancel some-updown-center"
-                  :disabled="cantCancel"
-                  :class="{ 'btn-disable': cantCancel}">
-            <span>参加をやめる</span>
-            <fa icon="sad-tear"></fa>
-          </div>
-        </div>
-      </div>
-      <div class="event-details">
-        {{ event.details }}
-      </div>
+    </div>
+    <div class="event-details">
+      {{ event.details }}
     </div>
   </div>
 </template>
@@ -65,7 +62,6 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import Loading from '@/components/organisms/common/Loading.vue';
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
@@ -75,15 +71,18 @@ var today = new Date();
 export default {
   mixins: [commonMethods, errorMethods],
   components: {
-    Loading,
     ConfirmModal
+  },
+  props: {
+    eventProp: {},
+    isEntryProp: {},
+    entryCntProp: {}
   },
   data() {
     return {
-      event: "",
-      isEntry: false,
-      entryCnt: 0,
-      loading: true,
+      event: this.eventProp,
+      isEntry: this.isEntryProp,
+      entryCnt: this.entryCntProp,
       modalFlg: false,
       cantEntry: false,
       cantCancel: false,
@@ -95,28 +94,6 @@ export default {
     }
   },
   methods: {
-    getEvent: function() {
-      axios.get(
-        `http://${g.hostName}/api/events/${this.$route.params.id}`,
-        {
-          params: {
-            user_id: this.$store.getters['user/id']
-          }
-        }
-      )
-      .then((response) => {
-        this.event = response.data.event;
-        this.isEntry = response.data.is_entry;
-        this.entryCnt = response.data.entry_cnt;
-        this.$emit('set-event-title', this.event.title);
-      })
-      .catch((error) => {
-        this.apiErrors(error.response.status);
-      })
-      .finally(() => {
-        this.loading = false;
-      });
-    },
     postEventEntry: function() {
       axios.post(
         `http://${g.hostName}/api/events/${this.$route.params.id}/entry`,
@@ -236,9 +213,6 @@ export default {
       this.cantEntry = false
       return false
     }
-  },
-  mounted: function() {
-    this.getEvent();
   }
 }
 </script>

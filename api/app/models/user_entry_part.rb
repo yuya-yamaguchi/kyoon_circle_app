@@ -1,0 +1,2 @@
+class UserEntryPart < ApplicationRecord
+end

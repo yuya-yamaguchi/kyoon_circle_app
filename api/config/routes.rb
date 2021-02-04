@@ -26,10 +26,21 @@ Rails.application.routes.draw do
       end
       scope module: :event do
         resources :comments, only: [:index, :create, :update, :destroy]
+        scope module: :sessions do
+          resources :session_musics, only: [:index, :create] do
+            resources :session_parts do
+              member do
+                post 'entry'
+              end
+            end
+          end
+        end
       end
     end
 
     resources :event_categories, only: [:index]
+
+    resources :part_categories, only: [:index]
 
     resources :news, only: [:index, :show, :create, :update, :destroy]
     

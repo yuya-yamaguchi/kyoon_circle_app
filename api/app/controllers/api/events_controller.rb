@@ -43,6 +43,9 @@ class Api::EventsController < ApplicationController
     event_params = require_event_params
     event = Event.new(set_event_params(event_params))
     if event.save
+      if event_params[:event_category_id] == 2
+        EventSession.create(event_id: event.id)
+      end
       # グループラインへのメッセージ送信
       event.push_line if event.line_msg_push
       render status: 201, json: event

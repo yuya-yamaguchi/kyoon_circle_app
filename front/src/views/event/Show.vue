@@ -2,26 +2,42 @@
   <div>
     <BreadCrumbs :breadCrumbs="breadCrumbs"/>
     <div class="single-container">
-      <EventContent @set-event-title="setEventTitle"/>
+      <EventContent
+        v-if="event"
+        :event-prop="event"
+        :is-entry-prop="isEntry"
+        :entry-cnt-prop="entryCnt"/>
+      <div v-if="event.event_category_id==2">
+        <EventSession/>
+      </div>
       <EventComments/>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import g from "@/variable/variable.js";
 import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import EventContent from "@/components/organisms/events/EventContent.vue";
+import EventSession from "@/components/organisms/events/EventSession.vue";
 import EventComments from "@/components/organisms/events/EventComments.vue";
+import { commonMethods } from '@/mixins/commonMethods';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [commonMethods, errorMethods],
   components: {
     BreadCrumbs,
     EventContent,
+    EventSession,
     EventComments
   },
   data() {
     return {
-      eventTitle: ""
+      event: "",
+      isEntry: false,
+      entryCnt: 0
     }
   },
   computed: {
@@ -36,7 +52,7 @@ export default {
           path: '/events?page=1'
         },
         {
-          name: this.eventTitle,
+          name: this.event.title,
           path: ''
         }
       ]
@@ -44,9 +60,30 @@ export default {
     }
   },
   methods: {
-    setEventTitle: function(title){
-      this.eventTitle = title;
+    getEvent: function() {
+      axios.get(
+        `http://${g.hostName}/api/events/${this.$route.params.id}`,
+        {
+          params: {
+            user_id: this.$store.getters['user/id']
+          }
+        }
+      )
+      .then((response) => {
+        this.event = response.data.event;
+        this.isEntry = response.data.is_entry;
+        this.entryCnt = response.data.entry_cnt;
+      })
+      .catch((error) => {
+        this.apiErrors(error.response.status);
+      })
+      .finally(() => {
+        // this.loading = false;
+      });
     }
+  },
+  mounted() {
+    this.getEvent();
   }
 }
 </script>
