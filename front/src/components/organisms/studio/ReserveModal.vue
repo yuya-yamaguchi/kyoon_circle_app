@@ -156,7 +156,7 @@ export default {
     // モーダルウィンドウを閉じる
     closeModal: function() {
       this.reserveCompleteFlg = false;
-      this.$emit('from-child');
+      this.$emit('close-modal');
     },
     // スタジオ予約の実行
     postStudioReserve: function(){
@@ -189,9 +189,9 @@ export default {
               type:    2
             }
           );
-          this.$router.push({ 
-            name: "Login"
-          })
+          this.$store.dispatch(
+            "loginGuide/update", true
+          );
         }
         else {
           this.errorMessages.api = error.response.data.error_message;

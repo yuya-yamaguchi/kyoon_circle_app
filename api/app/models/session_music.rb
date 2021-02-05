@@ -2,12 +2,21 @@ class SessionMusic < ApplicationRecord
   has_many :session_parts
 
   def self.get_musics_info(event_id)
-    session_musics = SessionMusic.where(event_id: event_id)
+    session_musics = SessionMusic.where(event_id: event_id).order('status DESC')
     musics_info = []
     session_musics.each do |session_music|
       music_info = []
       music_info << session_music
-      music_info << session_music.session_parts.order('part_category_id')
+      session_parts = session_music.session_parts.order('part_category_id')
+      parts_info = []
+      session_parts.each do |session_part|
+        entry_users = session_part.users.select(:id, :name)
+        part_info = []
+        part_info << session_part
+        part_info << entry_users
+        parts_info << part_info
+      end
+      music_info << parts_info
       musics_info << music_info
     end
     return musics_info

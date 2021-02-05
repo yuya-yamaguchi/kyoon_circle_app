@@ -119,9 +119,9 @@ export default {
             }
           );
           if (error.response.status === 401) {
-            this.$router.push({ 
-              name: "Login"
-            })
+            this.$store.dispatch(
+              "loginGuide/update", true
+            );
           }
         }
         this.apiErrors(error.response.status);

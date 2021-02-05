@@ -6,9 +6,11 @@
       <div class="add-music-info">
         <div class="form-item">
           <input type="text" v-model="sessionMusic.title" placeholder="曲名を入力..." class="default-input">
+          <p class="form-item--err-msg">{{ errMsg.title }}</p>
         </div>
         <div class="form-item">
           <input type="text" v-model="sessionMusic.artist" placeholder="アーティスト名を入力..." class="default-input">
+          <p class="form-item--err-msg">{{ errMsg.artist }}</p>
         </div>
         <table class="parts-table form-item">
           <tr>
@@ -63,8 +65,10 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import { sessionMusicValidates } from '@/mixins/validates/sessionMusicValidates';
 
 export default {
+  mixins: [sessionMusicValidates],
   props: {
     partCategoriesProp: {}
   },
@@ -76,7 +80,8 @@ export default {
         need:   '1',
         any:    '2',
         noneed: '0',
-      }
+      },
+      errMsg: {}
     }
   },
   methods: {
@@ -84,24 +89,37 @@ export default {
       this.$emit('close-modal');
     },
     postSessionMusic: function() {
-      axios.post(
-        `http://${g.hostName}/api/events/${this.$route.params.id}/session_musics`,
-        {
-          session_music: this.sessionMusic,
-          session_parts: this.sessionParts
-        },
-        {
-          headers: {
-            Authorization: this.$store.getters['user/secureToken']
+      if (this.sessionMusicValid()) {
+        axios.post(
+          `http://${g.hostName}/api/events/${this.$route.params.id}/session_musics`,
+          {
+            session_music: this.sessionMusic,
+            session_parts: this.sessionParts
+          },
+          {
+            headers: {
+              Authorization: this.$store.getters['user/secureToken']
+            }
           }
+        )
+        .then(() => {
+          this.$emit('add-music');
+          this.$emit('close-modal');
+        })
+        .catch((error) => {
+          this.apiErrors(error.response.status);
+        })
+      }
+    },
+    sessionMusicValid: function() {
+      this.errMsg.title  = this.sessionMusicTitleValid(this.sessionMusic.title)
+      this.errMsg.artist = this.sessionMusicArtistValid(this.sessionMusic.artist)
+      for (var key in this.errMsg) {
+        if (this.errMsg[key]) {
+          return false
         }
-      )
-      .then(() => {
-        this.$emit('close-modal');
-      })
-      .catch((error) => {
-        this.apiErrors(error.response.status);
-      })
+      }
+      return true
     }
   }
 }
@@ -150,7 +168,8 @@ export default {
         border: 1px solid;
         margin: 10px 5px;
         border-radius: 10px;
-        font-weight: bold
+        font-weight: bold;
+        cursor: pointer;
       }
       .selectd-part {
         background: var(--accent-color);

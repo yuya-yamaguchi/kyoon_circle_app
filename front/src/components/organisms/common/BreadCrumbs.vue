@@ -35,7 +35,7 @@ export default {
   border-top: 1px dotted #888;
   color: #FFF;
   position: fixed;
-  z-index: 99;
+  z-index: 10;
   &--list {
     a {
       text-decoration: none;

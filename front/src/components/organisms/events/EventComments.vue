@@ -8,13 +8,15 @@
       <div class="event-comments--display">
         <div v-for="(comment, i) in eventComments" :key="i" class="comment-card">
           <div class="comment-card--left">
-            <div class="comment-userimg">
+            <router-link :to="{name: 'UserShow', params: { id: comment.user_id }}" class="comment-userimg">
               <UserAvatar :avatar-prop="comment.user_avatar"/>
-            </div>
+            </router-link>
           </div>
           <div class="comment-card--right">
             <div class="comment-info">
-              <div class="comment-info--username">{{ comment.user_name }}</div>
+              <router-link :to="{name: 'UserShow', params: { id: comment.user_id }}" class="comment-info--username">
+                {{ comment.user_name }}
+              </router-link>
               <div class="comment-info--time">{{ howManyAgo(comment.created_at) }}</div>
             </div>
             <p v-if="eventComments[i].text" class="comment-text">{{ comment.text }}</p>
@@ -200,6 +202,7 @@ export default {
       justify-content: flex-start;
       &--left {
         .comment-userimg {
+          display: block;
           width: 45px;
           height: 45px;
         }
@@ -213,6 +216,7 @@ export default {
           font-size: 15px;
           &--username {
             margin-right: 10px;
+            color: #333;
           }
           &--time {
             font-size: 12px;

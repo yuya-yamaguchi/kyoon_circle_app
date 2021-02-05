@@ -8,8 +8,11 @@
         お気軽にご参加ください！
       </p>
       <SearchEvent :selectEventCategoryProp="selectEventCategory" @search-events="searchEvents"/>
-      <EventList v-if="events.length!=0" :events-prop="events"/>
-      <div v-if="events.length==0" class="nothing-msg">該当のイベントはありません</div>
+      <Loading v-if="loading"/>
+      <div v-else>
+        <EventList v-if="events.length!=0" :events-prop="events"/>
+        <div v-if="events.length==0" class="nothing-msg">該当のイベントはありません</div>
+      </div>
       <Pagination v-if="events.length!=0" :pagy-prop="pagy" @chage-page="changePage"/>
     </div>
   </div>
@@ -22,6 +25,7 @@ import EventList from '@/components/organisms/events/EventList.vue';
 import SearchEvent from '@/components/organisms/events/SearchEvent.vue';
 import Pagination from '@/components/organisms/common/Pagination.vue';
 import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
+import Loading from '@/components/organisms/common/Loading.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
@@ -30,14 +34,16 @@ export default {
     EventList,
     SearchEvent,
     Pagination,
-    BreadCrumbs
+    BreadCrumbs,
+    Loading
   },
   data() {
     let selectEventCategory = (this.$route.query.event_category == undefined ) ? 0 : this.$route.query.event_category
     return {
       events: [],
       pagy: "",
-      selectEventCategory: selectEventCategory
+      selectEventCategory: selectEventCategory,
+      loading: true
     }
   },
   computed: {
@@ -81,6 +87,9 @@ export default {
       })
       .catch((error) => {
         this.apiErrors(error.response.status);
+      })
+      .finally(() => {
+        this.loading = false;
       });
     },
     changePage: function(pageNo) {

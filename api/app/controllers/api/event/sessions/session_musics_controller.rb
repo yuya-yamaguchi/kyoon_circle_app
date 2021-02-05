@@ -12,7 +12,7 @@ class Api::Event::Sessions::SessionMusicsController < ApplicationController
       params[:session_parts].length.times do |i|
         SessionPart.create(session_part_params(i, session_music.id))
       end
-      render status: 201
+      render status: 201, json: { session_music: session_music }
     else
       render status: 400
     end

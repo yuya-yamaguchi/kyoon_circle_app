@@ -31,6 +31,7 @@ Rails.application.routes.draw do
             resources :session_parts do
               member do
                 post 'entry'
+                post 'cancel'
               end
             end
           end

@@ -6,7 +6,7 @@
         <ReserveModal v-if="clickReserve!=''"
           :click-reserve-prop="clickReserve"
           :studio-prop="studio"
-          @from-child="closeModal()"
+          @close-modal="closeModal()"
           @reserve-success="getStudioReserves($route.query.week)"/>
       </transition>
       <div class="week-bar">
