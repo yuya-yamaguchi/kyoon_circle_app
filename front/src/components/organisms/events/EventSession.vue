@@ -4,9 +4,15 @@
       :partCategoriesProp="partCategories"
       @close-modal="displayModal=false"
       @add-music="getSessionMusics"/>
+    <ConfirmModal v-if="displayConfirmModal"
+      :modal-msg-prop="modalMsg"
+      @process-confirm="doneEventEntry"/>
     <div @click="displayAddMusic" class="add-music-btn">
       曲を追加する +
     </div>
+    {{isEntry}}
+    {{isEntryProp}}(prop)
+    <Loading v-if="loading"/>
     <div v-if="sessionMusics.length!=0" class="scroll">
       <table class="session-musics-table">
         <tr class="session-music-header">
@@ -17,7 +23,9 @@
         </tr>
         <tr v-for="(sessionMusic, i) in sessionMusics" :key="i" class="session-music">
           <td class="session-music--info">
-            <p class="session-music--info--title">{{sessionMusic[0].title}}</p>
+            <router-link :to="{name: 'SessionMusicShow', params: { event_id: $route.params.id, session_music_id: sessionMusic[0].id }}" class="session-music--info--title">
+              {{sessionMusic[0].title}}
+            </router-link>
             <p v-if="sessionMusic[0].status==1" class="session-music--info--status">成立!</p>
           </td>
           <td v-for="(sessionPart, j) in sessionMusic[1]" :key="j" class="session-part">
@@ -31,16 +39,18 @@
                   icon="times-circle"
                   class="entry-cancel-btn"></fa>
               </div>
-              <p v-if="!entryUserIds(sessionPart[1]).includes($store.getters['user/id'])"
+              <!-- 1パートに複数人エントリーさせたい場合には下記処理を有効にする -->
+              <!-- <p v-if="!entryUserIds(sessionPart[1]).includes($store.getters['user/id'])" -->
+              <p v-if="sessionPart[1].length==0"
                 @click="entryPart(sessionMusic[0].id ,sessionPart[0].id, sessionMusic[0], sessionPart[1])"
                 class="part-entry-btn">
                 <span v-if="sessionPart[0].status==2">（</span>
                 <span>エントリー</span>
                 <span v-if="sessionPart[0].status==2">）</span>
               </p>
-              <p v-else
+              <!-- <p v-else
                 class="already-entry">エントリー中
-              </p>
+              </p> -->
             </div>
             <div v-else class="noneed-part">
             </div>
@@ -55,16 +65,34 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import AddMusicModal from "@/components/organisms/events/AddMusicModal.vue";
+import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
+import Loading from '@/components/organisms/common/Loading.vue';
+import { errorMethods } from '@/mixins/errorMethods';
+import { eventEntry } from '@/mixins/events/eventEntry';
 
 export default {
+  mixins: [errorMethods, eventEntry],
   components: {
-    AddMusicModal
+    AddMusicModal,
+    ConfirmModal,
+    Loading
+  },
+  props: {
+    isEntryProp: {},
+    // entryCntProp: {}
   },
   data() {
     return {
       displayModal: false,
+      displayConfirmModal: false,
       partCategories: [],
-      sessionMusics:  []
+      sessionMusics:  [],
+      modalMsg: {
+        title: "",
+        message: "このイベントへの参加が必要です<br>参加しますか？",
+        btn: "参加する"
+      },
+      loading: true
     }
   },
   methods: {
@@ -92,27 +120,31 @@ export default {
       .catch((error) => {
         this.apiErrors(error.response.status);
       })
+      .finally(() => {
+        this.loading = false
+      })
     },
     entryPart: function(sessionMusicId, sessionPartId, sessionMusic, entryUsers) {
-      axios.post(
-        `http://${g.hostName}/api/events/${this.$route.params.id}/session_musics/${sessionMusicId}/session_parts/${sessionPartId}/entry`,
-        {},
-        {
-          headers: {
-            Authorization: this.$store.getters['user/secureToken']
+      if (this.entryPartValid())
+        axios.post(
+          `http://${g.hostName}/api/events/${this.$route.params.id}/session_musics/${sessionMusicId}/session_parts/${sessionPartId}/entry`,
+          {},
+          {
+            headers: {
+              Authorization: this.$store.getters['user/secureToken']
+            }
           }
-        }
-      )
-      .then((response) => {
-        sessionMusic.status = response.data.session_music.status;
-        entryUsers.push({
-          id: this.$store.getters['user/id'],
-          name: this.$store.getters['user/name']
+        )
+        .then((response) => {
+          sessionMusic.status = response.data.session_music.status;
+          entryUsers.push({
+            id: this.$store.getters['user/id'],
+            name: this.$store.getters['user/name']
+          })
         })
-      })
-      .catch((error) => {
-        this.apiErrors(error.response.status);
-      })
+        .catch((error) => {
+          this.apiErrors(error.response.status);
+        })
     },
     cancelPart: function(sessionMusicId, sessionPartId, sessionMusic, entryUsers) {
       axios.post(
@@ -137,6 +169,34 @@ export default {
     entryUserIds(entryUsers) {
       let userIds = entryUsers.map(function(user){ return user.id })
       return userIds
+    },
+    entryPartValid: function() {
+      // ログインしていない場合
+      if (!this.$store.getters['user/id']) {
+        this.$store.dispatch(
+          "loginGuide/update", true
+        );
+        this.$store.dispatch(
+          "flash/create",
+          { message: "ログインまたは会員登録を行ってください。",
+            type:    2
+          }
+        );
+        return false
+      }
+      // イベントに参加していない場合
+      if (!this.isEntryProp) {
+        // イベントへの参加確認モーダルを表示
+        this.displayConfirmModal = true
+        return false
+      }
+      return false
+    },
+    doneEventEntry: function(confirm) {
+      this.displayConfirmModal = false;
+      if (confirm) {
+        this.postEventEntry()
+      }
     }
   },
   mounted() {
@@ -184,7 +244,9 @@ export default {
         border-left: 1px solid;
         border-bottom: 1px solid;
         &--title {
-          font-size: 18px;
+          font-size: 16px;
+          color: #333;
+          text-decoration: none;
         }
         &--status {
           font-size: 12px;
@@ -203,8 +265,10 @@ export default {
           font-size: 13px;
           .entry-user {
             display: flex;
-            justify-content: flex-start;
             margin-bottom: 5px;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
             &--name {
               color: #333;
             }
@@ -220,11 +284,15 @@ export default {
             background: rgb(238, 204, 129);
             padding: 8px 0;
             font-size: 10px;
+            height: 100%;
             font-weight: bold;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            &:hover {
+              opacity: 0.7;
+            }
           }
           .already-entry {
             margin-top: auto;

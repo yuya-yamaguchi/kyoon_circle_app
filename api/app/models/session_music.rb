@@ -1,5 +1,6 @@
 class SessionMusic < ApplicationRecord
-  has_many :session_parts
+  belongs_to :event
+  has_many :session_parts, dependent: :destroy
 
   def self.get_musics_info(event_id)
     session_musics = SessionMusic.where(event_id: event_id).order('status DESC')

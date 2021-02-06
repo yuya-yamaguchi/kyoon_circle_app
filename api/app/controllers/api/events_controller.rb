@@ -20,9 +20,9 @@ class Api::EventsController < ApplicationController
     if params[:user_id].to_i > 0
       is_entry = @event.event_entries.where(user_id: params[:user_id]).present?
     end
-    entry_cnt = @event.event_entries.count
+    entry_users = @event.users
     render status: 200,
-           json: { event: @event, is_entry: is_entry, entry_cnt: entry_cnt }
+           json: { event: @event, is_entry: is_entry, entry_users: entry_users }
   end
 
   def edit

@@ -6,9 +6,12 @@
         v-if="event"
         :event-prop="event"
         :is-entry-prop="isEntry"
-        :entry-cnt-prop="entryCnt"/>
+        :entry-users-prop="entryUsers"
+        @update-entry-status="updateIsEntry"/>
       <div v-if="event.event_category_id==2">
-        <EventSession/>
+        <EventSession
+          :is-entry-prop="isEntry"
+          @update-entry-status="updateIsEntry"/>
       </div>
       <EventComments/>
     </div>
@@ -37,7 +40,7 @@ export default {
     return {
       event: "",
       isEntry: false,
-      entryCnt: 0
+      entryUsers: []
     }
   },
   computed: {
@@ -72,7 +75,7 @@ export default {
       .then((response) => {
         this.event = response.data.event;
         this.isEntry = response.data.is_entry;
-        this.entryCnt = response.data.entry_cnt;
+        this.entryUsers = response.data.entry_users;
       })
       .catch((error) => {
         this.apiErrors(error.response.status);
@@ -80,6 +83,10 @@ export default {
       .finally(() => {
         // this.loading = false;
       });
+    },
+    updateIsEntry: function(value) {
+      console.log("google")
+      this.isEntry = value;
     }
   },
   mounted() {

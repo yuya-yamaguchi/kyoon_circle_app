@@ -17,6 +17,8 @@
 .studio-top {
   position: relative;
   padding-top: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
   img {
     width: 100%;
     vertical-align: bottom;

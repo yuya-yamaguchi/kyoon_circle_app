@@ -26,7 +26,7 @@
       <div class="number-info">
         <p class="number-info--title">参加人数</p>
         <p class="number-info--value">
-          <span>{{ entryCnt }}人</span>
+          <span>{{ entryUsers.length }}人</span>
           <span v-show="event.max_entry>0"> / {{ event.max_entry }}人</span>
         </p>
       </div>
@@ -37,13 +37,13 @@
         <div class="event-middle-info">開催場所 {{ event.place }}</div>
       </div>
       <div class="entry-btns">
-        <div v-if="!isEntry"
+        <div v-if="!isEntryProp"
                 @click="postEventEntry()"
                 class="entry-btns--entry"
                 :disabled="cantEntry"
                 :class="{ 'btn-disable': cantEntry}">参加する
         </div>
-        <div v-if="isEntry"
+        <div v-if="isEntryProp"
                 @click="postCancelEventEntry()"
                 class="entry-btns--cancel some-updown-center"
                 :disabled="cantCancel"
@@ -52,6 +52,15 @@
           <fa icon="sad-tear"></fa>
         </div>
       </div>
+    </div>
+    <div class="entry-users">
+      <p>参加者</p>
+      <span v-for="(entryUser, i) in entryUsers" :key="i" class="entry-users--user">
+        <router-link :to="{name: 'UserShow', params: { id: entryUser.id }}">
+          {{ entryUser.name }}
+        </router-link>
+        <span v-if="i < entryUsers.length-1">, </span>
+      </span>
     </div>
     <div class="event-details">
       {{ event.details }}
@@ -65,24 +74,25 @@ import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
+import { eventEntry } from '@/mixins/events/eventEntry';
 
 var today = new Date();
 
 export default {
-  mixins: [commonMethods, errorMethods],
+  mixins: [commonMethods, errorMethods, eventEntry],
   components: {
     ConfirmModal
   },
   props: {
     eventProp: {},
     isEntryProp: {},
-    entryCntProp: {}
+    entryUsersProp: {}
   },
   data() {
     return {
       event: this.eventProp,
-      isEntry: this.isEntryProp,
-      entryCnt: this.entryCntProp,
+      // isEntry: this.isEntryProp,
+      entryUsers: this.entryUsersProp,
       modalFlg: false,
       cantEntry: false,
       cantCancel: false,
@@ -94,39 +104,40 @@ export default {
     }
   },
   methods: {
-    postEventEntry: function() {
-      axios.post(
-        `http://${g.hostName}/api/events/${this.$route.params.id}/entry`,
-        {
-          user_id: this.$store.getters['user/id']
-        },
-        {
-          headers: {
-            Authorization: this.$store.getters['user/secureToken']
-          }
-        }
-      )
-      .then((response) => {
-        this.isEntry = true;
-        this.entryCnt = response.data;
-      })
-      .catch((error) => {
-        if (error.response.status === 400 || error.response.status === 401) {
-          this.$store.dispatch(
-            "flash/create",
-            { message: error.response.data.error_message,
-              type:    2
-            }
-          );
-          if (error.response.status === 401) {
-            this.$store.dispatch(
-              "loginGuide/update", true
-            );
-          }
-        }
-        this.apiErrors(error.response.status);
-      });
-    },
+    // postEventEntry: function() {
+    //   axios.post(
+    //     `http://${g.hostName}/api/events/${this.$route.params.id}/entry`,
+    //     {
+    //       user_id: this.$store.getters['user/id']
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: this.$store.getters['user/secureToken']
+    //       }
+    //     }
+    //   )
+    //   .then((response) => {
+    //     this.isEntry = true;
+    //     this.entryCnt = response.data;
+    //     this.$emit('update-entry-status', this.isEntry)
+    //   })
+    //   .catch((error) => {
+    //     if (error.response.status === 400 || error.response.status === 401) {
+    //       this.$store.dispatch(
+    //         "flash/create",
+    //         { message: error.response.data.error_message,
+    //           type:    2
+    //         }
+    //       );
+    //       if (error.response.status === 401) {
+    //         this.$store.dispatch(
+    //           "loginGuide/update", true
+    //         );
+    //       }
+    //     }
+    //     this.apiErrors(error.response.status);
+    //   });
+    // },
     postCancelEventEntry: function() {
       axios.post(
         `http://${g.hostName}/api/events/${this.$route.params.id}/entry_cancel`,
@@ -140,8 +151,8 @@ export default {
         }
       )
       .then((response) => {
-        this.isEntry = false;
         this.entryCnt = response.data;
+        this.$emit('update-entry-status', this.isEntry)
       })
       .catch((error) => {
         if (error.response.status === 400 || error.response.status === 401) {
@@ -267,6 +278,19 @@ export default {
   }
   :hover {
     opacity: 0.8;
+  }
+}
+.entry-users {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background: #dedef5;
+  &--user {
+    font-size: 14px;
+    color: #333;
+    a {
+      color: #333;
+    }
   }
 }
 .event-details {

@@ -139,6 +139,7 @@ export default {
 .add-music-container {
   z-index: 2;
   width: 95%;
+  max-width: 1000px;
   margin: 0 auto;
   background: #FFF;
   position: absolute;

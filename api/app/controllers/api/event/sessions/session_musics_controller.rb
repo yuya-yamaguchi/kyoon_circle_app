@@ -18,6 +18,15 @@ class Api::Event::Sessions::SessionMusicsController < ApplicationController
     end
   end
 
+  def show
+    session_music = SessionMusic.find_by(id: params[:id])
+    if session_music.present?
+      render status: 200, json: { session_music: session_music }
+    else
+      render status: 404
+    end
+  end
+
   private
   def session_music_params
     params.require(:session_music).permit(:title, :artist).merge(user_id: @user.id, event_id: params[:event_id])

@@ -14,6 +14,7 @@ import EventEdit from '@/views/event/Edit.vue'
 import EventEditList from '@/views/event/EditList.vue'
 import EventIndex from '@/views/event/Index.vue'
 import EventShow from '@/views/event/Show.vue'
+import SessionMusicShow from '@/views/event/session/SessionMusicShow.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
 import StudioEdit from '@/views/admin/studio/Edit.vue'
 import StudioReserves from '@/views/admin/studio/Reserves.vue'
@@ -68,6 +69,12 @@ const routes = [
     path: '/event/:id',
     name: 'EventShow',
     component: EventShow
+  },
+  // セッション曲詳細
+  {
+    path: '/event/:event_id/music/:session_music_id',
+    name: 'SessionMusicShow',
+    component: SessionMusicShow
   },
   // お知らせ一覧
   {
