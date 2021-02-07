@@ -5,6 +5,9 @@ class Event < ApplicationRecord
   has_many :event_comments, dependent: :destroy
   has_many :users, through: :event_entries
   belongs_to :event_category
+  has_one  :event_session, dependent: :destroy
+  has_many :session_musics, dependent: :destroy
+  has_many :user_entry_parts
   
   validates :title, presence: true
   validates :title, length: { maximum: 40, message: "は40文字以下で入力してください" }, allow_blank: true

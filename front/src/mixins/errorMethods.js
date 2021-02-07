@@ -6,6 +6,11 @@ export const errorMethods = {
         "response/update",
         { status: status }
       );
+      if (status === 401) {
+        this.$store.dispatch(
+          "loginGuide/update", true
+        );
+      }
     }
   }
 }

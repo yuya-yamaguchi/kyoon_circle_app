@@ -65,15 +65,20 @@ export default {
               type:    1
             }
           );
-          this.$router.push({ 
-            name: "Top"
-          })
+          this.$store.dispatch(
+            "loginGuide/update", false
+          );
+          if (location.pathname == '/login') {
+            this.$router.push({ 
+              name: "Top"
+            })
+          }
         })
         .catch((error) => {
           if (error.response) {
             this.errorMessages = error.response.data.errors;
           }
-        });
+        })
     },
     loginValid: function() {
       this.errMsg.email = this.userEmailValid(this.email)

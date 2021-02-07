@@ -33,7 +33,6 @@ export default {
         `http://${g.hostName}/api/news`
       )
       .then((response) => {
-        console.log(response)
         this.news = response.data;
       })
       .catch((error) => {

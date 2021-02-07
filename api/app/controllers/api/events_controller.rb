@@ -20,9 +20,9 @@ class Api::EventsController < ApplicationController
     if params[:user_id].to_i > 0
       is_entry = @event.event_entries.where(user_id: params[:user_id]).present?
     end
-    entry_cnt = @event.event_entries.count
+    entry_users = @event.users
     render status: 200,
-           json: { event: @event, is_entry: is_entry, entry_cnt: entry_cnt }
+           json: { event: @event, is_entry: is_entry, entry_users: entry_users }
   end
 
   def edit
@@ -43,6 +43,9 @@ class Api::EventsController < ApplicationController
     event_params = require_event_params
     event = Event.new(set_event_params(event_params))
     if event.save
+      if event_params[:event_category_id] == 2
+        EventSession.create(event_id: event.id)
+      end
       # グループラインへのメッセージ送信
       event.push_line if event.line_msg_push
       render status: 201, json: event
@@ -62,8 +65,8 @@ class Api::EventsController < ApplicationController
   def entry
     event_entry = EventEntry.new(user_id: params[:user_id], event_id: params[:id])
     if event_entry.save
-      entry_cnt = @event.event_entries.count
-      render status: 200, json: entry_cnt
+      entry_users = @event.users
+      render status: 200, json: { entry_users: entry_users }
     else
       render status: 400, json:{ error_message: event_entry.errors.full_messages[0] }
     end
@@ -71,9 +74,12 @@ class Api::EventsController < ApplicationController
 
   def entry_cancel
     event_entry = @event.event_entries.find_by(user_id: params[:user_id])
-    if event_entry.destroy
-      entry_cnt = @event.event_entries.count
-      render status: 200, json: entry_cnt
+    if event_entry.destroy && @event.user_entry_parts.where(user_id: params[:user_id]).delete_all
+      @event.session_musics.each do |session_music|
+        session_music.change_status
+      end
+      entry_users = @event.users
+      render status: 200, json: { entry_users: entry_users }
     else
       render status: 400, json:{ error_message: event_entry.errors.full_messages[0] }
     end

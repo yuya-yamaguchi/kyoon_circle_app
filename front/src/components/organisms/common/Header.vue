@@ -4,7 +4,7 @@
     <div class="header-menus">
       <div class="header-menus">
         <router-link to="/news" class="header-menu">お知らせ</router-link>
-        <router-link to="/studios/1?week=0" class="header-menu">スタジオ</router-link>
+        <router-link to="/studios/1?week=0" class="header-menu">スタジオ予約</router-link>
         <router-link to="/events?page=1" class="header-menu">イベント</router-link>
         <!-- <a class="header-menu">宿泊</a> -->
       </div>
@@ -13,7 +13,7 @@
         <router-link to="/login" class="sign-btn">ログイン</router-link>
       </template>
       <template v-else class="header-menus">
-        <router-link to="/mypage" class="header-menu">{{ $store.getters["user/name"] }}</router-link>
+        <router-link to="/mypage" class="header-menu">マイページ</router-link>
         <button type="submit" @click="logout()" class="sign-btn">ログアウト</button>
       </template>
     </div>
@@ -38,8 +38,7 @@ export default {
           }
         }
       )
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         // FRONT側のユーザ情報を削除
         this.$store.dispatch("user/logout");
         this.$store.dispatch(

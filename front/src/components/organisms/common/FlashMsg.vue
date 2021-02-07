@@ -39,7 +39,7 @@ export default {
 }
 
 .messages-container {
-  z-index:99;
+  z-index:999;
   position: fixed;
   top: 20%;
   left: 50%;

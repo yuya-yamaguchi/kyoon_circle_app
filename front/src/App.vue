@@ -2,6 +2,7 @@
   <div id="nav">
     <Header/>
     <FlashMsg v-if="$store.getters['flash/message'].length!=0"/>
+    <LoginModal v-if="$store.getters['loginGuide/isDisplay']"/>
     <div class="base-container">
       <NotFound v-if="[404].includes(errorStatus)"/>
       <Errors v-else-if="[403, 500].includes(errorStatus)" :error-status-prop="errorStatus"/>
@@ -20,6 +21,7 @@ import "@/assets/style/_transition.scss";
 import Header from "@/components/organisms/common/Header.vue";
 import Footer from "@/components/organisms/common/Footer.vue";
 import FlashMsg from "@/components/organisms/common/FlashMsg.vue";
+import LoginModal from "@/components/organisms/common/LoginModal.vue";
 import NotFound from "@/views/errors/NotFound.vue";
 import Errors from "@/views/errors/Errors.vue";
 
@@ -29,6 +31,7 @@ export default {
     Footer,
     FlashMsg,
     NotFound,
+    LoginModal,
     Errors
   },
   computed: {

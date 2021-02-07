@@ -3,61 +3,71 @@
     <ConfirmModal v-show="modalFlg"
       :modal-msg-prop="modalMsg"
       @process-confirm="deleteEvent"/>
-    <Loading v-if="loading"/>
-    <div v-else>
-      <div class="space-between">
-        <h1 class="main-title">{{ event.title }}</h1>
-        <div v-show="$store.getters['user/adminType']>0">
-          <router-link :to="`/event/${event.id}/edit`" class="edit-btn some-updown-center">
-            <fa icon="edit"></fa>
-            <span>編集する</span>
-          </router-link>
-          <a @click="displayConfirmModal" class="delete-btn some-updown-center">
-            <fa icon="trash"></fa>
-            <span>削除する</span>
-          </a>
+    <ConfirmModal v-show="cancelModal"
+      :modal-msg-prop="cancelModalMsg"
+      @process-confirm="postCancelEventEntry"/>
+    <div class="space-between">
+      <h1 class="main-title">{{ event.title }}</h1>
+      <div v-show="$store.getters['user/adminType']>0">
+        <router-link :to="`/event/${event.id}/edit`" class="edit-btn some-updown-center">
+          <fa icon="edit"></fa>
+          <span>編集する</span>
+        </router-link>
+        <a @click="displayConfirmModal" class="delete-btn some-updown-center">
+          <fa icon="trash"></fa>
+          <span>削除する</span>
+        </a>
+      </div>
+    </div>
+    <p v-if="isEventEnd()" class="cant-entry-msg">このイベントは終了しました</p>
+    <p v-else-if="isOverCapacity()" class="cant-entry-msg">このイベントは定員に達しました</p>
+    <div class="event-top-info">
+      <div class="number-info">
+        <p class="number-info--title">参加費</p>
+        <p class="number-info--value">{{ event.fee }}</p>
+      </div>
+      <div class="number-info">
+        <p class="number-info--title">参加人数</p>
+        <p class="number-info--value">
+          <span>{{ entryUsersProp.length }}人</span>
+          <span v-show="event.max_entry>0"> / {{ event.max_entry }}人</span>
+        </p>
+      </div>
+    </div>
+    <div class="space-between">
+      <div>
+        <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 2) }}</div>
+        <div class="event-middle-info">開催場所 {{ event.place }}</div>
+      </div>
+      <div class="entry-btns">
+        <div v-if="!isEntryProp"
+                @click="postEventEntry()"
+                class="entry-btns--entry"
+                :disabled="cantEntry"
+                :class="{ 'btn-disable': cantEntry}">参加する
+        </div>
+        <div v-if="isEntryProp" class="already-entry">このイベントに参加中</div>
+        <div v-if="isEntryProp"
+                @click="displayCancelModal()"
+                class="entry-btns--cancel some-updown-center"
+                :disabled="cantCancel"
+                :class="{ 'btn-disable': cantCancel}">
+          <span>参加をやめる</span>
+          <fa icon="sad-tear"></fa>
         </div>
       </div>
-      <p v-if="isEventEnd()" class="cant-entry-msg">このイベントは終了しました</p>
-      <p v-else-if="isOverCapacity()" class="cant-entry-msg">このイベントは定員に達しました</p>
-      <div class="event-top-info">
-        <div class="number-info">
-          <p class="number-info--title">参加費</p>
-          <p class="number-info--value">{{ event.fee }}</p>
-        </div>
-        <div class="number-info">
-          <p class="number-info--title">参加人数</p>
-          <p class="number-info--value">
-            <span>{{ entryCnt }}人</span>
-            <span v-show="event.max_entry>0"> / {{ event.max_entry }}人</span>
-          </p>
-        </div>
-      </div>
-      <div class="space-between">
-        <div>
-          <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 2) }}</div>
-          <div class="event-middle-info">開催場所 {{ event.place }}</div>
-        </div>
-        <div class="entry-btns">
-          <div v-if="!isEntry"
-                  @click="postEventEntry()"
-                  class="entry-btns--entry"
-                  :disabled="cantEntry"
-                  :class="{ 'btn-disable': cantEntry}">参加する
-          </div>
-          <div v-if="isEntry"
-                  @click="postCancelEventEntry()"
-                  class="entry-btns--cancel some-updown-center"
-                  :disabled="cantCancel"
-                  :class="{ 'btn-disable': cantCancel}">
-            <span>参加をやめる</span>
-            <fa icon="sad-tear"></fa>
-          </div>
-        </div>
-      </div>
-      <div class="event-details">
-        {{ event.details }}
-      </div>
+    </div>
+    <div class="entry-users">
+      <p>参加者</p>
+      <span v-for="(entryUser, i) in entryUsersProp" :key="i" class="entry-users--user">
+        <router-link :to="{name: 'UserShow', params: { id: entryUser.id }}">
+          {{ entryUser.name }}
+        </router-link>
+        <span v-if="i < entryUsersProp.length-1">, </span>
+      </span>
+    </div>
+    <div class="event-details">
+      {{ event.details }}
     </div>
   </div>
 </template>
@@ -65,25 +75,26 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import Loading from '@/components/organisms/common/Loading.vue';
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
+import { eventEntry } from '@/mixins/events/eventEntry';
 
 var today = new Date();
 
 export default {
-  mixins: [commonMethods, errorMethods],
+  mixins: [commonMethods, errorMethods, eventEntry],
   components: {
-    Loading,
     ConfirmModal
+  },
+  props: {
+    eventProp: {},
+    isEntryProp: {},
+    entryUsersProp: {}
   },
   data() {
     return {
-      event: "",
-      isEntry: false,
-      entryCnt: 0,
-      loading: true,
+      event: this.eventProp,
       modalFlg: false,
       cantEntry: false,
       cantCancel: false,
@@ -91,97 +102,51 @@ export default {
         title: "イベントの取消",
         message: "イベントの取消を行います。<br>削除したイベントは元へは戻せません。よろしいですか？",
         btn: "削除"
-      }
+      },
+      cancelModal: false,
+      cancelModalMsg: {
+        title: "",
+        message: "このイベントへの参加をキャンセルします。<br>よろしいですか？",
+        btn: "はい"
+      },
     }
   },
   methods: {
-    getEvent: function() {
-      axios.get(
-        `http://${g.hostName}/api/events/${this.$route.params.id}`,
-        {
-          params: {
+    postCancelEventEntry: function(confirm) {
+      this.cancelModal = false
+      if (confirm) {
+        axios.post(
+          `http://${g.hostName}/api/events/${this.$route.params.id}/entry_cancel`,
+          {
             user_id: this.$store.getters['user/id']
-          }
-        }
-      )
-      .then((response) => {
-        this.event = response.data.event;
-        this.isEntry = response.data.is_entry;
-        this.entryCnt = response.data.entry_cnt;
-        this.$emit('set-event-title', this.event.title);
-      })
-      .catch((error) => {
-        this.apiErrors(error.response.status);
-      })
-      .finally(() => {
-        this.loading = false;
-      });
-    },
-    postEventEntry: function() {
-      axios.post(
-        `http://${g.hostName}/api/events/${this.$route.params.id}/entry`,
-        {
-          user_id: this.$store.getters['user/id']
-        },
-        {
-          headers: {
-            Authorization: this.$store.getters['user/secureToken']
-          }
-        }
-      )
-      .then((response) => {
-        this.isEntry = true;
-        this.entryCnt = response.data;
-      })
-      .catch((error) => {
-        if (error.response.status === 400 || error.response.status === 401) {
-          this.$store.dispatch(
-            "flash/create",
-            { message: error.response.data.error_message,
-              type:    2
+          },
+          {
+            headers: {
+              Authorization: this.$store.getters['user/secureToken']
             }
-          );
-          if (error.response.status === 401) {
-            this.$router.push({ 
-              name: "Login"
-            })
           }
-        }
-        this.apiErrors(error.response.status);
-      });
-    },
-    postCancelEventEntry: function() {
-      axios.post(
-        `http://${g.hostName}/api/events/${this.$route.params.id}/entry_cancel`,
-        {
-          user_id: this.$store.getters['user/id']
-        },
-        {
-          headers: {
-            Authorization: this.$store.getters['user/secureToken']
-          }
-        }
-      )
-      .then((response) => {
-        this.isEntry = false;
-        this.entryCnt = response.data;
-      })
-      .catch((error) => {
-        if (error.response.status === 400 || error.response.status === 401) {
-          this.$store.dispatch(
-            "flash/create",
-            { message: error.response.data.error_message,
-              type:    2
+        )
+        .then((response) => {
+          this.$emit('update-entry-status', false, response.data.entry_users)
+          this.$emit('update-event-session')
+        })
+        .catch((error) => {
+          if (error.response.status === 400 || error.response.status === 401) {
+            this.$store.dispatch(
+              "flash/create",
+              { message: error.response.data.error_message,
+                type:    2
+              }
+            );
+            if (error.response.status == 401) {
+              this.$router.push({ 
+                name: "Login"
+              })
             }
-          );
-          if (error.response.status == 401) {
-            this.$router.push({ 
-              name: "Login"
-            })
           }
-        }
-        this.apiErrors(error.response.status);
-      });
+          this.apiErrors(error.response.status);
+        });
+      }
     },
     deleteEvent: function(confirm) {
       this.modalFlg = false;
@@ -216,6 +181,9 @@ export default {
     displayConfirmModal: function() {
       this.modalFlg = true;
     },
+    displayCancelModal: function() {
+      this.cancelModal = true;
+    },
     isEventEnd: function()  {
       var start_date = new Date(this.event.start_datetime.substr(0, 4), 
                                 Number(this.event.start_datetime.substr(5, 2)-1),
@@ -236,9 +204,6 @@ export default {
       this.cantEntry = false
       return false
     }
-  },
-  mounted: function() {
-    this.getEvent();
   }
 }
 </script>
@@ -280,19 +245,36 @@ export default {
   text-align: center;
   font-weight: bold;
   &--entry {
-    background: var(--accent-color);
+    background: orange;
     padding: 5px 10px;
   }
   &--cancel {
-    background: orange;
+    background: var(--accent-color);
     padding: 5px 10px;
     svg {
       width: 18px;
       margin-left: 5px;
     }
   }
+  .already-entry {
+    color: orange;
+    font-size: 14px;
+  }
   :hover {
     opacity: 0.8;
+  }
+}
+.entry-users {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background: #dedef5;
+  &--user {
+    font-size: 14px;
+    color: #333;
+    a {
+      color: #333;
+    }
   }
 }
 .event-details {

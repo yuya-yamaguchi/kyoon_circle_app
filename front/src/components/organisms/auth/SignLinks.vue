@@ -1,7 +1,7 @@
 <template>
   <div class="other-auth-links">
     <router-link v-show="isLinkShow('/signup')" to="/signup" class="other-auth-links--sign-up">会員登録はこちら</router-link>
-    <router-link v-show="isLinkShow('/login')" to="/login" class="other-auth-links--login">ログインはこちら</router-link>
+    <router-link v-show="isLoginLinkShow()" to="/login" class="other-auth-links--login">ログインはこちら</router-link>
     <a @click="guestLogin('normal@example.com')" class="other-auth-links--guest-login">ゲストログイン(一般ユーザ)</a>
     <a @click="guestLogin('admin@example.com')" class="other-auth-links--guest-login">ゲストログイン(管理ユーザ)</a>
   </div>
@@ -18,6 +18,9 @@ export default {
         return false
       }
       return true
+    },
+    isLoginLinkShow: function() {
+      return (location.pathname == '/signup') ? true : false;
     },
     guestLogin: function(email){
       axios.post(`http://${g.hostName}/api/auth/sign_in`,
@@ -46,9 +49,14 @@ export default {
             type:    1
           }
         );
-        this.$router.push({ 
-          name: "Top"
-        })
+        this.$store.dispatch(
+          "loginGuide/update", false
+        );
+        if (location.pathname == '/login') {
+          this.$router.push({ 
+            name: "Top"
+          })
+        }
       })
       .catch((error) => {
         if (error.response) {

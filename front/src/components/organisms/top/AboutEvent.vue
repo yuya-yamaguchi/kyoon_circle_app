@@ -23,9 +23,6 @@ export default {
   components: {
     EventList,
     Loading
-  },
-  mounted() {
-    console.log(this.eventsProp)
   }
 }
 </script>

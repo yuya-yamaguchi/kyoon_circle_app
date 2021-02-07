@@ -21,6 +21,11 @@ export default {
   components: {
     SignLinks,
     SignUpForm
+  },
+  mounted() {
+    this.$store.dispatch(
+      "loginGuide/update", false
+    );
   }
 }
 </script>

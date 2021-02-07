@@ -2,7 +2,7 @@
   <div>
     <BreadCrumbs :breadCrumbs="breadCrumbs"/>
     <StudioImage/>
-    <div class="studio-container">
+    <div class="single-container">
       <StudioContent/>
       <StudioReservesTable :admin-prop="0"/>
     </div>

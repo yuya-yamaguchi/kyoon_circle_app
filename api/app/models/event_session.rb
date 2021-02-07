@@ -1,0 +1,2 @@
+class EventSession < ApplicationRecord
+end
