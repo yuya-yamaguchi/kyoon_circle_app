@@ -7,11 +7,13 @@
         :event-prop="event"
         :is-entry-prop="isEntry"
         :entry-users-prop="entryUsers"
-        @update-entry-status="updateIsEntry"/>
+        @update-entry-status="updateEntryStatus"
+        @update-event-session="updateEventSession"/>
       <div v-if="event.event_category_id==2">
         <EventSession
+          :key="key"
           :is-entry-prop="isEntry"
-          @update-entry-status="updateIsEntry"/>
+          @update-entry-status="updateEntryStatus"/>
       </div>
       <EventComments/>
     </div>
@@ -40,7 +42,8 @@ export default {
     return {
       event: "",
       isEntry: false,
-      entryUsers: []
+      entryUsers: [],
+      key: true // EventSessionの再描画用
     }
   },
   computed: {
@@ -80,13 +83,13 @@ export default {
       .catch((error) => {
         this.apiErrors(error.response.status);
       })
-      .finally(() => {
-        // this.loading = false;
-      });
     },
-    updateIsEntry: function(value) {
-      console.log("google")
-      this.isEntry = value;
+    updateEntryStatus: function(entryStatus, entryUsersUp) {
+      this.isEntry = entryStatus;
+      this.entryUsers = entryUsersUp;
+    },
+    updateEventSession: function() {
+      this.key = !this.key
     }
   },
   mounted() {

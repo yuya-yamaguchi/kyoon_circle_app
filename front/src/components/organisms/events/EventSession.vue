@@ -10,8 +10,6 @@
     <div @click="displayAddMusic" class="add-music-btn">
       曲を追加する +
     </div>
-    {{isEntry}}
-    {{isEntryProp}}(prop)
     <Loading v-if="loading"/>
     <div v-if="sessionMusics.length!=0" class="scroll">
       <table class="session-musics-table">
@@ -79,7 +77,6 @@ export default {
   },
   props: {
     isEntryProp: {},
-    // entryCntProp: {}
   },
   data() {
     return {
@@ -89,7 +86,7 @@ export default {
       sessionMusics:  [],
       modalMsg: {
         title: "",
-        message: "このイベントへの参加が必要です<br>参加しますか？",
+        message: "エントリーにはこのイベントへの参加が必要です",
         btn: "参加する"
       },
       loading: true
@@ -173,6 +170,7 @@ export default {
     entryPartValid: function() {
       // ログインしていない場合
       if (!this.$store.getters['user/id']) {
+        // ログインモーダルを表示
         this.$store.dispatch(
           "loginGuide/update", true
         );
@@ -190,7 +188,7 @@ export default {
         this.displayConfirmModal = true
         return false
       }
-      return false
+      return true
     },
     doneEventEntry: function(confirm) {
       this.displayConfirmModal = false;
@@ -265,7 +263,6 @@ export default {
           font-size: 13px;
           .entry-user {
             display: flex;
-            margin-bottom: 5px;
             justify-content: center;
             align-items: center;
             height: 100%;

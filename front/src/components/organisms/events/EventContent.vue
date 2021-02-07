@@ -3,6 +3,9 @@
     <ConfirmModal v-show="modalFlg"
       :modal-msg-prop="modalMsg"
       @process-confirm="deleteEvent"/>
+    <ConfirmModal v-show="cancelModal"
+      :modal-msg-prop="cancelModalMsg"
+      @process-confirm="postCancelEventEntry"/>
     <div class="space-between">
       <h1 class="main-title">{{ event.title }}</h1>
       <div v-show="$store.getters['user/adminType']>0">
@@ -26,7 +29,7 @@
       <div class="number-info">
         <p class="number-info--title">参加人数</p>
         <p class="number-info--value">
-          <span>{{ entryUsers.length }}人</span>
+          <span>{{ entryUsersProp.length }}人</span>
           <span v-show="event.max_entry>0"> / {{ event.max_entry }}人</span>
         </p>
       </div>
@@ -43,8 +46,9 @@
                 :disabled="cantEntry"
                 :class="{ 'btn-disable': cantEntry}">参加する
         </div>
+        <div v-if="isEntryProp" class="already-entry">このイベントに参加中</div>
         <div v-if="isEntryProp"
-                @click="postCancelEventEntry()"
+                @click="displayCancelModal()"
                 class="entry-btns--cancel some-updown-center"
                 :disabled="cantCancel"
                 :class="{ 'btn-disable': cantCancel}">
@@ -55,11 +59,11 @@
     </div>
     <div class="entry-users">
       <p>参加者</p>
-      <span v-for="(entryUser, i) in entryUsers" :key="i" class="entry-users--user">
+      <span v-for="(entryUser, i) in entryUsersProp" :key="i" class="entry-users--user">
         <router-link :to="{name: 'UserShow', params: { id: entryUser.id }}">
           {{ entryUser.name }}
         </router-link>
-        <span v-if="i < entryUsers.length-1">, </span>
+        <span v-if="i < entryUsersProp.length-1">, </span>
       </span>
     </div>
     <div class="event-details">
@@ -91,8 +95,6 @@ export default {
   data() {
     return {
       event: this.eventProp,
-      // isEntry: this.isEntryProp,
-      entryUsers: this.entryUsersProp,
       modalFlg: false,
       cantEntry: false,
       cantCancel: false,
@@ -100,76 +102,51 @@ export default {
         title: "イベントの取消",
         message: "イベントの取消を行います。<br>削除したイベントは元へは戻せません。よろしいですか？",
         btn: "削除"
-      }
+      },
+      cancelModal: false,
+      cancelModalMsg: {
+        title: "",
+        message: "このイベントへの参加をキャンセルします。<br>よろしいですか？",
+        btn: "はい"
+      },
     }
   },
   methods: {
-    // postEventEntry: function() {
-    //   axios.post(
-    //     `http://${g.hostName}/api/events/${this.$route.params.id}/entry`,
-    //     {
-    //       user_id: this.$store.getters['user/id']
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: this.$store.getters['user/secureToken']
-    //       }
-    //     }
-    //   )
-    //   .then((response) => {
-    //     this.isEntry = true;
-    //     this.entryCnt = response.data;
-    //     this.$emit('update-entry-status', this.isEntry)
-    //   })
-    //   .catch((error) => {
-    //     if (error.response.status === 400 || error.response.status === 401) {
-    //       this.$store.dispatch(
-    //         "flash/create",
-    //         { message: error.response.data.error_message,
-    //           type:    2
-    //         }
-    //       );
-    //       if (error.response.status === 401) {
-    //         this.$store.dispatch(
-    //           "loginGuide/update", true
-    //         );
-    //       }
-    //     }
-    //     this.apiErrors(error.response.status);
-    //   });
-    // },
-    postCancelEventEntry: function() {
-      axios.post(
-        `http://${g.hostName}/api/events/${this.$route.params.id}/entry_cancel`,
-        {
-          user_id: this.$store.getters['user/id']
-        },
-        {
-          headers: {
-            Authorization: this.$store.getters['user/secureToken']
-          }
-        }
-      )
-      .then((response) => {
-        this.entryCnt = response.data;
-        this.$emit('update-entry-status', this.isEntry)
-      })
-      .catch((error) => {
-        if (error.response.status === 400 || error.response.status === 401) {
-          this.$store.dispatch(
-            "flash/create",
-            { message: error.response.data.error_message,
-              type:    2
+    postCancelEventEntry: function(confirm) {
+      this.cancelModal = false
+      if (confirm) {
+        axios.post(
+          `http://${g.hostName}/api/events/${this.$route.params.id}/entry_cancel`,
+          {
+            user_id: this.$store.getters['user/id']
+          },
+          {
+            headers: {
+              Authorization: this.$store.getters['user/secureToken']
             }
-          );
-          if (error.response.status == 401) {
-            this.$router.push({ 
-              name: "Login"
-            })
           }
-        }
-        this.apiErrors(error.response.status);
-      });
+        )
+        .then((response) => {
+          this.$emit('update-entry-status', false, response.data.entry_users)
+          this.$emit('update-event-session')
+        })
+        .catch((error) => {
+          if (error.response.status === 400 || error.response.status === 401) {
+            this.$store.dispatch(
+              "flash/create",
+              { message: error.response.data.error_message,
+                type:    2
+              }
+            );
+            if (error.response.status == 401) {
+              this.$router.push({ 
+                name: "Login"
+              })
+            }
+          }
+          this.apiErrors(error.response.status);
+        });
+      }
     },
     deleteEvent: function(confirm) {
       this.modalFlg = false;
@@ -203,6 +180,9 @@ export default {
     },
     displayConfirmModal: function() {
       this.modalFlg = true;
+    },
+    displayCancelModal: function() {
+      this.cancelModal = true;
     },
     isEventEnd: function()  {
       var start_date = new Date(this.event.start_datetime.substr(0, 4), 
@@ -265,16 +245,20 @@ export default {
   text-align: center;
   font-weight: bold;
   &--entry {
-    background: var(--accent-color);
+    background: orange;
     padding: 5px 10px;
   }
   &--cancel {
-    background: orange;
+    background: var(--accent-color);
     padding: 5px 10px;
     svg {
       width: 18px;
       margin-left: 5px;
     }
+  }
+  .already-entry {
+    color: orange;
+    font-size: 14px;
   }
   :hover {
     opacity: 0.8;

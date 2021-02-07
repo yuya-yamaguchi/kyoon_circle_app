@@ -16,8 +16,7 @@ export const eventEntry = {
         }
       )
       .then((response) => {
-        this.entryCnt = response.data;
-        this.$emit('update-entry-status', true)
+        this.$emit('update-entry-status', true, response.data.entry_users)
       })
       .catch((error) => {
         if (error.response.status === 400 || error.response.status === 401) {

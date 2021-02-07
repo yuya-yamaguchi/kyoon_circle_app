@@ -38,8 +38,7 @@ export default {
           }
         }
       )
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         // FRONT側のユーザ情報を削除
         this.$store.dispatch("user/logout");
         this.$store.dispatch(

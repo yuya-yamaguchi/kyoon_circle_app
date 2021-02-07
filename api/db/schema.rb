@@ -132,8 +132,10 @@ ActiveRecord::Schema.define(version: 2021_02_03_064430) do
   create_table "user_entry_parts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "session_part_id", null: false
+    t.bigint "event_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_user_entry_parts_on_event_id"
     t.index ["session_part_id"], name: "index_user_entry_parts_on_session_part_id"
     t.index ["user_id", "session_part_id"], name: "index_user_entry_parts_on_user_id_and_session_part_id", unique: true
     t.index ["user_id"], name: "index_user_entry_parts_on_user_id"

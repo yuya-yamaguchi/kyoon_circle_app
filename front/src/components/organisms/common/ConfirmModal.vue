@@ -73,10 +73,10 @@ export default {
     justify-content: space-between;
     margin-bottom: 30px;
     .confirm-btn {
-      width: 150px;
+      width: 160px;
     }
     .back-btn {
-      width: 150px;
+      width: 160px;
       color: #333;
       background: #FFF;
     }
