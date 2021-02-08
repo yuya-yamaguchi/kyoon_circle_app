@@ -244,7 +244,7 @@ export default {
         &--title {
           font-size: 16px;
           color: #333;
-          text-decoration: none;
+          margin-left: 5px;
         }
         &--status {
           font-size: 12px;
