@@ -4,6 +4,7 @@
       <button @click="closeModal()" class="close-button">×</button>
       <h1>曲の編集</h1>
       <SessionMusicForm v-if="!loading"
+        :part-categories-prop="partCategories"
         :session-music-prop="sessionMusic"
         :session-parts-prop="sessionParts"
         :btn-name-prop="'更新'"
@@ -27,6 +28,7 @@ export default {
   },
   data() {
     return {
+      partCategories: {},
       sessionMusic: {},
       sessionParts: [],
       loading: true
@@ -74,10 +76,22 @@ export default {
       .catch((error) => {
         this.apiErrors(error.response.status);
       })
+    },
+    getPartCategoies: function() {
+      axios.get(
+        `http://${g.hostName}/api/part_categories`
+      )
+      .then((response) => {
+        this.partCategories = response.data;
+      })
+      .catch((error) => {
+        this.apiErrors(error.response.status);
+      })
     }
   },
   mounted() {
-    this.getSessionMusic()
+    this.getSessionMusic();
+    this.getPartCategoies();
   }
 }
 </script>

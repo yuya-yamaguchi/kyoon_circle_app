@@ -42,10 +42,10 @@ class SessionMusic < ApplicationRecord
   end
 
   def set_youtube_url
-    if music_url.match("https://www.youtube.com/watch")
+    if music_url&.match("https://www.youtube.com/watch")
       edit_url = music_url.gsub("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/")
       self.youtube_url_embed = edit_url.sub(/&.+/,'')
-    elsif music_url.match("https://youtu.be")
+    elsif music_url&.match("https://youtu.be")
       self.youtube_url_embed = music_url.gsub("https://youtu.be", "https://www.youtube.com/embed")
     elsif music_url.blank?
       self.youtube_url_embed = nil

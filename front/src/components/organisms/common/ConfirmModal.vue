@@ -43,8 +43,6 @@ export default {
   height: 100%;
   background-color: rgba(0,0,0,0.5);
   display: flex;
-  // align-items: center;
-  // justify-content: center;
 }
 
 .confirm-container {

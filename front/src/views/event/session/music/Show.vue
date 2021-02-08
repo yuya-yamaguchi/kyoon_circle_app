@@ -5,7 +5,7 @@
       <EditMusicModal v-if="displayModal"
         @update-music="getSessionMusic"
         @close-modal="displayModal=false"/>
-      <ConfirmModal v-show="displayDelModal"
+      <ConfirmModal v-if="displayDelModal"
         :modal-msg-prop="modalMsg"
         @process-confirm="deleteSessionMusic"/>
       <div class="space-between">
@@ -26,8 +26,8 @@
           </a>
         </div>
       </div>
-      <div class="youtube-outer">
-        <iframe v-if="sessionMusic.youtube_url_embed"
+      <div v-if="sessionMusic.youtube_url_embed" class="youtube-outer">
+        <iframe
           class="youtube-embed"
           :src="sessionMusic.youtube_url_embed"/>
       </div>
