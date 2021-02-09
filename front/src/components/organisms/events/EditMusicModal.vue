@@ -2,13 +2,13 @@
   <div id="overlay">
     <div class="add-music-container">
       <button @click="closeModal()" class="close-button">×</button>
-      <h1>曲の追加</h1>
-      <SessionMusicForm
-        :part-categories-prop="partCategoriesProp"
+      <h1>曲の編集</h1>
+      <SessionMusicForm v-if="!loading"
+        :part-categories-prop="partCategories"
         :session-music-prop="sessionMusic"
         :session-parts-prop="sessionParts"
-        :btn-name-prop="'登録'"
-        @post-session-music="postSessionMusic"
+        :btn-name-prop="'更新'"
+        @post-session-music="putSessionMusic"
         @close-modal="closeModal"/>
     </div>
   </div>
@@ -20,25 +20,45 @@ import g from "@/variable/variable.js";
 import SessionMusicForm from '@/components/organisms/events/sessions/SessionMusicForm';
 
 export default {
-  props: {
-    partCategoriesProp: {}
-  },
   components: {
     SessionMusicForm
   },
+  props: {
+    partCategoriesProp: {}
+  },
   data() {
     return {
+      partCategories: {},
       sessionMusic: {},
-      sessionParts: this.partCategoriesProp.map(function(pc){ return {part_category_id: pc.id, status: "1"} }),
+      sessionParts: [],
+      loading: true
     }
   },
   methods: {
     closeModal: function() {
       this.$emit('close-modal');
     },
-    postSessionMusic: function(sessionMusic, sessionParts) {
-      axios.post(
-        `http://${g.hostName}/api/events/${this.$route.params.id}/session_musics`,
+    getSessionMusic() {
+      axios.get(
+        `http://${g.hostName}/api/events/${this.$route.params.event_id}/session_musics/${this.$route.params.session_music_id}/edit`,
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
+      )
+      .then((response) => {
+        this.sessionMusic = response.data.session_music
+        this.sessionParts = response.data.session_parts
+        this.loading = false
+      })
+      .catch((error) => {
+        this.apiErrors(error.response.status);
+      })
+    },
+    putSessionMusic: function(sessionMusic, sessionParts) {
+      axios.put(
+        `http://${g.hostName}/api/events/${this.sessionMusic.event_id}/session_musics/${this.sessionMusic.id}`,
         {
           session_music: sessionMusic,
           session_parts: sessionParts
@@ -50,13 +70,28 @@ export default {
         }
       )
       .then(() => {
-        this.$emit('add-music');
+        this.$emit('update-music');
         this.$emit('close-modal');
       })
       .catch((error) => {
         this.apiErrors(error.response.status);
       })
+    },
+    getPartCategoies: function() {
+      axios.get(
+        `http://${g.hostName}/api/part_categories`
+      )
+      .then((response) => {
+        this.partCategories = response.data;
+      })
+      .catch((error) => {
+        this.apiErrors(error.response.status);
+      })
     }
+  },
+  mounted() {
+    this.getSessionMusic();
+    this.getPartCategoies();
   }
 }
 </script>

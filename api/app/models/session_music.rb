@@ -2,6 +2,9 @@ class SessionMusic < ApplicationRecord
   belongs_to :event
   has_many :session_parts, dependent: :destroy
 
+  before_create :set_youtube_url
+  before_update :set_youtube_url
+
   def self.get_musics_info(event_id)
     session_musics = SessionMusic.where(event_id: event_id).order('status DESC')
     musics_info = []
@@ -35,6 +38,17 @@ class SessionMusic < ApplicationRecord
     end
     if session_music_status != self.status
       self.update(status: session_music_status)
+    end
+  end
+
+  def set_youtube_url
+    if music_url&.match("https://www.youtube.com/watch")
+      edit_url = music_url.gsub("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/")
+      self.youtube_url_embed = edit_url.sub(/&.+/,'')
+    elsif music_url&.match("https://youtu.be")
+      self.youtube_url_embed = music_url.gsub("https://youtu.be", "https://www.youtube.com/embed")
+    elsif music_url.blank?
+      self.youtube_url_embed = nil
     end
   end
 end

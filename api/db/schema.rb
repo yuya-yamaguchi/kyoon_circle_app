@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_03_064430) do
+ActiveRecord::Schema.define(version: 2021_02_08_084114) do
 
   create_table "event_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -94,6 +94,8 @@ ActiveRecord::Schema.define(version: 2021_02_03_064430) do
     t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "music_url"
+    t.text "youtube_url_embed"
     t.index ["event_id"], name: "index_session_musics_on_event_id"
     t.index ["user_id"], name: "index_session_musics_on_user_id"
   end

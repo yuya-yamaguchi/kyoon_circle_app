@@ -1,7 +1,7 @@
 <template>
   <div v-if="breadCrumbs!=[]" class="bread-crumbs">
     <div v-for="(breadCrumb, i) in breadCrumbs" :key="i" class="bread-crumbs--list">
-      <router-link v-if="breadCrumb.path!=''" :to="`${breadCrumb.path}`">
+      <router-link v-if="breadCrumb.path" :to="`${breadCrumb.path}`">
         {{ breadCrumb.name }}
       </router-link>
       <span v-else>
