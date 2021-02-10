@@ -4,6 +4,7 @@
       <SideBar :select-menu-prop="104"/>
     </div>
     <div class="double-container--right">
+      <h1 class="main-title">イベント編集</h1>
       <EventList v-if="events.length!=0" :events-prop="events"/>
       <Pagination :pagy-prop="pagy" @chage-page="changePage"/>
     </div>

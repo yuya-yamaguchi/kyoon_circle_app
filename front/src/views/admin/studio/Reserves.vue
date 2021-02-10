@@ -29,8 +29,12 @@ export default {
   margin: 0 auto;
   padding: 20px 0;
   background: #FFF;
-  h1 {
-    margin: 0 0 20px 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .studio-reserves-container {
+    padding: 0;
+    background: var(--base-color);
   }
 }
 </style>

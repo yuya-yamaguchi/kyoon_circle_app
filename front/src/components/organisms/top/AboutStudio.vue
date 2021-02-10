@@ -23,6 +23,7 @@
   position: relative;
   img {
     width: 100%;
+    min-height: 400px;
     vertical-align: bottom;
     filter: blur(6px);
   }

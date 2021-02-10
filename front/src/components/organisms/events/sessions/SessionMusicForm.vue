@@ -122,6 +122,7 @@ export default {
     }
     .session-part-guide {
       margin: 10px 0;
+      white-space: nowrap;
     }
     .session-part {
       display: block;
@@ -151,6 +152,18 @@ export default {
     width: 150px;
     color: #333;
     background: #FFF;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .btn-area {
+    display: block;
+    .confirm-btn {
+      width: 70%;
+    }
+    .back-btn {
+      width: 70%;
+    }
   }
 }
 </style>

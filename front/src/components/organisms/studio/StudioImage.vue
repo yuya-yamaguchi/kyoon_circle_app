@@ -21,6 +21,7 @@
   margin: 0 auto;
   img {
     width: 100%;
+    min-height: 350px;
     vertical-align: bottom;
     filter: blur(2px);
   }

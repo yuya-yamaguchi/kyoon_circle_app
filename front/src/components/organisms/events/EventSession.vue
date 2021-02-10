@@ -286,7 +286,6 @@ export default {
 .scroll {
   display: block;
   overflow-x: scroll;
-  white-space: nowrap;
   -webkit-overflow-scrolling: touch;
   .session-musics-table {
     width: 100%;
@@ -303,14 +302,14 @@ export default {
     }
     .session-music {
       &--info {
-        min-width: 100px;
+        min-width: 120px;
         border-right: 1px solid;
         border-left: 1px solid;
         border-bottom: 1px solid;
         &--title {
           font-size: 16px;
           color: #333;
-          margin-left: 5px;
+          margin: 0 5px;
         }
         &--status {
           font-size: 12px;
@@ -321,7 +320,7 @@ export default {
       .session-part {
         border-right: 1px solid;
         border-bottom: 1px solid;
-        min-width: 100px;
+        min-width: 80px;
         .part-info {
           display: flex;
           flex-direction: column;

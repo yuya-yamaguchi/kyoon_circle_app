@@ -142,7 +142,8 @@ export default {
 
 <style scoped lang="scss">
 .studio-reserve-container{
-  margin: 50px;
+  max-width: 800px;
+  margin: 50px auto;
   .week-bar {
     display: flex;
     justify-content: space-between;
@@ -175,7 +176,6 @@ export default {
     border-bottom: 1px dotted;
     border-right: 1px dotted #FFF;
     text-align: center;
-    width: 100px;
     background: #333;
     color: #FFF;
     font-weight: bold;

@@ -34,4 +34,10 @@ export default {
     margin: 0 0 20px 20px;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .user-profile-container {
+    background: var(--base-color);
+  }
+}
 </style>

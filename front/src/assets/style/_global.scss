@@ -26,7 +26,8 @@
 }
 
 .auth-container {
-  width: 600px;
+  max-width: 600px;
+  min-width: 300px;
   margin: 0 auto;
   padding: 30px 0;
   box-shadow: 10px 10px 10px rgba(70, 70, 70, 0.2);
@@ -107,7 +108,7 @@
 
 .form-item{
   width:  90%;
-  min-width: 300px;
+  min-width: 250px;
   margin: 0 auto;
   margin-bottom: 40px;
   text-align: left;
@@ -249,8 +250,53 @@
     color: red;
   }
 }
-
 .w800 {
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
+}
+.all-view-link {
+  display: block;
+  text-decoration: none;
+  margin: 0 auto;
+  text-align: center;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 600px) {
+  .double-container {
+    background: var(--base-color);
+    padding: 0;
+    &--left {
+      display: none;
+    }
+    &--right {
+      width: 100%;
+      padding: 5px;
+    }
+  }
+  .auth-container {
+    .form-container {
+      padding: 10px 20px;
+    }
+  }
+  .edit-btn {
+    margin-bottom: 20px;
+    svg {
+      width: 20px;
+    }
+  }
+  .delete-btn {
+    svg {
+      width: 20px;
+    }
+  }
+  .edit-btn-name {
+    display: none;
+  }
+  .delete-btn-name {
+    display: none;
+  }
 }

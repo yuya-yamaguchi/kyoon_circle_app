@@ -49,10 +49,10 @@ export default {
   display: flex;
 }
 .login-container {
-  width: 80%;
+  width: 90%;
+  max-width: 500px;
   margin: 0 auto;
   background: #FFF;
-  max-width: 500px;
   position: absolute;
   top: 50%;
   left: 50%;
