@@ -62,10 +62,10 @@ export default {
 
 .select-user-modal-container {
   z-index: 2;
-  width: 70%;
+  width: 90%;
+  max-width: 700px;
   margin: 0 auto;
   background: #FFF;
-  max-width: 700px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -104,6 +104,14 @@ export default {
       width: 140px;
       color: #333;
       background: #FFF;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .select-user-modal-container {
+    .btn-area {
+      display: block;
     }
   }
 }

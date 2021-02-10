@@ -3,19 +3,19 @@
     <div class="hide-menus-container">
       <div class="menu-cards">
         <div v-if="!$store.getters['user/id']" class="menu-card">
-          <router-link to="/signup" class="menu-link">
+          <router-link to="/signup" class="menu-link some-updown-center">
             <fa icon="user-plus" class="menu-link--icon"></fa>
             <div class="menu-link--title">新規会員登録</div>
           </router-link>
         </div>
         <div v-if="!$store.getters['user/id']" class="menu-card">
-          <router-link to="/login" class="menu-link">
+          <router-link to="/login" class="menu-link some-updown-center">
             <fa icon="sign-in-alt" class="menu-link--icon"></fa>
             <div class="menu-link--title">ログイン</div>
           </router-link>
         </div>
         <div v-if="$store.getters['user/id']" class="menu-card">
-          <div @click="logout()" class="menu-link">
+          <div @click="logout()" class="menu-link some-updown-center">
             <fa icon="sign-out-alt" class="menu-link--icon"></fa>
             <div class="menu-link--title">ログアウト</div>
           </div>
@@ -23,7 +23,7 @@
       </div>
       <div class="menu-cards">
         <div v-for="menu in basicMenues" :key="menu" class="menu-card">
-          <router-link :to="menu.path" class="menu-link">
+          <router-link :to="menu.path" class="menu-link some-updown-center">
             <fa v-if="menu.icon" :icon="menu.icon" class="menu-link--icon"></fa>
             <div class="menu-link--title">
               {{ menu.name }}
@@ -33,7 +33,7 @@
       </div>
       <div v-if="$store.getters['user/id']" class="menu-cards">
         <div v-for="menu in myMenues" :key="menu" class="menu-card">
-          <router-link :to="menu.path" class="menu-link">
+          <router-link :to="menu.path" class="menu-link some-updown-center">
             <fa v-if="menu.icon" :icon="menu.icon" class="menu-link--icon"></fa>
             <div class="menu-link--title">
               {{ menu.name }}
@@ -43,7 +43,7 @@
       </div>
       <div v-if="$store.getters['user/adminType']" class="menu-cards">
         <div v-for="menu in adminMenues" :key="menu" class="menu-card">
-          <router-link :to="menu.path" class="menu-link">
+          <router-link :to="menu.path" class="menu-link some-updown-center">
             <fa v-if="menu.icon" :icon="menu.icon" class="menu-link--icon"></fa>
             <div class="menu-link--title">
               {{ menu.name }}
@@ -176,7 +176,9 @@ export default {
             transition: .3s;
           }
           &--icon {
+            display: block;
             width: 16px;
+            height: 16px;
             margin-right: 10px;
           }
           &--title {
