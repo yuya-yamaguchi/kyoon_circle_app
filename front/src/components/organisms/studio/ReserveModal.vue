@@ -253,10 +253,10 @@ function calcReserveTime(selected) {
 
 .reserve-container {
   z-index: 2;
-  width: 70%;
+  width: 90%;
+  max-width: 700px;
   margin: 0 auto;
   background: #FFF;
-  max-width: 700px;
   h1 {
     margin: 30px;
   }
@@ -317,6 +317,19 @@ function calcReserveTime(selected) {
     color: red;
     margin: 20px;
     font-size:  14px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .reserve-container {
+    .reserve-form {
+      select {
+        font-size: 16px;
+      }
+      &--btn {
+        display: block;
+      }
+    }
   }
 }
 </style>

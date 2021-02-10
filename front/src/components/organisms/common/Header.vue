@@ -1,30 +1,49 @@
 <template>
-  <header>
-    <router-link to="/" class="site-title">京音</router-link>
-    <div class="header-menus">
+  <div>
+    <transition name="slide" appear>
+      <ForSmartPhoneMunus v-if="hideMenu"
+        @logout="logout()"
+        @close-hide-menu="hideMenu=false"/>
+    </transition>
+    <header>
+      <router-link to="/" class="site-title">京音</router-link>
       <div class="header-menus">
-        <router-link to="/news" class="header-menu">お知らせ</router-link>
-        <router-link to="/studios/1?week=0" class="header-menu">スタジオ予約</router-link>
-        <router-link to="/events?page=1" class="header-menu">イベント</router-link>
-        <!-- <a class="header-menu">宿泊</a> -->
+        <div class="header-menus">
+          <router-link to="/news" class="header-menu">お知らせ</router-link>
+          <router-link to="/studios/1?week=0" class="header-menu">スタジオ予約</router-link>
+          <router-link to="/events?page=1" class="header-menu">イベント</router-link>
+          <!-- <a class="header-menu">宿泊</a> -->
+        </div>
+        <template v-if='!$store.getters["user/id"]'>
+          <router-link to="/signup" class="sign-btn">新規会員登録</router-link>
+          <router-link to="/login" class="sign-btn">ログイン</router-link>
+        </template>
+        <template v-else class="header-menus">
+          <router-link to="/mypage" class="header-menu">マイページ</router-link>
+          <button type="submit" @click="logout()" class="sign-btn">ログアウト</button>
+        </template>
       </div>
-      <template v-if='!$store.getters["user/id"]'>
-        <router-link to="/signup" class="sign-btn">新規会員登録</router-link>
-        <router-link to="/login" class="sign-btn">ログイン</router-link>
-      </template>
-      <template v-else class="header-menus">
-        <router-link to="/mypage" class="header-menu">マイページ</router-link>
-        <button type="submit" @click="logout()" class="sign-btn">ログアウト</button>
-      </template>
-    </div>
-  </header>
+      <div @click="hideMenu=true" class="hide-menu">
+        <fa icon="bars"></fa>
+      </div>
+    </header>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import ForSmartPhoneMunus from "@/components/organisms/common/ForSmartPhoneMunus.vue";
 
 export default {
+  components: {
+    ForSmartPhoneMunus
+  },
+  data() {
+    return {
+      hideMenu: false
+    }
+  },
   methods: {
     logout: function() {
       // API側にてログアウトを行う
@@ -109,14 +128,14 @@ header{
   .site-title {
     text-align: left;
     line-height: 60px;
-    padding: 0 20px;
+    padding: 0 10px;
     color: #FFF;
     font-size: 30px;
     text-decoration: none;
     white-space: nowrap;
   }
   .header-menus {
-    margin-right: 30px;
+    margin-right: 20px;
     display: flex;
     justify-content: flex-end;
     .header-menu {
@@ -144,7 +163,6 @@ header{
         transform: scale(1, 1);
       }
     }
-    
     .sign-btn {
       display: block;
       text-decoration: none;
@@ -161,6 +179,24 @@ header{
       line-height: 30px;
       cursor: pointer;
       white-space: nowrap;
+    }
+  }
+  .hide-menu {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  header {
+    .header-menus {
+      display: none;
+    }
+    .hide-menu {
+      display: block;
+      width: 20px;
+      margin: 0 20px;
+      line-height: 70px;
+      cursor: pointer;
     }
   }
 }

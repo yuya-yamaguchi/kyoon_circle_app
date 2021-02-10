@@ -23,3 +23,14 @@
 .fade-slow-leave-from {
   opacity: 1;
 }
+
+.slide-enter-from, .slide-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+.slide-enter-to, .slide-leave-from {
+  transform: translateX(0);
+}
+.slide-enter-active, .slide-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
+}

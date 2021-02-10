@@ -63,4 +63,10 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 600px) {
+  .users-list-container {
+    background: var(--base-color);
+  }
+}
 </style>

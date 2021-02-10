@@ -2,7 +2,7 @@
   <div>
     <table>
       <tr v-for="(news, i) in newsProp" :key="i">
-        <td>{{ formatDate(news.created_at) }}</td>
+        <td class="post-date">{{ formatDate(news.created_at) }}</td>
         <td>
           <router-link :to="transLinks(news.id)" class="news-card">
             {{ news.title }}
@@ -35,8 +35,12 @@ table {
   width: 95%;
   margin: 10px auto;
   tr {
-    display: block;
+    display: flex;
+    justify-content: flex-start;
     border-bottom: 1px dotted #888;
+    .post-date {
+      white-space: nowrap;
+    }
     td {
       display: inline-block;
       margin: 5px 10px;
@@ -49,7 +53,5 @@ table {
       }
     }
   }
-  
 }
-
 </style>

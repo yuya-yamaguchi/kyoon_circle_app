@@ -67,7 +67,8 @@ export default {
     z-index: 1;
   }
   &--left {
-    width: 100px;
+    width: 20%;
+    max-width: 100px;
     padding: 20px;
     font-weight: bold;
     text-align: center;
@@ -82,8 +83,9 @@ export default {
   }
   &--middle {
     padding: 10px;
+    width: 80%;
     &--title {
-      font-size: 20px;
+      font-size: 18px;
     }
     &--type {
       background: rgb(71, 71, 241);
@@ -98,23 +100,6 @@ export default {
     &--fee {
       font-weight: bold;
       margin-left: 10px;
-    }
-  }
-  &--right {
-    margin-left: auto;
-    a {
-      display: block;
-      text-decoration: none;
-      background: red;
-      color: #FFF;
-      font-size: 14px;
-      font-weight: bold;
-      border-radius: 10px;
-      padding: 2px 10px;
-      margin: 10px;
-    }
-    a:hover {
-      opacity: 0.6;
     }
   }
 }

@@ -97,4 +97,16 @@ export default {
     font-size: .8rem;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .studio-content {
+    display: block;
+    table {
+      width: 100%;
+    }
+    &--caution {
+      margin: 20px 0 0 0;
+    }
+  }
+}
 </style>

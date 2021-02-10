@@ -11,11 +11,11 @@
       <div v-show="$store.getters['user/adminType']>0">
         <router-link :to="`/event/${event.id}/edit`" class="edit-btn some-updown-center">
           <fa icon="edit"></fa>
-          <span>編集する</span>
+          <span class="edit-btn-name">編集する</span>
         </router-link>
         <a @click="displayConfirmModal" class="delete-btn some-updown-center">
           <fa icon="trash"></fa>
-          <span>削除する</span>
+          <span class="delete-btn-name">削除する</span>
         </a>
       </div>
     </div>

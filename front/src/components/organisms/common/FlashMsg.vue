@@ -50,7 +50,7 @@ export default {
     color: #FFF;
     font-size: 20px;
     padding: 5px 20px;
-    background: var(--accent-color);
+    background: var(--main-color);
     
   }
   .error-msg {

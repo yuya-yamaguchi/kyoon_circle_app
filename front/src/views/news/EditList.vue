@@ -4,6 +4,7 @@
       <SideBar :select-menu-prop="106"/>
     </div>
     <div class="double-container--right">
+      <h1 class="main-title">お知らせ編集</h1>
       <NewsList v-if="news.length!=0" :news-prop="news"/>
     </div>
   </div>

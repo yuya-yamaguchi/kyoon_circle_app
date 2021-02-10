@@ -96,4 +96,42 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 600px) {
+  .user-info {
+    margin: 0 auto;
+    &--top {
+      display: block;
+      margin: 0 auto;
+      &--img {
+        position: static;
+        margin: 0 auto;
+      }
+      &--name {
+        margin: 0 auto;
+        text-align: center;
+      }
+      &--edit {
+        margin: 0 auto;
+        text-align: center;
+        svg {
+          width: 14px;
+        }
+        &:hover {
+          color: var(--accent-color)
+        }
+      }
+    }
+    &--profile {
+      padding: 20px 10px;
+      margin: 20px 0 0 0;
+      &--instruments {
+        margin: 0;
+      }
+      &--contents {
+        margin: 20px 0 0 0;
+      }
+    }
+  }
+}
 </style>

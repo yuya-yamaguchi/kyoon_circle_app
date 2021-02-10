@@ -30,15 +30,6 @@ export default {
   padding: 100px 0px;
   background: #FFF;
 }
-.all-view-link {
-  display: block;
-  text-decoration: none;
-  margin: 0 auto;
-  text-align: center;
-  color: #333;
-  font-size: 20px;
-  font-weight: bold;
-}
 .top-each-title {
   font-size: 40px;
   font-weight: bold;

@@ -18,11 +18,11 @@
           <a @click="displayModal=true"
             class="edit-btn some-updown-center">
             <fa icon="edit"></fa>
-            <span>編集する</span>
+            <span class="edit-btn-name">編集する</span>
           </a>
           <a @click="displayDelModal=true" class="delete-btn some-updown-center">
             <fa icon="trash"></fa>
-            <span>削除する</span>
+            <span class="delete-btn-name">削除する</span>
           </a>
         </div>
       </div>
@@ -137,6 +137,7 @@ export default {
   white-space: nowrap;
 }
 .youtube-outer {
+  // 縦横比を合わせるために設定（16:9）
   width: 100%;
   padding-top: 56.25%;
   margin-top: 20px;
@@ -149,11 +150,10 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    min-width: 400px;
-    min-height: 225px;
+    box-sizing: border-box;
   }
 }
 .music-url {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 </style>

@@ -8,11 +8,11 @@
       <div v-show="$store.getters['user/adminType']>0">
         <router-link :to="`/news/${news.id}/edit`" class="edit-btn some-updown-center">
           <fa icon="edit"></fa>
-          <span>編集する</span>
+          <span class="edit-btn-name">編集する</span>
         </router-link>
         <a @click="displayConfirmModal" class="delete-btn some-updown-center">
           <fa icon="trash"></fa>
-          <span>削除する</span>
+          <span class="delete-btn-name">削除する</span>
         </a>
       </div>
     </div>
@@ -109,10 +109,9 @@ export default {
 .news-date {
   text-align: right;
 }
-
 .news-details {
   font-size: 18px;
-  margin: 20px;
+  margin: 20px 5px;
   padding: 10px;
   background: #FFF;
   white-space: pre-wrap;
