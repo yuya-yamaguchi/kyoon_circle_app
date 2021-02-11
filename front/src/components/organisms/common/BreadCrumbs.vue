@@ -1,6 +1,6 @@
 <template>
   <div v-if="breadCrumbs" class="bread-crumbs">
-    <div v-for="(breadCrumb, i) in breadCrumbs" :key="i" class="bread-crumbs--list">
+    <div v-for="(breadCrumb, i) in breadCrumbs" :key="i" class="bread-crumbs--list some-updown-center">
       <router-link v-if="breadCrumb.path" :to="`${breadCrumb.path}`" class="bread-crumbs--list--link">
         {{ breadCrumb.name }}
       </router-link>

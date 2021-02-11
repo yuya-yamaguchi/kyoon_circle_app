@@ -26,7 +26,7 @@ export default {
 
 <style scoped lang="scss">
 .flex-between {
-  width: 80%;
+  width: 100%;
   margin: 30px auto;
   display: flex;
   justify-content: space-between;

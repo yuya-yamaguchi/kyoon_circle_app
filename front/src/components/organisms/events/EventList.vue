@@ -45,7 +45,7 @@ export default {
 
 <style scoped lang="scss">
 .event-card {
-  margin: 20px;
+  margin: 20px 0;
   color: #333;
   background: #FFF;
   display: flex;

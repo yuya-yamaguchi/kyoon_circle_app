@@ -20,17 +20,17 @@
           <fa icon="chevron-right" class="small-icon"></fa>
         </div>
       </div>
-      <table>
-        <tr>
-          <th></th>
+      <table class="reserves-table">
+        <tr class="reserves-table--header">
+          <th class="reserve-times-head"></th>
           <th v-for="(day, w) in weeks" :key="w"
             :class="{'saturday': calcWeek(day, 1)=='土',
-                      'sunday':  calcWeek(day, 1)=='日'}">
+                     'sunday':  calcWeek(day, 1)=='日'}">
             {{ fmtDate(day, 3) }}<br>
             （{{ calcWeek(day, 1) }}）
           </th>
         </tr>
-        <tr v-for="(reserve, i) in reserves" :key="i">
+        <tr v-for="(reserve, i) in reserves" :key="i" class="reserves-table--content">
           <td class="reserve-time">
             <span>{{ Math.floor(i/2) }}：</span>
             <span v-if="i%2==0">00</span>
@@ -167,86 +167,89 @@ export default {
       }
     }
   }
-  table {
+  .reserves-table {
     width: 100%;
     border: 1px solid;
     margin: 0 auto;
-  }
-  th {
-    border-bottom: 1px dotted;
-    border-right: 1px dotted #FFF;
-    text-align: center;
-    background: #333;
-    color: #FFF;
-    font-weight: bold;
-  }
-  .saturday {
-    background: rgb(129, 129, 236);
-  }
-  .sunday {
-    background: rgb(235, 143, 107);
-  }
-  tr {
-    border: 1px dotted;
-    background: #333;
-    color: #FFF;
-  }
-  .reserve-time {
-    width: 45px;
-    height: 20px;
-    text-align: right;
-    padding-right: 5px;
-    white-space: nowrap
-  }
-  .can-reserve {
-    border: 1px dotted #333;
-    width: 40px;
-    height: 20px;
-    background: #FFF;
-    font-size: 12px;
-    text-align: center;
-    cursor: pointer;
-    &:hover{
-      background: rgb(231, 231, 231);
-      color: #888;
-      transition: .3s;
+    table-layout: fixed;
+    &--header {
+      th {
+        border-bottom: 1px dotted;
+        border-right: 1px dotted #FFF;
+        text-align: center;
+        background: #333;
+        color: #FFF;
+        font-weight: bold;
+      }
+      .reserve-times-head {
+        width: 60px;
+      }
+      .saturday {
+        background: rgb(129, 129, 236);
+      }
+      .sunday {
+        background: rgb(235, 143, 107);
+      }
     }
-  }
-  .can-not-reserve {
-    background: lightgray;
-    color: #888;
-    text-align: center;
-    border: 1px dotted;
-  }
-  .already-reserved {
-    background: lightgray;
-    color: #888;
-    text-align: center;
-    border: 1px dotted;
-  }
-  .reserved-user {
-    border: 1px dotted #333;
-    background: #FFF;
-    color: #333;
-    font-size: 12px;
-    text-align: center;
-  }
-  .no-reserves {
-    border: 1px dotted #333;
-    width: 40px;
-    height: 20px;
-    background: #FFF;
-  }
-  .no-reserves-admin {
-    border: 1px dotted #333;
-    width: 40px;
-    height: 20px;
-    background: lightgray;
-  }
-  .hide-name {
-    font-size: 0px;
-    color: #FFF;
-    border-top: 1px solid #FFF;
+    &--content {
+      border: 1px dotted;
+      background: #333;
+      color: #FFF;
+      .can-reserve {
+        border: 1px dotted #333;
+        height: 20px;
+        background: #FFF;
+        font-size: 12px;
+        text-align: center;
+        cursor: pointer;
+        &:hover{
+          background: rgb(231, 231, 231);
+          color: #888;
+          transition: .3s;
+        }
+      }
+      .can-not-reserve {
+        background: lightgray;
+        color: #888;
+        text-align: center;
+        border: 1px dotted;
+      }
+      .already-reserved {
+        background: lightgray;
+        color: #888;
+        text-align: center;
+        border: 1px dotted;
+      }
+      .reserved-user {
+        border: 1px dotted #333;
+        background: #FFF;
+        color: #333;
+        font-size: 12px;
+        text-align: center;
+      }
+      .no-reserves {
+        border: 1px dotted #333;
+        height: 20px;
+        background: #FFF;
+      }
+      .no-reserves-admin {
+        border: 1px dotted #333;
+        height: 20px;
+        background: lightgray;
+      }
+      .hide-name {
+        font-size: 0px;
+        color: #FFF;
+        border-top: 1px solid #FFF;
+      }
+    }
+    .reserve-time {
+      width: 100px;
+      height: 20px;
+      text-align: right;
+      padding-right: 5px;
+      white-space: nowrap
+    }
   }
 }
 </style>

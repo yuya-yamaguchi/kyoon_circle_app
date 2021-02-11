@@ -29,7 +29,7 @@ export default {
 
 <style scoped>
 .about-event {
-    padding: 100px 20px;
+  padding: 100px 10px;
 }
 .top-each-title {
   font-size: 40px;

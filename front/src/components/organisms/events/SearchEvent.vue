@@ -46,7 +46,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-select {
-  margin-left: 20px;
-}
 </style>
