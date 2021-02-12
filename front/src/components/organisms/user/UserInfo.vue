@@ -81,14 +81,14 @@ export default {
   }
   &--profile {
     background: #FFF;
-    padding: 20px;
+    padding: 10px;
     margin-left: 30px;
     min-height: 300px;
     &--instruments {
-      margin-left: 100px;
+      margin-left: 120px;
     }
     &--contents {
-      margin-top: 70px;
+      margin-top: 50px;
       font-size: 14px;
       box-sizing: border-box;
       background: #FFF;
@@ -123,7 +123,7 @@ export default {
       }
     }
     &--profile {
-      padding: 20px 10px;
+      padding: 10px;
       margin: 20px 0 0 0;
       &--instruments {
         margin: 0;

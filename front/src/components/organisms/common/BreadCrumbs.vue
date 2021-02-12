@@ -28,6 +28,7 @@ export default {
   width: 100%;
   display: flex;
   justify-content: flex-start;
+  flex-wrap : wrap;
   padding: 10px;
   font-weight: bold;
   font-size: 15px;
@@ -37,7 +38,6 @@ export default {
   position: fixed;
   box-sizing: border-box;
   z-index: 10;
-  flex-wrap : wrap;
   &--list {
     display: flex;
     justify-content: flex-start;

@@ -3,7 +3,7 @@
     <h3 class="top-each-title">EVENT</h3>
     <div class="about-event--content">
       <Loading v-if="loadingProp"/>
-      <div class="w800">
+      <div class="event-lists w800">
         <EventList v-if="eventsProp.length!=0" :events-prop="eventsProp"/>
         <router-link :to="{name: 'EventIndex', query: {page: 1}}" class="all-view-link">すべてのイベントを見る</router-link>
       </div>
@@ -27,9 +27,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .about-event {
   padding: 100px 10px;
+  .event-lists{
+    margin-top: 20px;
+  }
 }
 .top-each-title {
   font-size: 40px;

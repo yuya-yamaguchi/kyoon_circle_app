@@ -143,7 +143,7 @@ export default {
 <style scoped lang="scss">
 .studio-reserve-container{
   max-width: 800px;
-  margin: 50px auto;
+  margin: 0 auto;
   .week-bar {
     display: flex;
     justify-content: space-between;

@@ -6,7 +6,7 @@ class Api::EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :entry, :entry_cancel]
 
   def index
-    search_events = Event.search(params[:event_category_id]).desc
+    search_events = Event.search(params)
     pagy, events = pagy(search_events, items: 5)
     out_params = []
     events.each do |event|

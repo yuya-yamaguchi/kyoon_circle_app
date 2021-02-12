@@ -27,14 +27,5 @@ export default {
 .studio-reserves-container {
   width: 100%;
   margin: 0 auto;
-  padding: 20px 0;
-  background: #FFF;
-}
-
-@media screen and (max-width: 600px) {
-  .studio-reserves-container {
-    padding: 0;
-    background: var(--base-color);
-  }
 }
 </style>

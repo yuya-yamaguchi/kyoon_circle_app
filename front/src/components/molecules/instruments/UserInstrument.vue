@@ -23,10 +23,10 @@ export default {
   flex-wrap: wrap;
   .instrument {
     border: 1px solid;
-    margin: 5px 15px;
+    margin: 5px 15px 5px 0;
     padding: 2px 10px;
     border-radius: 10px;
-    width: 80px;
+    min-width: 70px;
     text-align: center;
     background: var(--accent-color);
     color: #FFF;

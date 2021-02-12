@@ -4,7 +4,7 @@ class EventEntry < ApplicationRecord
 
   validate :validate_max_entry
   validate :validate_hold_date
-  before_destroy :validate_hold_date_del
+  # before_destroy :validate_hold_date_del
 
   private
   # 参加人数制限を超えていないか

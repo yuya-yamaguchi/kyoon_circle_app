@@ -5,7 +5,7 @@
       <tr>
         <th>ユーザ名</th>
         <th>メールアドレス</th>
-        <th>管理者権限</th>
+        <th>管理権限</th>
       </tr>
       <tr v-for="(user, i) in users" :key="i">
         <td>{{ user.name }}</td>

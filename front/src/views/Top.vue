@@ -59,7 +59,6 @@ export default {
 
 <style scoped lang="scss">
 .top-container {
-  margin-bottom: 100px;
   max-width: 1440px;
   margin: 0 auto;
 }
