@@ -1,6 +1,6 @@
 <template>
   <div class="comments">
-    <form v-on:submit.prevent="sendComment()" class="comments--form">
+    <form class="comments--form">
       <textarea
         v-model="textareaComment"
         @keydown="textareaChange"
@@ -13,10 +13,10 @@
         </div>
         <div class="comment-btns">
           <div class="comment-btns--cancel" @click="cancelComment()">キャンセル</div>
-          <button
+          <div @click="sendComment()"
             :disabled="!textareaComment.match(/\S/g) || textareaComment.length > 200"
             :class="{ 'btn-disable': !textareaComment.match(/\S/g) || textareaComment.length > 200}"
-            class="comment-btns--post">コメント</button>
+            class="comment-btns--post">コメント</div>
         </div>
       </div>
     </form>
@@ -103,16 +103,12 @@ export default {
         font-size: 15px;
       }
       &--post {
-        border: none;
-        outline: none;
-        font-size: 15px;
-        color: #FFF;
         cursor: pointer;
         width: 90px;
         padding: 2px;
         text-align: center;
-        background: #888;
         background: var(--accent-color);
+        font-size: 15px;
       }
     }
   }

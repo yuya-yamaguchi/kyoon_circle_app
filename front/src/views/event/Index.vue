@@ -7,7 +7,7 @@
         セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
         お気軽にご参加ください！
       </p>
-      <SearchEvent :selectEventCategoryProp="selectEventCategory" @search-events="searchEvents"/>
+      <SearchEvent :searchProp="search" @search-events="searchEvents"/>
       <Loading v-if="loading"/>
       <div v-else>
         <EventList v-if="events.length!=0" :events-prop="events"/>
@@ -38,11 +38,17 @@ export default {
     Loading
   },
   data() {
-    let selectEventCategory = (this.$route.query.event_category == undefined ) ? 0 : this.$route.query.event_category
+    let selectEventCategory = (this.$route.query.event_category == undefined ) ? 0 : this.$route.query.event_category;
+    let selectOrder = (this.$route.query.order == undefined ) ? 'date_desc' : this.$route.query.order;
+    let selectEndEventHide = (this.$route.query.end_event_hide == undefined ) ? false : this.$route.query.end_event_hide;
     return {
       events: [],
       pagy: "",
-      selectEventCategory: selectEventCategory,
+      search: {
+        eventCategory: selectEventCategory,
+        order:         selectOrder,
+        endEventHide:  selectEndEventHide
+      },
       loading: true
     }
   },
@@ -66,18 +72,20 @@ export default {
     // $routeが変更されたことをパラメータが変更されたことをwatchにて検知する
     '$route' (to) {
       if ( to.query.page != undefined ) {
-        this.getEvents(to.query.page, to.query.event_category)
+        this.getEvents(to.query)
       }
     }
   },
   methods: {
-    getEvents: function(pageNo, eventCategory) {
+    getEvents: function(searchParams) {
       axios.get(
         `http://${g.hostName}/api/events`,
         {
           params: {
-            page: pageNo,
-            event_category_id: eventCategory
+            page:           searchParams.page,
+            event_category: searchParams.event_category,
+            order:          searchParams.order,
+            end_event_hide: searchParams.end_event_hide
           }
         }
       )
@@ -97,22 +105,27 @@ export default {
         name: "EventIndex",
         query: {
           page: pageNo,
-          eventCategory: this.selectEventCategory
+          event_category: this.search.eventCategory,
+          order: this.search.order,
+          end_event_hide: this.search.endEventHide
         }
       })
     },
-    searchEvents: function(selectEventCategory) {
+    searchEvents: function(search) {
+      this.search = search;
       this.$router.push({
         name: "EventIndex",
         query: {
           page: 1,
-          event_category: selectEventCategory
+          event_category: this.search.eventCategory,
+          order: this.search.order,
+          end_event_hide: this.search.endEventHide
         }
       })
     }
   },
   mounted: function() {
-    this.getEvents(this.$route.query.page, this.$route.query.event_category);
+    this.getEvents(this.$route.query);
   }
 }
 </script>

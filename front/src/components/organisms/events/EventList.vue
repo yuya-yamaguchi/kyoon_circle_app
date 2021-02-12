@@ -14,6 +14,12 @@
             <span class="event-card--middle--fee">{{ event.fee }}</span>
           </p>
         </div>
+        <div class="event-card--right">
+          <div class="entry-user-cnt some-updown-center">
+            <fa class="entry-user-cnt--icon" icon="user"/>
+            <span class="entry-user-cnt--num">{{ event.entry_count }}</span>
+          </div>
+        </div>
       </router-link>
     </div>
   </div>
@@ -45,7 +51,7 @@ export default {
 
 <style scoped lang="scss">
 .event-card {
-  margin: 20px;
+  margin-bottom: 20px;
   color: #333;
   background: #FFF;
   display: flex;
@@ -100,6 +106,22 @@ export default {
     &--fee {
       font-weight: bold;
       margin-left: 10px;
+    }
+  }
+  &--right {
+    .entry-user-cnt {
+      margin: 5px 5px 0 0;
+      white-space: nowrap;
+      color: #888;
+      &--icon {
+        width: 14px;
+        height: 14px;
+      }
+      &--num {
+        margin-left: 2px;
+        font-size: 16px;
+        font-weight: bold;
+      }
     }
   }
 }

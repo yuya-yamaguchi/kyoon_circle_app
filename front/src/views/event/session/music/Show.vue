@@ -75,7 +75,7 @@ export default {
         },
         {
           name: 'イベント一覧',
-          path: '/events/page=1'
+          path: '/events?page=1'
         },
         {
           name: this.event.title,

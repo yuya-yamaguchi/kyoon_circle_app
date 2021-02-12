@@ -2,7 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   box-sizing: border-box;
-  padding: 100px 10px;
+  padding: 70px 10px;
   min-height: calc(100vh - 140px);
 }
 
@@ -10,9 +10,9 @@
   display: flex;
   justify-content: space-between;
   max-width: 1200px;
-  margin: 50px auto;
+  margin: 10px auto;
   padding: 0 10px;
-  min-height: calc(100vh - 240px);
+  min-height: calc(100vh - 160px);
   &--left {
     width: 25%;
     box-sizing: border-box;
@@ -44,7 +44,7 @@
 
 .sub-title {
   font-size: 24px;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
 .text-center {

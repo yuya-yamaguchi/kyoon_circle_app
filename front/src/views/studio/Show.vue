@@ -4,7 +4,9 @@
     <StudioImage/>
     <div class="single-container">
       <StudioContent/>
-      <StudioReservesTable :admin-prop="0"/>
+      <div class="studio-reserves-table-container">
+        <StudioReservesTable :admin-prop="0"/>
+      </div>
     </div>
   </div>
 </template>
@@ -44,7 +46,7 @@ export default {
 </script>
 
 <style scoped>
-.studio-container {
-  margin: 40px 10px 0 10px;
+.studio-reserves-table-container {
+  margin: 50px 0;
 }
 </style>
