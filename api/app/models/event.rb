@@ -88,7 +88,7 @@ class Event < ApplicationRecord
   # ラインへの通知
   def push_line
     group_id = "Cf3d1c27541003b233c4177ab4cb98680"
-    text = "新しいイベントが投稿されました！\n#{self.title}\n#{Constants::APP_URL}/event/#{self.id}"
+    text = "新しいイベントが追加されました！\n\n#{self.title}\n\n#{self.details}\n\n↓参加は下記から\n#{Constants::APP_URL}/event/#{self.id}"
     message = {
       type: 'text',
       text: text
