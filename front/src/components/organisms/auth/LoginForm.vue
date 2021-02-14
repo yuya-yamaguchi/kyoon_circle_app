@@ -39,9 +39,9 @@ export default {
   methods: {
     login: function(){
       if (this.loginValid())
-        axios.post(`http://${g.hostName}/api/auth/sign_in`,
+        axios.post(`http://${g.hostName}/api/login`,
           {
-            email: this.email,
+            email:    this.email,
             password: this.password
           }	
         )
@@ -49,14 +49,11 @@ export default {
           this.$store.dispatch(
             "user/updateUser",
             {
-              id:     response.data.data.id,
-              name:   response.data.data.name,
-              email:  response.data.data.email,
-              token:  response.headers['access-token'],
-              uid:    response.headers['uid'],
-              client: response.headers['client'],
-              adminType: response.data.data.admin_type,
-              secureToken: response.data.data.token
+              id:          response.data.id,
+              name:        response.data.name,
+              email:       response.data.email,
+              adminType:   response.data.admin_type,
+              secureToken: response.data.token
             }
           );
           this.$store.dispatch(

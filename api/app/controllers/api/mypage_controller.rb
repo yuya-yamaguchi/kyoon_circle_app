@@ -6,14 +6,6 @@ class Api::MypageController < ApplicationController
     render status: 200, json: { user: @user, user_instruments: user_instruments }
   end
 
-  def update
-    if @user.update(user_params)
-      render status: 200, json: @user
-    else
-      render status: 422, json: @user.errors.full_messages
-    end
-  end
-
   def studio_reserves
     future_reserves = @user.studio_reserves.after_today_desc
     history_reserves = @user.studio_reserves.bofore_today_desc
@@ -32,10 +24,5 @@ class Api::MypageController < ApplicationController
       out_history_params << history_event.set_index_params
     end
     render status: 200, json: { future_events: out_future_params, history_events: out_history_params }
-  end
-
-  private
-  def user_params
-    params.require(:user).permit(:name, :profile, :avatar, { :instrument_ids => [] })
   end
 end

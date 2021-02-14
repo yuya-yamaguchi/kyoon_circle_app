@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :api, { format: 'json' } do
-    mount_devise_token_auth_for "User", at: "auth"
-
+    post   '/login',   to: 'sessions#create'
+    
     resources :top, only: [:index]
 
     resources :studios, only: [:show] do
@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :users, only: [:show]
+    resources :users, only: [:show, :create, :update]
 
     resources :events, only: [:index, :show, :create, :edit, :update, :destroy] do
       member do

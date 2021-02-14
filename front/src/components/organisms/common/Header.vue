@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-import g from "@/variable/variable.js";
 import ForSmartPhoneMunus from "@/components/organisms/common/ForSmartPhoneMunus.vue";
 
 export default {
@@ -46,70 +44,17 @@ export default {
   },
   methods: {
     logout: function() {
-      // API側にてログアウトを行う
-      axios.delete(
-        `http://${g.hostName}/api/auth/sign_out`,
-        {
-          data: {
-            "uid":          this.$store.getters['user/uid'],
-            "access-token": this.$store.getters['user/token'],
-            "client":       this.$store.getters['user/client']
-          }
+      // FRONT側のユーザ情報を削除
+      this.$store.dispatch("user/logout");
+      this.$store.dispatch(
+        "flash/create",
+        { message: "ログアウトが完了しました",
+          type:    1
         }
-      )
-      .then(() => {
-        // FRONT側のユーザ情報を削除
-        this.$store.dispatch("user/logout");
-        this.$store.dispatch(
-          "flash/create",
-          { message: "ログアウトが完了しました",
-            type:    1
-          }
-        );
-        this.$router.push({
-          name: "Top"
-        })
+      );
+      this.$router.push({
+        name: "Top"
       })
-      .catch(function(error) {
-        console.log(error);
-      });
-    },
-    testLogin: function(){
-      axios.post(`http://${g.hostName}/api/auth/sign_in`,
-        {
-          email: 'a@gmail.com',
-          password: '12345678'
-        }	
-      )
-      .then((response) => {
-        this.$store.dispatch(
-          "user/updateUser",
-          {
-            id:     response.data.data.id,
-            name:   response.data.data.name,
-            email:  response.data.data.email,
-            token:  response.headers['access-token'],
-            uid:    response.headers['uid'],
-            client: response.headers['client'],
-            adminType: response.data.data.admin_type,
-            secureToken: response.data.data.token
-          }
-        );
-        this.$store.dispatch(
-          "flash/create",
-          { message: "ログインが完了しました",
-            type:    1
-          }
-        );
-        this.$router.push({ 
-          name: "Top"
-        })
-      })
-      .catch((error) => {
-        if (error.response) {
-          this.errorMessages = error.response.data.errors;
-        }
-      });
     }
   }
 }
