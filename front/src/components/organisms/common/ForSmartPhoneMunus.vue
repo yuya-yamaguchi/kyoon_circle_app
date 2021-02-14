@@ -104,6 +104,10 @@ export default {
         { name: "参加イベント一覧",
           path: "/mypage/events",
           icon: "calendar-check"
+        },
+        { name: "パスワード変更",
+          path: "/mypage/change_password",
+          icon: "key"
         }
       ]
       return menus;

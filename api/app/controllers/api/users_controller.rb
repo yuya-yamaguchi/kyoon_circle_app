@@ -1,6 +1,6 @@
 class Api::UsersController < ApplicationController
   before_action :set_user, only: [:show]
-  before_action :auth_check, only: [:update]
+  before_action :auth_check, only: [:update, :change_password]
 
   def show
     user_instruments = @user.set_instruments
@@ -21,6 +21,18 @@ class Api::UsersController < ApplicationController
       render status: 200, json: @user
     else
       render status: 422, json: @user.errors.full_messages
+    end
+  end
+
+  def change_password
+    if @user.authenticate(params[:user][:current_password])
+      if @user.update(user_params)
+        render status: 201
+      else
+        render status: 422, json: @user.errors.full_messages
+      end
+    else
+      render status: 401, json: "現在のパスワードが正しくありません"
     end
   end
 

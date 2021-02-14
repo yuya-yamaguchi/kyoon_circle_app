@@ -9,6 +9,7 @@ import MypageTop from '@/views/mypage/Top.vue'
 import MypageEdit from '@/views/mypage/Edit.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
 import MypageEvents from '@/views/mypage/Events.vue'
+import ChangePassword from '@/views/mypage/ChangePassword.vue'
 import EventNew from '@/views/event/New.vue'
 import EventEdit from '@/views/event/Edit.vue'
 import EventEditList from '@/views/event/EditList.vue'
@@ -120,6 +121,13 @@ const routes = [
     path: '/mypage/events',
     name: 'MypageEvents',
     component: MypageEvents,
+    meta: { requiresAuth: true }
+  },
+  // パスワード変更
+  {
+    path: '/mypage/change_password',
+    name: 'ChangePassword',
+    component: ChangePassword,
     meta: { requiresAuth: true }
   },
   /***********************/

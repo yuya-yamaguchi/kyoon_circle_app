@@ -17,7 +17,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :users, only: [:show, :create, :update]
+    resources :users, only: [:show, :create, :update] do
+      collection do
+        post :change_password
+      end
+    end
 
     resources :events, only: [:index, :show, :create, :edit, :update, :destroy] do
       member do
