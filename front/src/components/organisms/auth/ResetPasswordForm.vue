@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="main-title text-center">新しいパスワードの設定</h1>
-    <div class="password-forget-form">
+    <div class="reset-password-form">
       <div class="form-item">
         <p>新しいパスワード</p>
         <input type="password" v-model="user.password" class="default-input">
@@ -19,8 +19,10 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import { userValidates } from '@/mixins/userValidates';
 
 export default {
+  mixins: [userValidates],
   data() {
     return {
       user: {},
@@ -29,24 +31,37 @@ export default {
   },
   methods: {
     postResetPassword: function() {
-      axios.post(
-        `http://${g.hostName}/api/users/reset_password`,
-        {
-          token: this.$route.query.token,
-          user: this.user
+      if (this.passwordValid())
+        axios.post(
+          `http://${g.hostName}/api/users/reset_password`,
+          {
+            token: this.$route.query.token,
+            user: this.user
+          }
+        )
+        .then(() => {
+          this.$emit('reset-password-complete');
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    passwordValid: function() {
+      this.errMsg.password = this.userPasswordValid(this.user.password, this.user.password_confirmation)
+      for (var key in this.errMsg) {
+        if (this.errMsg[key] != "") {
+          return false
         }
-      )
-      .then(() => {
-        this.$emit('reset-password-complete');
-      })
-      .catch(() => {
-        this.tokenCheckResult = false
-      })
+      }
+      return true
     }
   }
 }
 </script>
 
 <style scoped>
-
+.reset-password-form {
+  margin: 30px auto;
+  max-width: 350px;
+}
 </style>

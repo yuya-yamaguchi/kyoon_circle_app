@@ -40,14 +40,16 @@ class Api::UsersController < ApplicationController
 
   def reset_password_email
     user = User.find_by(email: params[:email])
-    if user.nil?
+    if user.present?
+      if user.send_reset_password_email
+        render status: 200
+      else
+        render status: 400, json: "メールの送信に失敗しました"
+      end
+    else
       render status: 401, json: "メールアドレスのご登録がありません"
     end
-    if user.send_reset_password_email
-      render status: 200
-    else
-      render status: 400, json: "メールの送信に失敗しました"
-    end
+    
   end
 
   def reset_password_token_check
@@ -61,6 +63,7 @@ class Api::UsersController < ApplicationController
 
   def reset_password
     user = User.find_by(reset_password_token: params[:token])
+    user.reset_password_token = nil
     if user.update(user_params)
       render status: 201
     else

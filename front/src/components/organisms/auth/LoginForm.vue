@@ -77,8 +77,8 @@ export default {
           }
         })
         .catch((error) => {
-          if (error.response) {
-            this.errorMessages = error.response.data.errors;
+          if (error.response.status==401) {
+            this.errorMessages = ['メールアドレスまたはパスワードが一致しません'];
           }
         })
     },

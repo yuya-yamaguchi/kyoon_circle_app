@@ -5,7 +5,7 @@
       パスワードの再設定が終了している場合、同じURLはご利用いただけません
     </p>
     <router-link :to="{name: 'Top'}">
-      トップページに戻る
+      トップページへ
     </router-link>
   </div>
 </template>

@@ -67,7 +67,7 @@ export default {
 
 <style scoped lang="scss">
 .reset-password-container {
-  max-width: 350px;
+  max-width: 400px;
   margin: 0 auto;
 }
 </style>

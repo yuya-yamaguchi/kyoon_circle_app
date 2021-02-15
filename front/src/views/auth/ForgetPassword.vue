@@ -1,54 +1,79 @@
 <template>
   <div class="single-container">
-    <div class="auth-container">
-      <h1 class="main-title text-center">パスワードをお忘れの方</h1>
-      <div class="password-forget-form">
-        <div class="form-item">
-          <p>メールアドレス</p>
-          <input type="text" v-model="email" placeholder="ご登録しているメールアドレス" class="default-input">
-          <p class="form-item--err-msg">{{ errMsg.email }}</p>
-          <p class="form-item--addition">ご登録されたメールアドレスにパスワード再設定のご案内が送信されます</p>
+    <div class="auth-container releative-container">
+      <LoadingCircle v-if="sendingEmailStatus"/>
+      <div v-if="!sendEmailStatus">
+        <ForgetPasswordForm
+          @sent-email="sentEmail"
+          @sending-email="sendingEmail"/>
+      </div>
+      <div v-else>
+        <h1 class="main-title text-center">メールを送信しました</h1>
+        <div class="sent-email-message">
+          <p>
+            {{ email }}へメールを送信しました。<br>
+            メールに記載されたURLをクリックして、パスワードの変更を完了してください。<br>
+            メールが届かない場合、再度送信してください。
+          </p>
+          <a @click="sendEmailAgain" class="forget-password-link">再度送信する</a>
         </div>
-        <button class="default-button" @click="sendResetPasswordEmail()">送信する</button>
+        <div>
+          <router-link :to="{name: 'Top'}" class="top-page-link">トップページへ</router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import g from "@/variable/variable.js";
+import ForgetPasswordForm from '@/components/organisms/auth/ForgetPasswordForm.vue';
+import LoadingCircle from '@/components/organisms/common/LoadingCircle.vue';
 
 export default {
+  components: {
+    ForgetPasswordForm,
+    LoadingCircle
+  },
   data() {
     return {
-      email: "",
-      errMsg: {}
+      sendEmailStatus: false,
+      sendingEmailStatus: false,
+      email: ''
     }
   },
   methods: {
-    sendResetPasswordEmail: function(){
-      axios.post(`http://${g.hostName}/api/users/reset_password_email`,
-        {
-          email: this.email
-        }	
-      )
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => {
-        if (error.response) {
-          this.errMsg.email = error.response.data;
-        }
-      })
+    sentEmail: function(email) {
+      this.sendEmailStatus = true;
+      this.email = email;
+    },
+    sendingEmail: function(status) {
+      this.sendingEmailStatus = status;
+    },
+    sendEmailAgain: function() {
+      this.sendEmailStatus = false;
+      this.email = '';
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.password-forget-form {
-  max-width: 350px;
-  margin: 30px auto;
+.releative-container {
+  position: relative;
+}
+.sent-email-message {
+  margin: 30px 50px;
+  .forget-password-link {
+    display: inline-block;
+    text-decoration: underline;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+}
+.top-page-link {
+  color: #2C3E50;
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
 }
 </style>

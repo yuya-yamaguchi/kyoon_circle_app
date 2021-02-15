@@ -4,26 +4,28 @@
       <SideBar :select-menu-prop="5"/>
     </div>
     <div class="double-container--right">
-      <h1 class="main-title text-center">パスワード変更</h1>
-      <form v-on:submit.prevent="putPassword" class="change-password-form">
-        <ErrMsg :error-messages-prop="apiErrorMessages"/>
-        <div class="form-item">
-          <p class="form-item--name">現在のパスワード</p>
-          <input type="password" v-model="user.current_password" placeholder="" class="default-input">
-          <p class="form-item--err-msg">{{ errMsg.current_password }}</p>
-        </div>
-        <div class="form-item">
-          <p class="form-item--name">新しいパスワード</p>
-          <input type="password" v-model="user.password" placeholder="" class="default-input">
-          <p class="form-item--err-msg">{{ errMsg.password }}</p>
-        </div>
-        <div class="form-item">
-          <p class="form-item--name">確認パスワード</p>
-          <input type="password" v-model="user.password_confirmation" placeholder="" class="default-input">
-          <p class="form-item--err-msg">{{ errMsg.password_confirmation }}</p>
-        </div>
-        <button class="default-button">変更する</button>
-      </form>
+      <div class="auth-container">
+        <h1 class="main-title text-center">パスワード変更</h1>
+        <form v-on:submit.prevent="putPassword" class="change-password-form">
+          <ErrMsg :error-messages-prop="apiErrorMessages"/>
+          <div class="form-item">
+            <p class="form-item--name">現在のパスワード</p>
+            <input type="password" v-model="user.current_password" placeholder="" class="default-input">
+            <p class="form-item--err-msg">{{ errMsg.current_password }}</p>
+          </div>
+          <div class="form-item">
+            <p class="form-item--name">新しいパスワード</p>
+            <input type="password" v-model="user.password" placeholder="" class="default-input">
+            <p class="form-item--err-msg">{{ errMsg.password }}</p>
+          </div>
+          <div class="form-item">
+            <p class="form-item--name">確認パスワード</p>
+            <input type="password" v-model="user.password_confirmation" placeholder="" class="default-input">
+            <p class="form-item--err-msg">{{ errMsg.password_confirmation }}</p>
+          </div>
+          <button class="default-button">変更する</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -83,6 +85,7 @@ export default {
       }
     },
     changePasswordValid: function() {
+      this.errMsg.current_password = this.userPasswordValid(this.user.current_password)
       this.errMsg.password = this.userPasswordValid(this.user.password, this.user.password_confirmation)
       for (var key in this.errMsg) {
         if (this.errMsg[key] != "") {
