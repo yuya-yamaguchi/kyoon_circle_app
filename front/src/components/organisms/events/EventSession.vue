@@ -83,9 +83,10 @@ import SelectUserModal from "@/components/organisms/common/SelectUserModal.vue";
 import Loading from '@/components/organisms/common/Loading.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 import { eventEntry } from '@/mixins/events/eventEntry';
+import { authValidates } from '@/mixins/validates/authValidates';
 
 export default {
-  mixins: [errorMethods, eventEntry],
+  mixins: [errorMethods, eventEntry, authValidates],
   components: {
     AddMusicModal,
     ConfirmModal,
@@ -104,7 +105,7 @@ export default {
       sessionMusics:  [],
       modalMsg: {
         title: "",
-        message: "エントリーにはこのイベントへの参加が必要です",
+        message: "このイベントへの参加が必要です",
         btn: "参加する"
       },
       loading: true,
@@ -117,6 +118,14 @@ export default {
   },
   methods: {
     displayAddMusic: function() {
+      if (!this.isLogin()) { // 未ログイン時
+        this.displayLogin();
+        return
+      }
+      if (!this.isEntryProp) { // 未エントリー時
+        this.displayConfirmModal = true
+        return
+      }
       this.displayModal = true
     },
     displaySelectUser: function(sessionMusic, sessionPart, users) {
@@ -223,17 +232,8 @@ export default {
     },
     entryPartValid: function() {
       // ログインしていない場合
-      if (!this.$store.getters['user/id']) {
-        // ログインモーダルを表示
-        this.$store.dispatch(
-          "loginGuide/update", true
-        );
-        this.$store.dispatch(
-          "flash/create",
-          { message: "ログインまたは会員登録を行ってください。",
-            type:    2
-          }
-        );
+      if (!this.isLogin()) {
+        this.displayLogin();
         return false
       }
       // イベントに参加していない場合

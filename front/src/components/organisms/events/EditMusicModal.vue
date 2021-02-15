@@ -1,7 +1,7 @@
 <template>
   <div id="overlay">
     <div class="add-music-container">
-      <button @click="closeModal()" class="close-button">×</button>
+      <div @click="closeModal()" class="close-button">×</div>
       <h1>曲の編集</h1>
       <SessionMusicForm v-if="!loading"
         :part-categories-prop="partCategories"
@@ -118,7 +118,7 @@ export default {
   left: 50%;
   transform: translate(-50%,-50%);
   h1 {
-    margin: 30px;
+    margin-bottom: 30px;
     font-weight: bold;
     font-size: 24px;
     text-align: center;

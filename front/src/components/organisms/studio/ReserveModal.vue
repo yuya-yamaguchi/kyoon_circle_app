@@ -1,7 +1,7 @@
 <template>
   <div id="overlay">
     <div class="reserve-container">
-      <button @click="closeModal()" class="close-button">×</button>
+      <div @click="closeModal()" class="close-button">×</div>
       <template v-if="!reserveCompleteFlg">
         <h1 class="main-title text-center">スタジオ予約</h1>
         <ul class="error-messages">
@@ -258,7 +258,7 @@ function calcReserveTime(selected) {
   margin: 0 auto;
   background: #FFF;
   h1 {
-    margin: 30px;
+    margin-bottom: 30px;
   }
   .reserve-form {
     margin: 0 auto;

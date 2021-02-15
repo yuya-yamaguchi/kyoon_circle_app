@@ -18,6 +18,11 @@
       </div>
       <button class="default-button">ログイン</button>
     </form>
+    <div class="others">
+      <router-link :to="{name: 'ForgetPassword'}" class="password-forget">
+        パスワードを忘れた場合はこちら
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -39,9 +44,9 @@ export default {
   methods: {
     login: function(){
       if (this.loginValid())
-        axios.post(`http://${g.hostName}/api/auth/sign_in`,
+        axios.post(`http://${g.hostName}/api/login`,
           {
-            email: this.email,
+            email:    this.email,
             password: this.password
           }	
         )
@@ -49,14 +54,11 @@ export default {
           this.$store.dispatch(
             "user/updateUser",
             {
-              id:     response.data.data.id,
-              name:   response.data.data.name,
-              email:  response.data.data.email,
-              token:  response.headers['access-token'],
-              uid:    response.headers['uid'],
-              client: response.headers['client'],
-              adminType: response.data.data.admin_type,
-              secureToken: response.data.data.token
+              id:          response.data.id,
+              name:        response.data.name,
+              email:       response.data.email,
+              adminType:   response.data.admin_type,
+              secureToken: response.data.token
             }
           );
           this.$store.dispatch(
@@ -75,8 +77,8 @@ export default {
           }
         })
         .catch((error) => {
-          if (error.response) {
-            this.errorMessages = error.response.data.errors;
+          if (error.response.status==401) {
+            this.errorMessages = ['メールアドレスまたはパスワードが一致しません'];
           }
         })
     },
@@ -93,3 +95,13 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.others {
+  text-align: center;
+  .password-forget {
+    color: #333;
+    font-size: 14px;
+  }
+}
+</style>
