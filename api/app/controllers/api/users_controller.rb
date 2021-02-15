@@ -10,8 +10,6 @@ class Api::UsersController < ApplicationController
   def create
     user = User.new(user_params)
     if user.save
-      # UserMailer.with(user: @user).auth_email(@user).deliver_later
-      UserMailer.auth_email(user).deliver
       render status: 201, json: user
     else
       render status: 422, json: user.errors.full_messages
