@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Top from '@/views/Top.vue'
 import Signup from '@/views/auth/Signup.vue'
 import Login from '@/views/auth/Login.vue'
+import ForgetPassword from '@/views/auth/ForgetPassword.vue'
+import ResetPassword from '@/views/auth/ResetPassword.vue'
 import FirstIntroduction from '@/views/introduction/FirstIntroduction.vue'
 import StudioShow from '@/views/studio/Show.vue'
 import UserShow from '@/views/user/Show.vue'
@@ -46,6 +48,18 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  // ログインパスワードを忘れた場合の再発行画面
+  {
+    path: '/password/forget',
+    name: 'ForgetPassword',
+    component: ForgetPassword
+  },
+  // ログインパスワードのリセット画面
+  {
+    path: '/password/reset',
+    name: 'ResetPassword',
+    component: ResetPassword
   },
   // 新規会員登録後の導入画面
   {

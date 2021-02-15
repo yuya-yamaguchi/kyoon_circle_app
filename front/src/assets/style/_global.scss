@@ -38,7 +38,7 @@
 }
 
 .main-title {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: bold;
 }
 
@@ -54,7 +54,7 @@
 .default-button {
   display: block;
   margin: 20px auto;
-  padding: 10px 30px;
+  padding: 10px 40px;
   font-size: 18px;
   font-weight: bold;
   background: orange;
@@ -147,7 +147,8 @@
   }
   &--addition {
     font-size: 12px;
-    margin: 0 0 5px 5px;
+    margin-bottom: 5px;
+    color: #888;
   }
   &--err-msg {
     margin-top: 5px;

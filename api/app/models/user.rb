@@ -31,4 +31,19 @@ class User < ActiveRecord::Base
     end
     return set_params
   end
+
+  def send_reset_password_email
+    self.reset_password_token = new_token
+    self.reset_password_sent_at = Time.now
+    if self.save
+      UserMailer.reset_password_email(self).deliver
+      return true
+    else
+      return false
+    end
+  end
+
+  def new_token
+    SecureRandom.urlsafe_base64
+  end
 end

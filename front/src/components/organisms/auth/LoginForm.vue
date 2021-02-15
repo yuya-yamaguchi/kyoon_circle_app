@@ -18,6 +18,11 @@
       </div>
       <button class="default-button">ログイン</button>
     </form>
+    <div class="others">
+      <router-link :to="{name: 'ForgetPassword'}" class="password-forget">
+        パスワードを忘れた場合はこちら
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -90,3 +95,13 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.others {
+  text-align: center;
+  .password-forget {
+    color: #333;
+    font-size: 14px;
+  }
+}
+</style>

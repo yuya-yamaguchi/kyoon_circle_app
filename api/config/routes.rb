@@ -20,6 +20,9 @@ Rails.application.routes.draw do
     resources :users, only: [:show, :create, :update] do
       collection do
         post :change_password
+        post :reset_password_email
+        get  :reset_password_token_check
+        post :reset_password
       end
     end
 
