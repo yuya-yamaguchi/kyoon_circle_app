@@ -4,7 +4,7 @@ class UserMailer < ApplicationMailer
   def reset_password_email(user)
     @user = user
     base_url = ""
-    if Rails.env = "development"
+    if Rails.env.development?
       base_url = 'http://localhost'
     else
       base_url = Constants::APP_URL
