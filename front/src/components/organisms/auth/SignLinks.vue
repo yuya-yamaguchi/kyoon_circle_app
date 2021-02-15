@@ -23,24 +23,22 @@ export default {
       return (location.pathname == '/signup') ? true : false;
     },
     guestLogin: function(email){
-      axios.post(`http://${g.hostName}/api/auth/sign_in`,
+      axios.post(`http://${g.hostName}/api/login`,
         {
           email:     email,
           password: '12345678'
         }	
       )
       .then((response) => {
+        console.log(response)
         this.$store.dispatch(
           "user/updateUser",
           {
-            id:     response.data.data.id,
-            name:   response.data.data.name,
-            email:  response.data.data.email,
-            token:  response.headers['access-token'],
-            uid:    response.headers['uid'],
-            client: response.headers['client'],
-            adminType: response.data.data.admin_type,
-            secureToken: response.data.data.token
+            id:     response.data.id,
+            name:   response.data.name,
+            email:  response.data.email,
+            adminType: response.data.admin_type,
+            secureToken: response.data.token
           }
         );
         this.$store.dispatch(
@@ -52,7 +50,7 @@ export default {
         this.$store.dispatch(
           "loginGuide/update", false
         );
-        if (location.pathname == '/login') {
+        if (location.pathname == '/login' || location.pathname == '/signup') {
           this.$router.push({ 
             name: "Top"
           })

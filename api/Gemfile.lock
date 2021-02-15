@@ -199,9 +199,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   bootsnap (>= 1.4.2)
   byebug
-  devise
   devise_token_auth
   factory_bot_rails
   has_secure_token

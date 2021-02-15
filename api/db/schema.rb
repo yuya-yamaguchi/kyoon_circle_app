@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_08_084114) do
+ActiveRecord::Schema.define(version: 2021_02_15_120343) do
 
   create_table "event_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -153,17 +153,6 @@ ActiveRecord::Schema.define(version: 2021_02_08_084114) do
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.string "provider", default: "email", null: false
-    t.string "uid", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.boolean "allow_password_change", default: false
-    t.datetime "remember_created_at"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
     t.string "name"
     t.string "nickname"
     t.text "profile"
@@ -175,10 +164,10 @@ ActiveRecord::Schema.define(version: 2021_02_08_084114) do
     t.integer "admin_type", default: 0
     t.string "token"
     t.text "avatar"
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.string "password_digest"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
   add_foreign_key "events", "event_categories"

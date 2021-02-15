@@ -1,7 +1,7 @@
 <template>
   <div id="overlay">
     <div class="login-container">
-      <button @click="closeModal()" class="close-button">×</button>
+      <div @click="closeModal()" class="close-button">×</div>
       <div class="login-inner-container">
         <div class="text-center some-updown-center">
           <span class="main-title">ログイン</span>

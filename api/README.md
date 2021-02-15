@@ -1,8 +1,7 @@
 # Gemfile
 ### 認証関連
-* devise
-* devise_token_auth
 * has_secure_token
+* bcrypt
 ### 外部API
 * line-bot-api
 

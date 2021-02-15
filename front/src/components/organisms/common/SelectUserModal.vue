@@ -1,7 +1,7 @@
 <template>
   <div id="overlay">
     <div class="select-user-modal-container">
-      <button @click="closeModal()" class="close-button">×</button>
+      <div @click="closeModal()" class="close-button">×</div>
       <h1>ユーザを選択</h1>
       <div class="select-users">
         <select v-model="selectUser">
@@ -71,7 +71,7 @@ export default {
   left: 50%;
   transform: translate(-50%,-50%);
   h1 {
-    margin: 30px;
+    margin-bottom: 30px;
     font-weight: bold;
     font-size: 24px;
     text-align: center;

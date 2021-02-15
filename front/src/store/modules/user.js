@@ -2,9 +2,6 @@ const state = {
   id:     0,
   name:   '',
   email:  '',
-  token:  '',
-  uid:    '',
-  client: '',
   adminType: 0,
   secureToken: ''
 };
@@ -13,9 +10,6 @@ const getters = {
   id:     state => state.id,
   name:   state => state.name,
   email:  state => state.email,
-  token:  state => state.token,
-  uid:    state => state.uid,
-  client: state => state.client,
   adminType: state => state.adminType,
   secureToken: state => state.secureToken
 }
@@ -25,9 +19,6 @@ const mutations = {
     state.id     = 0;
     state.name   = '';
     state.email  = '';
-    state.token  = '';
-    state.uid    = '';
-    state.client = '';
     state.adminType   = false;
     state.secureToken = '';
   },
@@ -35,9 +26,6 @@ const mutations = {
     state.id     = user.id;
     state.name   = user.name;
     state.email  = user.email;
-    state.token  = user.token;
-    state.uid    = user.uid;
-    state.client = user.client;
     state.adminType   = user.adminType;
     state.secureToken = user.secureToken;
   },
