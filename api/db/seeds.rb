@@ -7,4 +7,4 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # studios初期データ
-Studio.create!(name: "studio-A", fee: 500)
+Studio.create!(name: 'studio-A', fee: 500)

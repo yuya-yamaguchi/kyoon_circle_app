@@ -2,7 +2,7 @@ class Studio < ApplicationRecord
   has_many :studio_reserves
 
   validates :name, presence: true
-  validates :name, length: { maximum: 20, message: "は20文字以下で入力してください" }, allow_blank: true
+  validates :name, length: { maximum: 20, message: 'は20文字以下で入力してください' }, allow_blank: true
   validates :fee, presence: true
 
   # 1週間のスタジオ予約状態を設定
@@ -21,9 +21,9 @@ class Studio < ApplicationRecord
     studio_reserves.each do |studio_reserve|
       i = 0
       loop do
-        reserved_time = (studio_reserve.start_time+(i*30*60)).strftime("%H%M")
-        if reserved_time < studio_reserve.end_time.strftime("%H%M")
-          reserves << { time: studio_reserve.date.strftime("%Y%m%d") + reserved_time,
+        reserved_time = (studio_reserve.start_time + (i * 30 * 60)).strftime('%H%M')
+        if reserved_time < studio_reserve.end_time.strftime('%H%M')
+          reserves << { time: studio_reserve.date.strftime('%Y%m%d') + reserved_time,
                         user_id: studio_reserve.user_id, studio_reserve_id: studio_reserve.id }
         else
           break
@@ -37,18 +37,18 @@ class Studio < ApplicationRecord
     times.each do |time|
       work = []
       weeks.each do |day|
-        check_time = sprintf("%s%02d%02d", day.strftime("%Y%m%d"), time[:hour], time[:minutes])
+        check_time = format('%s%02d%02d', day.strftime('%Y%m%d'), time[:hour], time[:minutes])
         # 処理対象の日時が予約済であるかチェック
-        reserved = reserves.find{|reserve| reserve[:time]==check_time}
+        reserved = reserves.find { |reserve| reserve[:time] == check_time }
         reserve_type = 0
         # 対象の日時が予約済の場合
         if !reserved.nil?
           # 取得済のユーザ情報があるか確認
-          user_find = already_users.find{|user| user[:id]==reserved[:user_id]}
+          user_find = already_users.find { |user| user[:id] == reserved[:user_id] }
           # 未取得のユーザの場合
           if user_find.nil?
             user = User.find_by(id: reserved[:user_id])
-            already_users << {id: user.id, name: user.name}
+            already_users << { id: user.id, name: user.name }
             username = user.name
             user_id = user.id
           else
@@ -61,14 +61,16 @@ class Studio < ApplicationRecord
         elsif now.to_date > day || (now.to_date + 60) < day
           reserve_type = 2 # 予約不可
         end
-        work << { date: day, hour: time[:hour], minutes: time[:minutes], reserve_type: reserve_type, user_id: user_id ,username: username, studio_reserve_id: studio_reserve_id }
+        work << { date: day, hour: time[:hour], minutes: time[:minutes], reserve_type: reserve_type, user_id: user_id,
+                  username: username, studio_reserve_id: studio_reserve_id }
       end
       reserves_params << work
     end
-    return reserves_params, weeks
+    [reserves_params, weeks]
   end
 
   private
+
   def set_24times
     times = []
     24.times do |hour|
@@ -76,7 +78,7 @@ class Studio < ApplicationRecord
         times << { hour: hour, minutes: min }
       end
     end
-    return times
+    times
   end
 end
 

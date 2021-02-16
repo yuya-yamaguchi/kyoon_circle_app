@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   # attr_accessor :name, :email
-  
+
   has_secure_token    # has_secure_token(gem)
   has_secure_password # bcrypt(gem)
 
@@ -13,10 +13,10 @@ class User < ActiveRecord::Base
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :name, presence: true
-  validates :name, length: { maximum: 20, message: "は20文字以下で入力してください" }, allow_blank: true
-  validates :profile, length: { maximum: 1000, message: "は1000文字以下で入力してください" }, allow_blank: true
+  validates :name, length: { maximum: 20, message: 'は20文字以下で入力してください' }, allow_blank: true
+  validates :profile, length: { maximum: 1000, message: 'は1000文字以下で入力してください' }, allow_blank: true
   validates :email, presence: true,
-                    length: { maximum: 255 }, 
+                    length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
 
@@ -27,19 +27,19 @@ class User < ActiveRecord::Base
     set_params = []
     instruments.each do |instrument|
       can_play = user_instrument_ids.include?(instrument.id)
-      set_params << {id: instrument.id, name: instrument.name, can_play: can_play}
+      set_params << { id: instrument.id, name: instrument.name, can_play: can_play }
     end
-    return set_params
+    set_params
   end
 
   def send_reset_password_email
     self.reset_password_token = new_token
     self.reset_password_sent_at = Time.now
-    if self.save
+    if save
       UserMailer.reset_password_email(self).deliver
-      return true
+      true
     else
-      return false
+      false
     end
   end
 

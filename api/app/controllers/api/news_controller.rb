@@ -1,6 +1,6 @@
 class Api::NewsController < ApplicationController
-  before_action :admin_check, only: [:create, :update, :destroy]
-  before_action :set_news, only: [:show, :update, :destroy]
+  before_action :admin_check, only: %i[create update destroy]
+  before_action :set_news, only: %i[show update destroy]
 
   def index
     news = News.order('created_at DESC')
@@ -37,12 +37,13 @@ class Api::NewsController < ApplicationController
       render status: 404, json: @news.errors.full_messages
     end
   end
-  
+
   private
+
   def news_params
     params.require(:news).permit(:title, :details, :line_msg_push).merge(user_id: params[:user_id])
   end
-  
+
   def set_news
     @news = News.find_by(id: params[:id])
     render status: 404 if @news.nil?

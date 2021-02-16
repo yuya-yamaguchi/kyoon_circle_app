@@ -1,9 +1,9 @@
 class Api::EventsController < ApplicationController
   include Pagy::Backend
-  
-  before_action :auth_check, only: [:edit, :update, :create, :destroy, :entry, :entry_cancel]
-  before_action :admin_check, only: [:edit, :update, :create, :destroy]
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :entry, :entry_cancel]
+
+  before_action :auth_check, only: %i[edit update create destroy entry entry_cancel]
+  before_action :admin_check, only: %i[edit update create destroy]
+  before_action :set_event, only: %i[show edit update destroy entry entry_cancel]
 
   def index
     search_events = Event.search(params)
@@ -17,9 +17,7 @@ class Api::EventsController < ApplicationController
 
   def show
     is_entry = false
-    if params[:user_id].to_i > 0
-      is_entry = @event.event_entries.where(user_id: params[:user_id]).present?
-    end
+    is_entry = @event.event_entries.where(user_id: params[:user_id]).present? if params[:user_id].to_i > 0
     entry_users = @event.users
     render status: 200,
            json: { event: @event, is_entry: is_entry, entry_users: entry_users }
@@ -38,14 +36,12 @@ class Api::EventsController < ApplicationController
       render status: 422, json: @event.errors.full_messages
     end
   end
-  
+
   def create
     event_params = require_event_params
     event = Event.new(set_event_params(event_params))
     if event.save
-      if event_params[:event_category_id] == 2
-        EventSession.create(event_id: event.id)
-      end
+      EventSession.create(event_id: event.id) if event_params[:event_category_id] == 2
       # グループラインへのメッセージ送信
       event.push_line if event.line_msg_push
       render status: 201, json: event
@@ -68,7 +64,7 @@ class Api::EventsController < ApplicationController
       entry_users = @event.users
       render status: 200, json: { entry_users: entry_users }
     else
-      render status: 400, json:{ error_message: event_entry.errors.full_messages[0] }
+      render status: 400, json: { error_message: event_entry.errors.full_messages[0] }
     end
   end
 
@@ -81,11 +77,12 @@ class Api::EventsController < ApplicationController
       entry_users = @event.users
       render status: 200, json: { entry_users: entry_users }
     else
-      render status: 400, json:{ error_message: event_entry.errors.full_messages[0] }
+      render status: 400, json: { error_message: event_entry.errors.full_messages[0] }
     end
   end
-  
+
   private
+
   def require_event_params
     params.require(:event)
           .permit(:title,
@@ -109,12 +106,14 @@ class Api::EventsController < ApplicationController
     day   = event_params[:start_date][8, 2].to_i
     if year > 0 && month > 0 && day > 0
       # DBの設定がUTCのため、9時間前を登録する
-      start_datetime = DateTime.new(year, month, day, event_params[:start_hour].to_i, event_params[:start_min].to_i) - Rational(9, 24)
-      if event_params[:end_hour] != "" && event_params[:end_min] != ""
-        end_datetime = DateTime.new(year, month, day, event_params[:end_hour].to_i, event_params[:end_min].to_i) - Rational(9, 24)
+      start_datetime = DateTime.new(year, month, day, event_params[:start_hour].to_i,
+                                    event_params[:start_min].to_i) - Rational(9, 24)
+      if event_params[:end_hour] != '' && event_params[:end_min] != ''
+        end_datetime = DateTime.new(year, month, day, event_params[:end_hour].to_i,
+                                    event_params[:end_min].to_i) - Rational(9, 24)
       end
     end
-    return_params = {
+    {
       user_id: event_params[:user_id],
       title: event_params[:title],
       details: event_params[:details],
@@ -126,7 +125,6 @@ class Api::EventsController < ApplicationController
       event_category_id: event_params[:event_category_id],
       line_msg_push: event_params[:line_msg_push]
     }
-    return return_params
   end
 
   def set_event

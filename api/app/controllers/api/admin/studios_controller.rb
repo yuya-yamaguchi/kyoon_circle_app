@@ -14,6 +14,7 @@ class Api::Admin::StudiosController < ApplicationController
   end
 
   private
+
   def studio_params
     params.require(:studio).permit(:name, :fee)
   end
