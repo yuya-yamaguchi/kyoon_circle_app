@@ -1,6 +1,7 @@
 <template>
   <div id="overlay">
     <div class="reserve-container">
+      <LoadingCircle v-if="reserving"/>
       <div @click="closeModal()" class="close-button">×</div>
       <template v-if="!reserveCompleteFlg">
         <h1 class="main-title text-center">スタジオ予約</h1>
@@ -90,6 +91,7 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import LoadingCircle from '@/components/organisms/common/LoadingCircle.vue';
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
@@ -97,6 +99,9 @@ var today = new Date();
 
 export default {
   mixins: [commonMethods, errorMethods],
+  components: {
+    LoadingCircle
+  },
   props: {
     clickReserveProp: {},
     studioProp: {},
@@ -126,7 +131,8 @@ export default {
         time: [],
         api: ""
       },
-      disabledFlg: false
+      disabledFlg: false,
+      reserving: false
     }
   },
   computed: {
@@ -160,6 +166,7 @@ export default {
     },
     // スタジオ予約の実行
     postStudioReserve: function(){
+      this.reserving = true;
       axios.post(
         `http://${g.hostName}/api/studios/${this.$route.params.id}/reserves`,
         {
@@ -177,8 +184,11 @@ export default {
         }
       )
       .then(() => {
-        this.reserveCompleteFlg = true;
-        this.$emit('reserve-success');
+        setTimeout(() => {
+          this.reserving = false;
+          this.reserveCompleteFlg = true;
+          this.$emit('reserve-success');
+        }, 2000)
       })
       .catch((error) => {
         this.apiErrors(error.response.status);
@@ -257,6 +267,7 @@ function calcReserveTime(selected) {
   max-width: 700px;
   margin: 0 auto;
   background: #FFF;
+  position: relative;
   h1 {
     margin-bottom: 30px;
   }

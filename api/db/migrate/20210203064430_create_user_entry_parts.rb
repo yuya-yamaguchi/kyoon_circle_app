@@ -7,6 +7,6 @@ class CreateUserEntryParts < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :user_entry_parts, [:user_id, :session_part_id], unique: true
+    add_index :user_entry_parts, %i[user_id session_part_id], unique: true
   end
 end

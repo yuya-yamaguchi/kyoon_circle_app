@@ -1,6 +1,6 @@
 class Api::UsersController < ApplicationController
   before_action :set_user, only: [:show]
-  before_action :auth_check, only: [:update, :change_password]
+  before_action :auth_check, only: %i[update change_password]
 
   def show
     user_instruments = @user.set_instruments
@@ -32,7 +32,7 @@ class Api::UsersController < ApplicationController
         render status: 422, json: @user.errors.full_messages
       end
     else
-      render status: 401, json: "現在のパスワードが正しくありません"
+      render status: 401, json: '現在のパスワードが正しくありません'
     end
   end
 
@@ -42,12 +42,11 @@ class Api::UsersController < ApplicationController
       if user.send_reset_password_email
         render status: 200
       else
-        render status: 400, json: "メールの送信に失敗しました"
+        render status: 400, json: 'メールの送信に失敗しました'
       end
     else
-      render status: 401, json: "メールアドレスのご登録がありません"
+      render status: 401, json: 'メールアドレスのご登録がありません'
     end
-    
   end
 
   def reset_password_token_check
@@ -70,12 +69,14 @@ class Api::UsersController < ApplicationController
   end
 
   private
+
   def set_user
     @user = User.find_by(id: params[:id])
     render status: 404 if @user.nil?
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :profile, :avatar, { :instrument_ids => [] })
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :profile, :avatar,
+                                 { instrument_ids: [] })
   end
 end

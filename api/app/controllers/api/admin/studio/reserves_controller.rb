@@ -1,6 +1,6 @@
 class Api::Admin::Studio::ReservesController < ApplicationController
   before_action :admin_check
-  
+
   def index
     studio = Studio.find_by(id: params[:studio_id])
     reserves_params, weeks = studio.week_reserve(params)

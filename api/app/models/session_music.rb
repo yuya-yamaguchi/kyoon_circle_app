@@ -23,7 +23,7 @@ class SessionMusic < ApplicationRecord
       music_info << parts_info
       musics_info << music_info
     end
-    return musics_info
+    musics_info
   end
 
   def change_status
@@ -36,17 +36,15 @@ class SessionMusic < ApplicationRecord
         break
       end
     end
-    if session_music_status != self.status
-      self.update(status: session_music_status)
-    end
+    update(status: session_music_status) if session_music_status != status
   end
 
   def set_youtube_url
-    if music_url&.match("https://www.youtube.com/watch")
-      edit_url = music_url.gsub("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/")
-      self.youtube_url_embed = edit_url.sub(/&.+/,'')
-    elsif music_url&.match("https://youtu.be")
-      self.youtube_url_embed = music_url.gsub("https://youtu.be", "https://www.youtube.com/embed")
+    if music_url&.match('https://www.youtube.com/watch')
+      edit_url = music_url.gsub('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/')
+      self.youtube_url_embed = edit_url.sub(/&.+/, '')
+    elsif music_url&.match('https://youtu.be')
+      self.youtube_url_embed = music_url.gsub('https://youtu.be', 'https://www.youtube.com/embed')
     elsif music_url.blank?
       self.youtube_url_embed = nil
     end

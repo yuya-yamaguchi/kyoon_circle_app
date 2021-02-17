@@ -36,7 +36,7 @@
     </div>
     <div class="space-between">
       <div>
-        <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 2) }}</div>
+        <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 4) }}</div>
         <div class="event-middle-info">開催場所 {{ event.place }}</div>
       </div>
       <div class="entry-btns">
@@ -53,7 +53,6 @@
                 :disabled="cantCancel"
                 :class="{ 'btn-disable': cantCancel}">
           <span>参加をやめる</span>
-          <fa icon="sad-tear"></fa>
         </div>
       </div>
     </div>

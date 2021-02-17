@@ -1,5 +1,5 @@
 class Api::Event::Sessions::SessionMusicsController < ApplicationController
-  before_action :auth_check, only: [:create, :update]
+  before_action :auth_check, only: %i[create update]
   before_action :set_event, only: [:show]
 
   def index
@@ -37,7 +37,7 @@ class Api::Event::Sessions::SessionMusicsController < ApplicationController
   def update
     session_music = SessionMusic.find_by(id: params[:id])
     if session_music.update(session_music_params)
-      params[:session_parts].each do |part_param, i|
+      params[:session_parts].each do |part_param|
         session_part = SessionPart.find_by(id: part_param[:id])
         session_part.update(status: part_param[:status])
       end
@@ -57,8 +57,10 @@ class Api::Event::Sessions::SessionMusicsController < ApplicationController
   end
 
   private
+
   def session_music_params
-    params.require(:session_music).permit(:title, :artist, :music_url).merge(user_id: @user.id, event_id: params[:event_id])
+    params.require(:session_music).permit(:title, :artist, :music_url).merge(user_id: @user.id,
+                                                                             event_id: params[:event_id])
   end
 
   def session_part_params(i, session_music_id)

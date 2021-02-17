@@ -1,6 +1,6 @@
 class Api::Studio::ReservesController < ApplicationController
   before_action :auth_check, except: [:index]
-  
+
   def index
     studio = Studio.find_by(id: params[:studio_id])
     reserves_params, weeks = studio.week_reserve(params)
@@ -27,13 +27,13 @@ class Api::Studio::ReservesController < ApplicationController
   end
 
   private
+
   def studio_reserves_params
-    hour = params[:studio_reserve][:end_time][0,2].to_i - params[:studio_reserve][:start_time][0,2].to_i
-    min = params[:studio_reserve][:end_time][3,2].to_i - params[:studio_reserve][:start_time][3,2].to_i
+    hour = params[:studio_reserve][:end_time][0, 2].to_i - params[:studio_reserve][:start_time][0, 2].to_i
+    min = params[:studio_reserve][:end_time][3, 2].to_i - params[:studio_reserve][:start_time][3, 2].to_i
     fee = ((hour * 60 + min) / 60.0) * @studio.fee
     params.require(:studio_reserve)
           .permit(:date, :start_time, :end_time)
           .merge(studio_id: params[:studio_id], user_id: params[:user_id], reserve_type: 1, fee: fee.to_i)
   end
 end
- 

@@ -1,7 +1,7 @@
 class Api::Event::CommentsController < ApplicationController
   before_action :set_event
-  before_action :set_event_comment, only: [:update, :destroy]
-  before_action :auth_check, only: [:create, :update, :destroy]
+  before_action :set_event_comment, only: %i[update destroy]
+  before_action :auth_check, only: %i[create update destroy]
 
   def index
     event_comments = @event.event_comments.recent
@@ -40,6 +40,7 @@ class Api::Event::CommentsController < ApplicationController
   end
 
   private
+
   def event_comment_params
     params.require(:event_comment).permit(:text).merge(user_id: params[:user_id])
   end
