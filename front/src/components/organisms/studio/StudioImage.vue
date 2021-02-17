@@ -17,7 +17,7 @@
 .studio-top {
   position: relative;
   padding-top: 40px;
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   img {
     width: 100%;

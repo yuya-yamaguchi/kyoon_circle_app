@@ -37,7 +37,7 @@ class Api::Event::Sessions::SessionMusicsController < ApplicationController
   def update
     session_music = SessionMusic.find_by(id: params[:id])
     if session_music.update(session_music_params)
-      params[:session_parts].each do |part_param, _i|
+      params[:session_parts].each do |part_param|
         session_part = SessionPart.find_by(id: part_param[:id])
         session_part.update(status: part_param[:status])
       end

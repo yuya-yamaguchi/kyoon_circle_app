@@ -17,6 +17,9 @@ export const commonMethods = {
                  date.substr(11, 5)
         case 3:
           return Number(date.substr(5, 2)) + '月' + Number(date.substr(8, 2)) + '日'
+        case 4:
+          // HH24:MI
+          return date.substr(11, 5)
         default:
           return date
       }
