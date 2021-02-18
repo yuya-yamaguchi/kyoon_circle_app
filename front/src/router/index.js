@@ -17,6 +17,7 @@ import EventEdit from '@/views/event/Edit.vue'
 import EventEditList from '@/views/event/EditList.vue'
 import EventIndex from '@/views/event/Index.vue'
 import EventShow from '@/views/event/Show.vue'
+import StayIndex from '@/views/stay/Index.vue'
 import SessionMusicShow from '@/views/event/session/music/Show.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
 import StudioEdit from '@/views/admin/studio/Edit.vue'
@@ -102,6 +103,12 @@ const routes = [
     path: '/news/:id',
     name: 'NewsShow',
     component: NewsShow
+  },
+  // 宿泊
+  {
+    path: '/stays',
+    name: 'StayIndex',
+    component: StayIndex
   },
   // ユーザページ
   {

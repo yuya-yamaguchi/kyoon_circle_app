@@ -1,0 +1,2 @@
+class Stayroom < ApplicationRecord
+end

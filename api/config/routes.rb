@@ -10,6 +10,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :stayrooms, only: [:index] do
+      scope module: :stayroom do
+        resources :reserves, only: [:index, :create]
+      end
+    end
+
     resources :mypage, only: %i[show update] do
       collection do
         get :studio_reserves
