@@ -7,14 +7,16 @@ class Api::Stayroom::ReservesController < ApplicationController
   end
   
   def create
-    if StayroomReserve.create(stayroom_reserve_params)
+    stayroom_reserve = StayroomReserve.new
+    if stayroom_reserve.create_reserves(stayroom_reserve_params)
       render status: 204
+    else
+      render status: 410, json: stayroom_reserve.errors.full_messages
     end
   end
 
   private
-
     def stayroom_reserve_params
-      params.require(:stayroom_reserve).permit(:date).merge(stayroom_id: params[:stayroom_id], user_id: @user.id)
+      params.require(:stayroom_reserve).permit(:stayroom_id, :start_date, :end_date).merge(user_id: @user.id)
     end
 end

@@ -24,7 +24,8 @@ class Studio < ApplicationRecord
         reserved_time = (studio_reserve.start_time + (i * 30 * 60)).strftime('%H%M')
         if reserved_time < studio_reserve.end_time.strftime('%H%M')
           reserves << { time: studio_reserve.date.strftime('%Y%m%d') + reserved_time,
-                        user_id: studio_reserve.user_id, studio_reserve_id: studio_reserve.id }
+                        user_id: studio_reserve.user_id,
+                        studio_reserve_id: studio_reserve.id }
         else
           break
         end
