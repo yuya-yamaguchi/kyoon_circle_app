@@ -27,9 +27,12 @@
         </th>
       </tr>
       <tr v-for="(week, index) in calendars" :key="index" class="calendar-table--body">
-        <td v-for="(day, index) in week" :key="index" class="calendar-date" :class="{ 'already-reserved': !canReserve(day) }">
+        <td v-for="(day, index) in week" :key="index"
+          class="calendar-date"
+          :class="{ 'other-month': (currentDate.get('month')+1) != day.month }">
           <div @click="postStayRoomReserves(day)">{{ day.date }}</div>
           <span v-if="canReserve(day)" @click="displayReserveModal(day)" class="reserve-btn">予約する</span>
+          <span v-else>×</span>
         </td>
       </tr>
     </table>
@@ -139,7 +142,7 @@ function fmtApiDate2(value) {
 
 <style scoped lang="scss">
 .calendar-table {
-  margin: 10px 0;
+  margin: 10px auto;
   background: #FFF;
   &--year-month {
     text-align: center;
@@ -166,7 +169,7 @@ function fmtApiDate2(value) {
         }
       }
     }
-    .already-reserved {
+    .other-month {
       background: lightgray;
     }
   }

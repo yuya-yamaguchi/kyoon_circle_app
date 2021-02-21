@@ -58,6 +58,8 @@ Rails.application.routes.draw do
 
     resources :news, only: %i[index show create update destroy]
 
+    resources :played_musics, only: %i[index]
+
     # 管理者用機能
     namespace :admin do
       resources :users, only: [:index]

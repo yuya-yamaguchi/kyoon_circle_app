@@ -114,7 +114,8 @@ ActiveRecord::Schema.define(version: 2021_02_17_221713) do
     t.bigint "stayroom_id", null: false
     t.bigint "user_id", null: false
     t.integer "fee", default: 0
-    t.date "date", null: false
+    t.date "checkin_date", null: false
+    t.date "checkout_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["stayroom_id"], name: "index_stayroom_reserves_on_stayroom_id"

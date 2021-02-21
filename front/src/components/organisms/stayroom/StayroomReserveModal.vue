@@ -3,7 +3,7 @@
     <div class="reserve-container">
       <LoadingCircle v-if="reserving"/>
       <div @click="closeModal()" class="close-button">×</div>
-      <div v-if="!isReserved">
+      <div v-if="!reserved">
         <h1 class="main-title text-center">宿泊予約</h1>
         <div class="reserve-content">
           <table class="reserve-table">
@@ -32,6 +32,9 @@
           </div>
         </div>
       </div>
+      <div v-else>
+        予約完了しました
+      </div>
     </div>
   </div>
 </template>
@@ -54,7 +57,7 @@ export default {
   data() {
     return {
       reserving: false,
-      isReserved: false,
+      reserved: false,
       stayroomReserve: this.selectStayroomReserveProp,
       reserveBtn: {
         name: "予約する",
@@ -87,7 +90,7 @@ export default {
         }
       )
       .then(() => {
-        this.isReserved = true;
+        this.reserved = true;
         this.$emit('reserve-complete');
       })
       .catch((error) => {
@@ -130,6 +133,7 @@ export default {
     margin: 0 auto;
     width: 70%;
     .reserve-table {
+      margin: 0 auto;
       &--head {
         min-width: 150px;
         height: 40px;

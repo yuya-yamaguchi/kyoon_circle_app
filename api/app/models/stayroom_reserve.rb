@@ -12,7 +12,8 @@ class StayroomReserve < ApplicationRecord
     # 部屋を指定する場合
     if params[:stayroom_id].to_i > 0
       results = StayroomReserve.where(stayroom_id: params[:stayroom_id])
-                               .where('? <= date AND date < ?', params[:start_date], params[:end_date])
+                               .where('? <= checkin_date  AND checkin_date  < ?', params[:start_date], params[:end_date])
+                               .where('? <= checkout_date AND checkout_date < ?', params[:start_date], params[:end_date])
       can_reserve = true if results.count == 0
     # 部屋を指定しない場合
     else

@@ -4,7 +4,8 @@ class CreateStayroomReserves < ActiveRecord::Migration[6.0]
       t.references :stayroom, null: false
       t.references :user, null: false
       t.integer    :fee, default: 0
-      t.date       :date, null: false
+      t.date       :checkin_date, null: false
+      t.date       :checkout_date, null: false
       t.timestamps
     end
   end

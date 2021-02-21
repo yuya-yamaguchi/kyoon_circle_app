@@ -11,7 +11,7 @@ class Api::Stayroom::ReservesController < ApplicationController
     if stayroom_reserve.create_reserves(stayroom_reserve_params)
       render status: 204
     else
-      render status: 410, json: stayroom_reserve.errors.full_messages
+      render status: 400, json: stayroom_reserve.errors.full_messages
     end
   end
 
