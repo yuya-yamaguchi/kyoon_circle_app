@@ -14,13 +14,13 @@
             <tr>
               <td class="reserve-table--head">チェックイン</td>
               <td>
-                <input type="date" v-model="stayroomReserve.start_date">
+                <input type="date" v-model="stayroomReserve.checkin_date">
               </td>
             </tr>
             <tr>
               <td class="reserve-table--head">チェックアウト</td>
               <td>
-                <input type="date" v-model="stayroomReserve.end_date">
+                <input type="date" v-model="stayroomReserve.checkout_date">
               </td>
             </tr>
           </table>

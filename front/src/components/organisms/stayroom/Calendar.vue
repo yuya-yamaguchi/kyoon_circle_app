@@ -1,7 +1,7 @@
 <template>
   <div>
     <StayroomReserveModal
-      v-if="selectStayroomReserve.start_date"
+      v-if="selectStayroomReserve.checkin_date"
       :selectStayroomReserveProp="selectStayroomReserve"
       :stayroomsProp="stayroomsProp"
       @reserve-complete="getStayRoomReserves()"
@@ -114,8 +114,8 @@ export default {
       }
     },
     displayReserveModal(date) {
-      this.selectStayroomReserve.start_date = fmtApiDate2(date)
-      this.selectStayroomReserve.end_date = this.afterDays(fmtApiDate2(date), 1)
+      this.selectStayroomReserve.checkin_date = fmtApiDate2(date)
+      this.selectStayroomReserve.checkout_date = this.afterDays(fmtApiDate2(date), 1)
       this.selectStayroomReserve.stayroom_id = this.selectStayRoomId
     },
     closeModal: function() {

@@ -17,6 +17,6 @@ class Api::Stayroom::ReservesController < ApplicationController
 
   private
     def stayroom_reserve_params
-      params.require(:stayroom_reserve).permit(:stayroom_id, :start_date, :end_date).merge(user_id: @user.id)
+      params.require(:stayroom_reserve).permit(:stayroom_id, :checkin_date, :checkout_date).merge(user_id: @user.id)
     end
 end

@@ -12,12 +12,12 @@ class StayroomReserve < ApplicationRecord
     # 部屋を指定する場合
     if params[:stayroom_id].to_i > 0
       results = StayroomReserve.where(stayroom_id: params[:stayroom_id])
-                               .where('? <= checkin_date  AND checkin_date  < ?', params[:start_date], params[:end_date])
-                               .where('? <= checkout_date AND checkout_date < ?', params[:start_date], params[:end_date])
+                               .where('? <= checkin_date  AND checkin_date  < ?', params[:checkin_date], params[:checkout_date])
+                               .where('? <= checkout_date AND checkout_date < ?', params[:checkin_date], params[:checkout_date])
       can_reserve = true if results.count == 0
     # 部屋を指定しない場合
     else
-      if vacant_room(params[:start_date], params[:end_date])
+      if vacant_room(params[:checkin_date], params[:checkout_date])
         can_reserve = true
       end
     end
@@ -32,28 +32,25 @@ class StayroomReserve < ApplicationRecord
     end
     if params[:stayroom_id].to_i == 0
       # 空いている部屋を取得
-      stayroom_id = vacant_room(params[:start_date], params[:end_date])
+      stayroom_id = vacant_room(params[:checkin_date], params[:checkout_date])
     else
       # frontで指定された部屋を設定
       stayroom_id = params[:stayroom_id]
     end
     # 予約日数分登録する
-    registar_num = (Date.parse(params[:end_date]) - Date.parse(params[:start_date])).to_i
-    registar_num.times do |i|
-      date = (Date.parse(params[:start_date]) + i).strftime('%Y-%m-%d')
-      StayroomReserve.create(user_id: params[:user_id],
-                             stayroom_id: stayroom_id,
-                             date: date
-                            )
-    end
+    StayroomReserve.create(user_id: params[:user_id],
+                            stayroom_id: stayroom_id,
+                            checkin_date: checkin_date,
+                            checkout_date: checkout_date
+                          )
   end
   
   private
   # 予約日付内で空室の部屋を取得
-  def vacant_room(start_date, end_date)
+  def vacant_room(checkin_date, checkout_date)
     stayrooms = Stayroom.all
     stayrooms.each do |stayroom|
-      results = stayroom.stayroom_reserves.where('? <= date AND date < ?', start_date, end_date)
+      results = stayroom.stayroom_reserves.where('? <= checkin_date AND checkin_date < ?', checkin_date, checkout_date)
       if results.count == 0
         return stayroom.id
       end
