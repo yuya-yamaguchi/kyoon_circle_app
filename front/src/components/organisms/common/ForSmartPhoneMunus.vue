@@ -76,8 +76,8 @@ export default {
           path: "/events",
           icon: "calendar-alt"
         },
-        { name: "宿泊（準備中）",
-          path: "",
+        { name: "宿泊予約",
+          path: "/stayrooms?month=0",
           icon: "bed"
         },
         { name: "お知らせ",
