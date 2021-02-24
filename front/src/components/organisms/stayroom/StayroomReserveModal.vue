@@ -5,11 +5,12 @@
       <div @click="closeModal()" class="close-button">×</div>
       <div v-if="!reserved">
         <h1 class="main-title text-center">宿泊予約</h1>
+        <div>{{ errors }}</div>
         <div class="reserve-content">
           <table class="reserve-table">
             <tr>
               <td class="reserve-table--head">部屋</td>
-              <td>{{ stayroomName }}</td>
+              <td>{{ stayroomName(stayroomReserve.stayroom_id) }}</td>
             </tr>
             <tr>
               <td class="reserve-table--head">チェックイン</td>
@@ -33,7 +34,26 @@
         </div>
       </div>
       <div v-else>
-        予約完了しました
+        <h1 class="main-title text-center">予約が完了しました</h1>
+        <table class="reserve-table">
+          <tr>
+            <td class="reserve-table--head">部屋</td>
+            <td>{{ stayroomName(stayroomReserved.stayroom_id) }}</td>
+          </tr>
+          <tr>
+            <td class="reserve-table--head">チェックイン</td>
+            <td>
+              {{ stayroomReserved.checkin_date }}
+            </td>
+          </tr>
+          <tr>
+            <td class="reserve-table--head">チェックアウト</td>
+            <td>
+              {{ stayroomReserved.checkout_date }}
+            </td>
+          </tr>
+        </table>
+        <button @click="closeModal()" class="default-button back-btn">閉じる</button>
       </div>
     </div>
   </div>
@@ -59,25 +79,17 @@ export default {
       reserving: false,
       reserved: false,
       stayroomReserve: this.selectStayroomReserveProp,
+      stayroomReserved: {},
       reserveBtn: {
         name: "予約する",
         isDisabled: false
-      }
-    }
-  },
-  computed: {
-    stayroomName() {
-      let roomName = ""
-      this.stayroomsProp.some(( v ) => {
-        if (v.id == this.stayroomReserve.stayroom_id) {
-          roomName = v.name
-        }
-      })
-      return (roomName) ? roomName : "指定なし"
+      },
+      errors: ""
     }
   },
   methods: {
     postStayRoomReserves: function() {
+      this.reserving = true;
       axios.post(
         `http://${g.hostName}/api/stayrooms/${this.stayroomReserve.stayroom_id}/reserves`,
         {
@@ -89,13 +101,26 @@ export default {
           }
         }
       )
-      .then(() => {
-        this.reserved = true;
-        this.$emit('reserve-complete');
+      .then((response) => {
+        setTimeout(() => {
+          this.stayroomReserved = response.data.stayroom_reserve;
+          this.reserving = false;
+          this.reserved = true;
+          this.$emit('reserve-complete');
+        }, 1500)
       })
       .catch((error) => {
-        console.log(error.response.data)
+        this.errors = error.response.data
       });
+    },
+    stayroomName(stayroom_id) {
+      let roomName = ""
+      this.stayroomsProp.some(( v ) => {
+        if (v.id == stayroom_id) {
+          roomName = v.name
+        }
+      })
+      return (roomName) ? roomName : "指定なし"
     },
     // モーダルウィンドウを閉じる
     closeModal: function() {
@@ -132,16 +157,20 @@ export default {
   .reserve-content {
     margin: 0 auto;
     width: 70%;
-    .reserve-table {
-      margin: 0 auto;
-      &--head {
-        min-width: 150px;
-        height: 40px;
-      }
-    }
     .commit-back-btns {
       margin: 30px 0;
     }
+  }
+  .reserve-table {
+    margin: 0 auto;
+    &--head {
+      min-width: 150px;
+      height: 40px;
+    }
+  }
+  .back-btn {
+    background: #FFF;
+    color: #333;
   }
 }
 </style>

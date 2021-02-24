@@ -4,16 +4,13 @@ export const calendar = {
   data() {
     return {
       currentDate: moment(),
+      calendars: [],
       weeks: ['日', '月', '火', '水', '木', '金', '土']
     }
   },
-  computed: {
-    calendars() {
-      return this.getCalendar();
-    },
-  },
   methods: {
-    getCalendar() {
+    getCalendar(month) {
+      this.currentDate = moment().add(month, "month");
       let startDate = this.getStartDate();
       const endDate = this.getEndDate();
       const weekNumber = Math.ceil(endDate.diff(startDate, "days") / 7);
@@ -31,7 +28,7 @@ export const calendar = {
         }
         calendars.push(weekRow);
       }
-      return calendars;
+      this.calendars = calendars;
     },
     getStartDate: function() {
       let date = moment(this.currentDate);
@@ -45,12 +42,6 @@ export const calendar = {
       date.endOf("month");
       const youbiNum = date.day();
       return date.add(6 - youbiNum, "days");
-    },
-    nextMonth() {
-      this.currentDate = moment(this.currentDate).add(1, "month");
-    },
-    prevMonth() {
-      this.currentDate = moment(this.currentDate).subtract(1, "month");
     }
   }
 }

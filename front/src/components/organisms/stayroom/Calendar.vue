@@ -6,16 +6,25 @@
       :stayroomsProp="stayroomsProp"
       @reserve-complete="getStayRoomReserves()"
       @close-modal="closeModal()"/>
-    <div>部屋</div>
+    <div>宿泊部屋を選択</div>
     <select v-model="selectStayRoomId" class="">
       <option value="0">指定しない</option>
       <option v-for="stayroom in stayroomsProp" :value="stayroom.id" :key="stayroom">
         {{ stayroom.name }}
       </option>
     </select>
-    <div>
-      <button @click="prevMonth">前の月</button>
-      <button @click="nextMonth">次の月</button>
+    <div class="month-bar space-between">
+      <div class="prev-month some-updown-center" @click="changeMonth(Number($route.query.month)-1)">
+        <fa icon="chevron-left" class="small-icon"></fa>
+        <p>前の月</p>
+      </div>
+      <div class="current-month" @click="changeMonth(0)">
+        <p>現在の月へ</p>
+      </div>
+      <div class="next-month some-updown-center" @click="changeMonth(Number($route.query.month)+1)">
+        <p>次の月</p>
+        <fa icon="chevron-right" class="small-icon"></fa>
+      </div>
     </div>
     <table class="calendar-table">
       <tr class="calendar-table--year-month">
@@ -59,6 +68,14 @@ export default {
       stayroomReserves: [],
       selectStayRoomId: 0,
       selectStayroomReserve: {},
+    }
+  },
+  watch: {
+    '$route' (to) {
+      if ( to.query.month !== undefined ) {
+        this.getCalendar(to.query.month);
+        this.getStayRoomReserves();
+      }
     }
   },
   methods: {
@@ -118,12 +135,20 @@ export default {
       this.selectStayroomReserve.checkout_date = this.afterDays(fmtApiDate2(date), 1)
       this.selectStayroomReserve.stayroom_id = this.selectStayRoomId
     },
+    changeMonth(month) {
+      this.$router.push({
+        name: 'StayroomIndex',
+        query: {
+          month: month
+        }
+      })
+    },
     closeModal: function() {
       this.selectStayroomReserve = {}
     }
   },
   mounted(){
-    this.getCalendar();
+    this.getCalendar(this.$route.query.month);
     this.getStayRoomReserves();
   }
 }
@@ -141,16 +166,52 @@ function fmtApiDate2(value) {
 </script>
 
 <style scoped lang="scss">
+.month-bar {
+  .prev-month {
+    cursor: pointer;
+    p {
+      margin-left: 5px;
+      font-weight: bold;
+    }
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+  .next-month {
+    cursor: pointer;
+    p {
+      margin-right: 5px;
+      font-weight: bold;
+    }
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+  .current-month {
+    cursor: pointer;
+    p {
+      font-weight: bold;
+    }
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
 .calendar-table {
-  margin: 10px auto;
+  margin: 5px auto;
   background: #FFF;
+  width: 100%;
   &--year-month {
     text-align: center;
-    border: 1px solid;
+    border: 1px solid #333;
+    background: #333;
+    color: #FFF;
   }
   &--head {
     th {
-      border: 1px solid;
+      border: 1px solid #333;
+      text-align: center;
     }
   }
   &--body {

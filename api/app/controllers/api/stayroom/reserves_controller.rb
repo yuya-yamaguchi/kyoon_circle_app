@@ -7,9 +7,9 @@ class Api::Stayroom::ReservesController < ApplicationController
   end
   
   def create
-    stayroom_reserve = StayroomReserve.new
-    if stayroom_reserve.create_reserves(stayroom_reserve_params)
-      render status: 204
+    stayroom_reserve = StayroomReserve.new(stayroom_reserve_params)
+    if stayroom_reserve.save
+      render status: 201, json: { stayroom_reserve: stayroom_reserve }
     else
       render status: 400, json: stayroom_reserve.errors.full_messages
     end
