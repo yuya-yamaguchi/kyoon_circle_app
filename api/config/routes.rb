@@ -10,6 +10,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :stayrooms, only: [:index] do
+      scope module: :stayroom do
+        resources :reserves, only: [:index, :create]
+      end
+    end
+
     resources :mypage, only: %i[show update] do
       collection do
         get :studio_reserves
@@ -51,6 +57,8 @@ Rails.application.routes.draw do
     resources :part_categories, only: [:index]
 
     resources :news, only: %i[index show create update destroy]
+
+    resources :played_musics, only: %i[index]
 
     # 管理者用機能
     namespace :admin do

@@ -188,7 +188,7 @@ export default {
           this.reserving = false;
           this.reserveCompleteFlg = true;
           this.$emit('reserve-success');
-        }, 2000)
+        }, 1500)
       })
       .catch((error) => {
         this.apiErrors(error.response.status);

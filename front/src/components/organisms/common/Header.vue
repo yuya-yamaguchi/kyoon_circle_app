@@ -12,7 +12,7 @@
           <router-link to="/news" class="header-menu">お知らせ</router-link>
           <router-link to="/studios/1?week=0" class="header-menu">スタジオ予約</router-link>
           <router-link to="/events?page=1" class="header-menu">イベント</router-link>
-          <!-- <a class="header-menu">宿泊</a> -->
+          <router-link to="/stayrooms?month=0" class="header-menu">宿泊</router-link>
         </div>
         <template v-if='!$store.getters["user/id"]'>
           <router-link to="/signup" class="sign-btn">新規会員登録</router-link>

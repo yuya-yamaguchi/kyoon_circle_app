@@ -16,6 +16,7 @@
     "axios": "^0.21.0",
     "core-js": "^3.8.2",
     "moment": "^2.29.1",
+    "v-calendar": "^2.2.3",
     "vue": "^3.0.0",
     "vue-moment": "^4.1.0",
     "vue-router": "^4.0.0-0",

@@ -9,7 +9,10 @@
           <p>遠方からお越しの際などにご利用ください</p>
           <p>※準備中、しばらくお待ちください</p>
         </div>
-        <button class="stay-info--btn gorgeous-button">Comming<br>Soon...</button>
+        <router-link to="/stayrooms/?month=0" class="stay-info--link gorgeous-button">
+          <p>予約はこちら</p>
+          <fa icon="play-circle"></fa>
+        </router-link>
       </div>
     </div>
   </div>
@@ -44,10 +47,17 @@
         font-weight: lighter;
       }
     }
-    &--btn {
+    &--link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       white-space: nowrap;
-      background: #888;
-      cursor: not-allowed;
+      text-align: center;
+      width: 150px;
+      svg {
+        width: 20px;
+        margin-left: 10px;
+      }
     }
   }
   .top-each-title {

@@ -39,8 +39,9 @@ export const commonMethods = {
       }
     },
     /* 本日からどれくらい前かを算出 */
+    /* datetime(string): YYYY-MM-DD HH24:MI:SS */
     howManyAgo: function(datetime) {
-      var jsDatetime = new Date(`${datetime.substr(0 ,4)}/${datetime.substr(5 ,2)}/${datetime.substr(8 ,2)} ${datetime.substr(11 ,8)}`)
+      var jsDatetime = new Date(`${datetime.substr(0, 4)}/${datetime.substr(5, 2)}/${datetime.substr(8, 2)} ${datetime.substr(11, 8)}`)
       var diff = today.getTime() - jsDatetime.getTime()
       var elapsed = new Date(diff);
       if (elapsed.getUTCFullYear() - 1970 < 0) {
@@ -58,6 +59,18 @@ export const commonMethods = {
       } else {
         return elapsed.getUTCSeconds() + '秒前';
       }
+    },
+    /* n日後の日付を算出 */
+    // [i]date(string): 形式（YYYY-MM-DD）
+    // [i]n(int)
+    // [o]n日後(string)
+    afterDays: function(date, n) {
+      let calcDate = new Date(date.substr(0, 4), Number(date.substr(5, 2))-1, Number(date.substr(8, 2)) + n)
+      return calcDate.getFullYear() + '-' + paddingZero(calcDate.getMonth()+1) + '-' + paddingZero(calcDate.getDate());
     }
   }
+}
+
+function paddingZero(value) {
+  return ('00' + value).slice(-2)
 }

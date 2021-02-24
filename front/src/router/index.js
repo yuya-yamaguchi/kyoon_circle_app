@@ -17,6 +17,7 @@ import EventEdit from '@/views/event/Edit.vue'
 import EventEditList from '@/views/event/EditList.vue'
 import EventIndex from '@/views/event/Index.vue'
 import EventShow from '@/views/event/Show.vue'
+import StayroomIndex from '@/views/stayroom/Index.vue'
 import SessionMusicShow from '@/views/event/session/music/Show.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
 import StudioEdit from '@/views/admin/studio/Edit.vue'
@@ -26,6 +27,7 @@ import NewsIndex from '@/views/news/Index.vue'
 import NewsShow from '@/views/news/Show.vue'
 import NewsEdit from '@/views/news/Edit.vue'
 import NewsEditList from '@/views/news/EditList.vue'
+// import Musics from '@/views/Musics.vue'
 import NotFound from "@/views/errors/NotFound.vue";
 
 import store from '@/store'
@@ -102,6 +104,12 @@ const routes = [
     path: '/news/:id',
     name: 'NewsShow',
     component: NewsShow
+  },
+  // 宿泊
+  {
+    path: '/stayrooms',
+    name: 'StayroomIndex',
+    component: StayroomIndex
   },
   // ユーザページ
   {
@@ -210,6 +218,12 @@ const routes = [
     component: StudioReserves,
     meta: { requiresAdmin: true }
   },
+  // 成立曲表示
+  // {
+  //   path: '/musics',
+  //   name: 'Musics',
+  //   component: Musics
+  // },
   // NOTFOUND画面(該当のURLが存在しない場合)
   {
     path: '/:pathMatch(.*)*',
