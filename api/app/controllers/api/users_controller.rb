@@ -1,10 +1,13 @@
 class Api::UsersController < ApplicationController
+  before_action :set_current_user, only: [:show]
   before_action :set_user, only: [:show]
   before_action :auth_check, only: %i[update change_password]
 
   def show
     user_instruments = @user.set_instruments
-    render status: 200, json: { user: @user, user_instruments: user_instruments }
+    user = @user.set_follow_count
+    user_followed = @current_user.following?(@user) if @current_user.present?
+    render status: 200, json: { user: user, user_instruments: user_instruments, user_followed: user_followed }
   end
 
   def create
@@ -17,19 +20,31 @@ class Api::UsersController < ApplicationController
   end
 
   def update
-    if @user.update(user_params)
-      render status: 200, json: @user
+    if @current_user.update(user_params)
+      render status: 200, json: @current_user
     else
-      render status: 422, json: @user.errors.full_messages
+      render status: 422, json: @current_user.errors.full_messages
     end
   end
 
+  def following
+    user  = User.find(params[:id])
+    following_users = user.following
+    render status: 200, json: { following_users: following_users }
+  end
+
+  def followers
+    user = User.find(params[:id])
+    followers = @current_user.followers
+    render status: 200, json: { followers: followers }
+  end
+
   def change_password
-    if @user.authenticate(params[:user][:current_password])
-      if @user.update(user_params)
+    if @current_user.authenticate(params[:user][:current_password])
+      if @current_user.update(user_params)
         render status: 201
       else
-        render status: 422, json: @user.errors.full_messages
+        render status: 422, json: @current_user.errors.full_messages
       end
     else
       render status: 401, json: '現在のパスワードが正しくありません'
