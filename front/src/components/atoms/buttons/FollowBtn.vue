@@ -27,13 +27,14 @@ export default {
 
 <style scoped lang="scss">
 .follow-btn {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--accent-color);
   border: 2px solid var(--accent-color);
-  padding: 5px 20px;
+  padding: 2px 20px;
   border-radius: 15px;
   font-weight: bold;
   text-align: center;
+  min-width: 100px;
   cursor: pointer;
   &:hover {
     opacity: 0.7;

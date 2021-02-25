@@ -1,7 +1,7 @@
 class Api::UsersController < ApplicationController
   before_action :set_current_user, only: [:show]
-  before_action :set_user, only: [:show]
-  before_action :auth_check, only: %i[update change_password]
+  before_action :set_user, only: [:show, :following, :followers]
+  before_action :auth_check, only: [:update, :change_password, :following, :followers]
 
   def show
     user_instruments = @user.set_instruments
@@ -28,15 +28,15 @@ class Api::UsersController < ApplicationController
   end
 
   def following
-    user  = User.find(params[:id])
-    following_users = user.following
-    render status: 200, json: { following_users: following_users }
+    following_users = @user.following
+    following_users_outparams = set_is_followed(following_users)
+    render status: 200, json: { user: @user, following_users: following_users_outparams }
   end
 
   def followers
-    user = User.find(params[:id])
-    followers = @current_user.followers
-    render status: 200, json: { followers: followers }
+    followers = @user.followers
+    followers_outparams = set_is_followed(followers)
+    render status: 200, json: { user: @user, followers: followers_outparams }
   end
 
   def change_password
@@ -93,5 +93,14 @@ class Api::UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :profile, :avatar,
                                  { instrument_ids: [] })
+  end
+
+  def set_is_followed(follow_users)
+    outparams = []
+    current_user_followed_ids = @current_user.active_relationships.map{|relationship| relationship.followed_id}
+    follow_users.each do |follow_user|
+      outparams << follow_user.set_following_status(current_user_followed_ids)
+    end
+    outparams
   end
 end

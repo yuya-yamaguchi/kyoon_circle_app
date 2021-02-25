@@ -12,6 +12,7 @@ import MypageEdit from '@/views/mypage/Edit.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
 import MypageEvents from '@/views/mypage/Events.vue'
 import ChangePassword from '@/views/mypage/ChangePassword.vue'
+import Follow from '@/views/user/Follow.vue'
 import EventNew from '@/views/event/New.vue'
 import EventEdit from '@/views/event/Edit.vue'
 import EventEditList from '@/views/event/EditList.vue'
@@ -152,6 +153,13 @@ const routes = [
     component: ChangePassword,
     meta: { requiresAuth: true }
   },
+  // フォロー一覧
+  {
+    path: '/users/:id/follow',
+    name: 'Follow',
+    component: Follow,
+    meta: { requiresAuth: true }
+  },
   /***********************/
   /* 管理者用VIEW         */
   /***********************/
@@ -240,7 +248,20 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // ログイン（トークン認証）が必要なページの場合
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    !store.getters['user/secureToken'] ? next({ path: '/login' }) : next();
+    if (store.getters['user/secureToken']) {
+      next()
+    }
+    else {
+      store.dispatch(
+        "loginGuide/update", true
+      );
+      store.dispatch(
+        "flash/create",
+        { message: "ログインまたは会員登録を行ってください。",
+          type:    2
+        }
+      );
+    }
   }
   // 管理者権限が必要なページの場合
   else if (to.matched.some(record => record.meta.requiresAdmin)) {

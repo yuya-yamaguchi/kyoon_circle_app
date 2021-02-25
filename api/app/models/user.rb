@@ -43,6 +43,11 @@ class User < ActiveRecord::Base
     following.include?(other_user)
   end
 
+  # ログインユーザが対象のユーザをフォローしているかを判定し結合
+  def set_following_status(followed_ids)
+    attributes.merge("is_followed" => followed_ids.include?(self.id))
+  end
+
   def set_instruments
     instruments = Instrument.order('id')
     user_instruments = self.instruments

@@ -10,8 +10,8 @@
       <div v-if="$store.getters['user/id'] != userProp.id" class="user-info--top--follow-btn">
         <FollowBtn
           :is-followed="isFollowed"
-          @follow="follow"
-          @unfollow="unfollow"/>
+          @follow="follow(userProp)"
+          @unfollow="unfollow(userProp)"/>
       </div>
       <div class="user-info--top--follow">
         <FollowCount :user-prop="user"/>

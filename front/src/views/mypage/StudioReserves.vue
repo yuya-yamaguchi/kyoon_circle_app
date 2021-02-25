@@ -82,7 +82,6 @@ export default {
 
 <style lang="scss" scoped>
 .studio-reserves {
-  background: #FFF;
   padding: 10px;
 }
 </style>
