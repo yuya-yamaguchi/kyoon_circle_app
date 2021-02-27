@@ -4,7 +4,11 @@
       <SideBar :select-menu-prop="1"/>
     </div>
     <div class="double-container--right">
-      <UserInfo :user-prop="user" :userInstrumentsProp="userInstruments" :loading="loading"/>
+      <UserInfo
+        v-if="!loading"
+        :user-prop="user"
+        :userInstrumentsProp="userInstruments"
+        :loading="loading"/>
     </div>
   </div>
 </template>

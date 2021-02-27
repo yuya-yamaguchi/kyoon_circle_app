@@ -114,6 +114,7 @@ export default {
   display: flex;
   justify-content: space-between;
   border-radius: 10px;
+  background: #FFF;
   &--info {
     padding: 10px;
     &--top {

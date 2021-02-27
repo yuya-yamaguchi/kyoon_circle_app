@@ -74,7 +74,6 @@ export default {
 
 <style lang="scss" scoped>
 .my-events {
-  background: #FFF;
   padding: 10px;
 }
 </style>

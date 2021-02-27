@@ -10,6 +10,12 @@ export const errorMethods = {
         this.$store.dispatch(
           "loginGuide/update", true
         );
+        this.$store.dispatch(
+          "flash/create",
+          { message: "ログインまたは会員登録を行ってください。",
+            type:    2
+          }
+        );
       }
     }
   }

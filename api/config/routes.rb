@@ -30,7 +30,13 @@ Rails.application.routes.draw do
         get  :reset_password_token_check
         post :reset_password
       end
+      member do
+        get :following
+        get :followers
+      end
     end
+
+    resources :relationships, only: [:create, :destroy]
 
     resources :events, only: %i[index show create edit update destroy] do
       member do

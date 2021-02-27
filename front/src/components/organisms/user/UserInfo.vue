@@ -4,8 +4,17 @@
       <div class="user-info--top--img">
         <UserAvatar v-if="!loading" :avatar-prop="userProp.avatar"/>
       </div>
-      <div class="user-info--top--name">
-        <div class="user-info main-title">{{ userProp.name }}</div>
+      <div class="user-info--top--name main-title">
+        {{ userProp.name }}
+      </div>
+      <div v-if="$store.getters['user/id'] != userProp.id" class="user-info--top--follow-btn">
+        <FollowBtn
+          :is-followed="isFollowed"
+          @follow="follow(userProp)"
+          @unfollow="unfollow(userProp)"/>
+      </div>
+      <div class="user-info--top--follow">
+        <FollowCount :user-prop="user"/>
       </div>
       <router-link v-if="isMypage" to="/mypage/edit" class="user-info--top--edit some-updown-center">
         <fa icon="edit"></fa>
@@ -24,16 +33,29 @@
 <script>
 import UserInstrument from "@/components/molecules/instruments/UserInstrument.vue";
 import UserAvatar from "@/components/atoms/UserAvatar.vue";
+import FollowCount from "@/components/organisms/user/FollowCount.vue";
+import FollowBtn from "@/components/atoms/buttons/FollowBtn.vue";
+import { userFollow } from '@/mixins/users/userFollow';
 
 export default {
+  mixins: [userFollow],
   components: {
     UserAvatar,
-    UserInstrument
+    UserInstrument,
+    FollowCount,
+    FollowBtn
   },
   props: {
     userProp: {},
     userInstrumentsProp: {},
+    isFollowedProp: {},
     loading: {}
+  },
+  data() {
+    return {
+      user: this.userProp,
+      isFollowed: this.isFollowedProp
+    }
   },
   computed: {
     isMypage() {
@@ -47,25 +69,28 @@ export default {
 .user-info {
   background: var(--base-color);
   &--top {
-    position: relative;
-    display: flex;
-    justify-content: flex-start;
-    z-index: 1;
     &--img {
-      position: absolute;
       background: var(--base-color);
       border-radius: 100%;
       width: 120px;
       height: 120px;
       border-radius: 100%;
-      z-index: 2;
-      padding: 10px;
+      margin: 0 auto;
     }
     &--name {
-      margin: 10px 0 0 140px;
+      text-align: center;
+      margin: 10px;
+    }
+    &--follow-btn {
+      margin: 10px auto;
+      width: 200px;
+    }
+    &--follow {
+      max-width: 300px;
+      margin: 10px auto;
     }
     &--edit {
-      margin-left:auto;
+      margin: 10px;
       text-align: right;
       font-size: 14px;
       font-weight: bold;
@@ -82,13 +107,9 @@ export default {
   &--profile {
     background: #FFF;
     padding: 10px;
-    margin-left: 30px;
-    min-height: 300px;
-    &--instruments {
-      margin-left: 120px;
-    }
+    min-height: 200px;
     &--contents {
-      margin-top: 50px;
+      margin-top: 20px;
       font-size: 14px;
       box-sizing: border-box;
       background: #FFF;
@@ -101,16 +122,6 @@ export default {
   .user-info {
     margin: 0 auto;
     &--top {
-      display: block;
-      margin: 0 auto;
-      &--img {
-        position: static;
-        margin: 0 auto;
-      }
-      &--name {
-        margin: 0 auto;
-        text-align: center;
-      }
       &--edit {
         margin: 0 auto;
         text-align: center;
@@ -125,9 +136,6 @@ export default {
     &--profile {
       padding: 10px;
       margin: 20px 0 0 0;
-      &--instruments {
-        margin: 0;
-      }
       &--contents {
         margin: 20px 0 0 0;
       }
