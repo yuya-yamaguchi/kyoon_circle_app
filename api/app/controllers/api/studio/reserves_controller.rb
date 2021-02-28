@@ -11,7 +11,7 @@ class Api::Studio::ReservesController < ApplicationController
     @studio = Studio.find(params[:studio_id])
     studio_reserve = StudioReserve.new(studio_reserves_params)
     if studio_reserve.save
-      render status: 200
+      render status: 201, json: { studio_reserve: studio_reserve }
     else
       render status: 400, json: { error_message: studio_reserve.errors.full_messages[0] }
     end
