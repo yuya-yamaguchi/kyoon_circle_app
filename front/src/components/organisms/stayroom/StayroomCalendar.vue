@@ -41,9 +41,16 @@
           <td v-for="(day, index) in week" :key="index"
             class="calendar-date"
             :class="{ 'other-month': (currentDate.get('month')+1) != day.month, 'today': isToday(day) }">
-            <div @click="postStayRoomReserves(day)" :class="{'saturday': index==6, 'sunday': index==0}">{{ day.date }}</div>
-            <span v-if="canReserve(day)" @click="displayReserveModal(day)" class="reserve-btn">予約する</span>
-            <span v-else>×</span>
+            <div :class="{'saturday': index==6, 'sunday': index==0}">{{ day.date }}</div>
+            <div v-if="isAdminPage">
+              <div v-for="username in reserveUsers(day)" :key="username" class="reserve-user">
+                {{ username }}
+              </div>
+            </div>
+            <div v-else>
+              <span v-if="canReserve(day)" @click="displayReserveModal(day)" class="reserve-btn">予約する</span>
+              <span v-else>×</span>
+            </div>
           </td>
         </tr>
       </table>
@@ -83,6 +90,11 @@ export default {
         this.getCalendar(to.query.month);
         this.getStayRoomReserves();
       }
+    }
+  },
+  computed: {
+    isAdminPage() {
+      return (location.pathname.match(/admin/)) ? true : false
     }
   },
   methods: {
@@ -140,14 +152,33 @@ export default {
         }
       }
     },
+    reserveUsers(date) {
+      let users = [];
+      if (this.selectStayRoomId == 0) {
+        this.stayroomReserves.some(( v ) => {
+          if (v.date == fmtApiDate2(date)) {
+            users.push(v.user_name)
+          }
+        })
+      }
+      else {
+        this.stayroomReserves.some(( v ) => {
+          if (v.date == fmtApiDate2(date) && v.stayroom_id == this.selectStayRoomId) {
+            users.push(v.user_name)
+          }
+        })
+      }
+      return users
+    },
     displayReserveModal(date) {
       this.selectStayroomReserve.checkin_date = fmtApiDate2(date)
       this.selectStayroomReserve.checkout_date = this.afterDays(fmtApiDate2(date), 1)
       this.selectStayroomReserve.stayroom_id = this.selectStayRoomId
     },
     changeMonth(month) {
+      let componentName = (location.pathname.match(/admin/)) ? "StayroomReserves" : "StayroomIndex"
       this.$router.push({
-        name: 'StayroomIndex',
+        name: componentName,
         query: {
           month: month
         }
@@ -239,6 +270,9 @@ function fmtApiDate2(value) {
         &:hover {
           color: var(--accent-color);
         }
+      }
+      .reserve-user {
+        font-size: 12px;
       }
     }
     .other-month {

@@ -28,13 +28,16 @@ class StayroomReserve < ApplicationRecord
   # 1ヶ月分の予約情報を取得
   def self.one_month_resreves(params)
     reserves = []
-    stayroom_reserves = StayroomReserve.where('checkin_date between ? AND ?', params[:calendar_start], params[:calendar_end])
+    stayroom_reserves = StayroomReserve.select(:id, :stayroom_id, :user_id, :checkin_date, :checkout_date, 'users.name')
+                                       .left_joins(:user)
+                                       .where('checkin_date between ? AND ?', params[:calendar_start], params[:calendar_end])
     stayroom_reserves.each do |stayroom_reserve|
       reserve_days = (stayroom_reserve.checkout_date - stayroom_reserve.checkin_date).to_i
       reserve_days.times do |i|
         reserves << { id: stayroom_reserve.id,
                       stayroom_id: stayroom_reserve.stayroom_id,
                       user_id: stayroom_reserve.user_id,
+                      user_name: stayroom_reserve.name,
                       date: stayroom_reserve.checkin_date + i
                     }
       end

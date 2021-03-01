@@ -139,6 +139,9 @@ export default {
         { name: "スタジオ予約確認",
           path: "/admin/studio/1/reserves?week=0"
         },
+        { name: "宿泊予約確認",
+          path: "/admin/stayrooms?month=0"
+        },
         { name: "イベント登録",
           path: "/event/new"
         },

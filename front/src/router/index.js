@@ -24,6 +24,7 @@ import SessionMusicShow from '@/views/event/session/music/Show.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
 import StudioEdit from '@/views/admin/studio/Edit.vue'
 import StudioReserves from '@/views/admin/studio/Reserves.vue'
+import StayroomReserves from '@/views/admin/stayroom/Reserves.vue'
 import NewsNew from '@/views/news/New.vue'
 import NewsIndex from '@/views/news/Index.vue'
 import NewsShow from '@/views/news/Show.vue'
@@ -232,6 +233,13 @@ const routes = [
     path: '/admin/studio/:id/reserves',
     name: 'StudioReserves',
     component: StudioReserves,
+    meta: { requiresAdmin: true }
+  },
+  // 宿泊予約確認
+  {
+    path: '/admin/stayrooms',
+    name: 'StayroomReserves',
+    component: StayroomReserves,
     meta: { requiresAdmin: true }
   },
   // 成立曲表示
