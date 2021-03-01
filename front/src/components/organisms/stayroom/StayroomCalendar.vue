@@ -1,50 +1,53 @@
 <template>
   <div>
-    <StayroomReserveModal
-      v-if="selectStayroomReserve.checkin_date"
-      :selectStayroomReserveProp="selectStayroomReserve"
-      :stayroomsProp="stayroomsProp"
-      @reserve-complete="getStayRoomReserves()"
-      @close-modal="closeModal()"/>
-    <div>宿泊部屋を選択</div>
-    <select v-model="selectStayRoomId" class="">
-      <option value="0">指定しない</option>
-      <option v-for="stayroom in stayroomsProp" :value="stayroom.id" :key="stayroom">
-        {{ stayroom.name }}
-      </option>
-    </select>
-    <div class="month-bar space-between">
-      <div class="prev-month some-updown-center" @click="changeMonth(Number($route.query.month)-1)">
-        <fa icon="chevron-left" class="small-icon"></fa>
-        <p>前の月</p>
+    <Loading v-if="loading"/>
+    <div v-else>
+      <StayroomReserveModal
+        v-if="selectStayroomReserve.checkin_date"
+        :selectStayroomReserveProp="selectStayroomReserve"
+        :stayroomsProp="stayroomsProp"
+        @reserve-complete="getStayRoomReserves()"
+        @close-modal="closeModal()"/>
+      <div>宿泊部屋を選択</div>
+      <select v-model="selectStayRoomId" class="">
+        <option value="0">指定しない</option>
+        <option v-for="stayroom in stayroomsProp" :value="stayroom.id" :key="stayroom">
+          {{ stayroom.name }}
+        </option>
+      </select>
+      <div class="month-bar space-between">
+        <div class="prev-month some-updown-center" @click="changeMonth(Number($route.query.month)-1)">
+          <fa icon="chevron-left" class="small-icon"></fa>
+          <p>前の月</p>
+        </div>
+        <div class="current-month" @click="changeMonth(0)">
+          <p>現在の月へ</p>
+        </div>
+        <div class="next-month some-updown-center" @click="changeMonth(Number($route.query.month)+1)">
+          <p>次の月</p>
+          <fa icon="chevron-right" class="small-icon"></fa>
+        </div>
       </div>
-      <div class="current-month" @click="changeMonth(0)">
-        <p>現在の月へ</p>
-      </div>
-      <div class="next-month some-updown-center" @click="changeMonth(Number($route.query.month)+1)">
-        <p>次の月</p>
-        <fa icon="chevron-right" class="small-icon"></fa>
-      </div>
+      <table class="calendar-table">
+        <tr class="calendar-table--year-month">
+          <td colspan="7">{{ currentDate.get('year') }}年{{ currentDate.get('month')+1 }}月</td>
+        </tr>
+        <tr class="calendar-table--head">
+          <th v-for="week in weeks" :key="week" :class="{ 'saturday': week=='土', 'sunday': week=='日' }">
+            {{ week }}
+          </th>
+        </tr>
+        <tr v-for="(week, index) in calendars" :key="index" class="calendar-table--body">
+          <td v-for="(day, index) in week" :key="index"
+            class="calendar-date"
+            :class="{ 'other-month': (currentDate.get('month')+1) != day.month, 'today': isToday(day) }">
+            <div @click="postStayRoomReserves(day)" :class="{'saturday': index==6, 'sunday': index==0}">{{ day.date }}</div>
+            <span v-if="canReserve(day)" @click="displayReserveModal(day)" class="reserve-btn">予約する</span>
+            <span v-else>×</span>
+          </td>
+        </tr>
+      </table>
     </div>
-    <table class="calendar-table">
-      <tr class="calendar-table--year-month">
-        <td colspan="7">{{ currentDate.get('year') }}年{{ currentDate.get('month')+1 }}月</td>
-      </tr>
-      <tr class="calendar-table--head">
-        <th v-for="week in weeks" :key="week">
-          {{ week }}
-        </th>
-      </tr>
-      <tr v-for="(week, index) in calendars" :key="index" class="calendar-table--body">
-        <td v-for="(day, index) in week" :key="index"
-          class="calendar-date"
-          :class="{ 'other-month': (currentDate.get('month')+1) != day.month }">
-          <div @click="postStayRoomReserves(day)">{{ day.date }}</div>
-          <span v-if="canReserve(day)" @click="displayReserveModal(day)" class="reserve-btn">予約する</span>
-          <span v-else>×</span>
-        </td>
-      </tr>
-    </table>
   </div>
 </template>
 
@@ -52,6 +55,7 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import StayroomReserveModal from '@/components/organisms/stayroom/StayroomReserveModal.vue';
+import Loading from '@/components/organisms/common/Loading.vue';
 import { commonMethods } from '@/mixins/commonMethods';
 import { calendar } from '@/mixins/calendar';
 import { errorMethods } from '@/mixins/errorMethods';
@@ -62,13 +66,15 @@ export default {
     stayroomsProp: {}
   },
   components: {
-    StayroomReserveModal
+    StayroomReserveModal,
+    Loading
   },
   data() {
     return {
       stayroomReserves: [],
       selectStayRoomId: 0,
       selectStayroomReserve: {},
+      loading: true
     }
   },
   watch: {
@@ -96,6 +102,9 @@ export default {
       })
       .catch((error) => {
         this.apiErrors(error.response);
+      })
+      .finally(() => {
+        this.loading = false;
       });
     },
     canReserve(date) {
@@ -213,6 +222,7 @@ function fmtApiDate2(value) {
     th {
       border: 1px solid #333;
       text-align: center;
+      font-weight: bold;
     }
   }
   &--body {
@@ -234,6 +244,17 @@ function fmtApiDate2(value) {
     .other-month {
       background: lightgray;
     }
+    .today {
+      border: 2px solid orange;
+      background: rgb(240, 217, 174);
+      box-sizing: border-box;
+    }
+  }
+  .saturday {
+    color: var(--saturday-color);
+  }
+  .sunday {
+    color: var(--sunday-color);
   }
 }
 

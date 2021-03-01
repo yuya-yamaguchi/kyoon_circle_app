@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_secure_password # bcrypt(gem)
 
   has_many :studio_reserves
+  has_many :stayroom_reserves
   has_many :event_entries
   has_many :events, through: :event_entries
   has_many :event_comments

@@ -26,4 +26,10 @@ class Api::MypageController < ApplicationController
     end
     render status: 200, json: { future_events: out_future_params, history_events: out_history_params }
   end
+
+  def stayroom_reserves
+    future_reserves  = StayroomReserve.feature_reserves(@current_user.id)
+    history_reserves = StayroomReserve.history_reserves(@current_user.id)
+    render status: 200, json: { future_reserves: future_reserves, history_reserves: history_reserves }
+  end
 end

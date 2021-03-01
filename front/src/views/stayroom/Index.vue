@@ -1,13 +1,13 @@
 <template>
   <div class="single-container">
-    <Calendar :stayrooms-prop="stayrooms"/>
+    <StayroomCalendar :stayrooms-prop="stayrooms"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
-import Calendar from '@/components/organisms/stayroom/Calendar.vue';
+import StayroomCalendar from '@/components/organisms/stayroom/StayroomCalendar.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
@@ -18,7 +18,7 @@ export default {
     }
   },
   components: {
-    Calendar
+    StayroomCalendar
   },
   methods: {
     getStayRooms: function() {

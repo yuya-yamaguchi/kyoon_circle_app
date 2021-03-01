@@ -1,7 +1,21 @@
 <template>
   <div>
-    <ErrMsg :error-messages-prop="apiErrorMessages"/>
+    <div class="error-messages">
+      <ErrMsg/>
+    </div>
     <form v-on:submit.prevent="updateProfile">
+      <div class="form-item">
+        <p class="form-item--name">ユーザ名</p>
+        <input type="text" v-model="user.name" class="default-input" @blur="userNameChk()" @keyup="userNameChk()">
+        <p class="form-item--err-msg">{{ errMsg.name }}</p>
+      </div>
+      <div>
+        <div class="form-item">
+          <p class="form-item--name">プロフィール</p>
+          <textarea v-model="user.profile" @blur="userProfileChk()" @keyup="userProfileChk()"></textarea>
+          <p class="form-item--err-msg">{{ errMsg.profile }}</p>
+        </div>
+      </div>
       <div class="form-item">
         <div class="avatar">
           <div class="avatar--image">
@@ -22,18 +36,6 @@
           v-if="userInstruments.length!=0"
           :userInstrumentsProp="userInstruments"
           @change-Instruments="changeUserInstruments"/>
-      </div>
-      <div class="form-item">
-        <p class="form-item--name">ユーザ名</p>
-        <input type="text" v-model="user.name" class="default-input" @blur="userNameChk()" @keyup="userNameChk()">
-        <p class="form-item--err-msg">{{ errMsg.name }}</p>
-      </div>
-      <div>
-        <div class="form-item">
-          <p class="form-item--name">プロフィール</p>
-          <textarea v-model="user.profile" @blur="userProfileChk()" @keyup="userProfileChk()"></textarea>
-          <p class="form-item--err-msg">{{ errMsg.profile }}</p>
-        </div>
       </div>
       <button class="default-button">変更する</button>
     </form>
@@ -61,7 +63,6 @@ export default {
       user: {},
       userInstruments: [],
       errMsg: {},
-      apiErrorMessages: [],
       loading: true
     }
   },
@@ -112,7 +113,6 @@ export default {
         })
       })
       .catch((error) => {
-        this.apiErrorMessages = error.response.data;
         this.apiErrors(error.response);
       });
     },

@@ -2,22 +2,39 @@
   <div id="overlay" @click="closeMenu()">
     <div class="hide-menus-container">
       <div class="menu-cards">
-        <div v-if="!$store.getters['user/id']" class="menu-card">
-          <router-link to="/signup" class="menu-link some-updown-center">
-            <fa icon="user-plus" class="menu-link--icon"></fa>
-            <div class="menu-link--title">新規会員登録</div>
-          </router-link>
+        <div v-if="$store.getters['user/id']">
+          <div class="menu-card">
+            <router-link to="/mypage" class="menu-top menu-link">
+              こんにちは、{{ $store.getters['user/name'] }} さん
+            </router-link>
+          </div>
+          <div v-for="menu in myMenues" :key="menu" class="menu-card">
+            <router-link :to="menu.path" class="menu-link some-updown-center">
+              <fa v-if="menu.icon" :icon="menu.icon" class="menu-link--icon"></fa>
+              <div class="menu-link--title">
+                {{ menu.name }}
+              </div>
+            </router-link>
+          </div>
+          <div class="menu-card">
+            <div @click="logout()" class="menu-link some-updown-center">
+              <fa icon="sign-out-alt" class="menu-link--icon"></fa>
+              <div class="menu-link--title">ログアウト</div>
+            </div>
+          </div>
         </div>
-        <div v-if="!$store.getters['user/id']" class="menu-card">
-          <router-link to="/login" class="menu-link some-updown-center">
-            <fa icon="sign-in-alt" class="menu-link--icon"></fa>
-            <div class="menu-link--title">ログイン</div>
-          </router-link>
-        </div>
-        <div v-if="$store.getters['user/id']" class="menu-card">
-          <div @click="logout()" class="menu-link some-updown-center">
-            <fa icon="sign-out-alt" class="menu-link--icon"></fa>
-            <div class="menu-link--title">ログアウト</div>
+        <div v-else>
+          <div class="menu-card">
+            <router-link to="/signup" class="menu-link some-updown-center">
+              <fa icon="user-plus" class="menu-link--icon"></fa>
+              <div class="menu-link--title">新規会員登録</div>
+            </router-link>
+          </div>
+          <div class="menu-card">
+            <router-link to="/login" class="menu-link some-updown-center">
+              <fa icon="sign-in-alt" class="menu-link--icon"></fa>
+              <div class="menu-link--title">ログイン</div>
+            </router-link>
           </div>
         </div>
       </div>
@@ -31,17 +48,12 @@
           </router-link>
         </div>
       </div>
-      <div v-if="$store.getters['user/id']" class="menu-cards">
-        <div v-for="menu in myMenues" :key="menu" class="menu-card">
-          <router-link :to="menu.path" class="menu-link some-updown-center">
-            <fa v-if="menu.icon" :icon="menu.icon" class="menu-link--icon"></fa>
-            <div class="menu-link--title">
-              {{ menu.name }}
-            </div>
-          </router-link>
-        </div>
-      </div>
       <div v-if="$store.getters['user/adminType']" class="menu-cards">
+        <div class="menu-card top-message">
+          <div class="menu-link">
+            管理者用メニュー
+          </div>
+        </div>
         <div v-for="menu in adminMenues" :key="menu" class="menu-card">
           <router-link :to="menu.path" class="menu-link some-updown-center">
             <fa v-if="menu.icon" :icon="menu.icon" class="menu-link--icon"></fa>
@@ -68,6 +80,10 @@ export default {
   computed: {
     basicMenues() {
       let menus = [
+        { name: "トップ",
+          path: "/",
+          icon: "mountain"
+        },
         { name: "スタジオ予約",
           path: "/studios/1?week=0",
           icon: "microphone-alt"
@@ -89,21 +105,21 @@ export default {
     },
     myMenues() {
       let menus = [
-        { name: "マイページトップ",
+        { name: "マイページ",
           path: "/mypage",
           icon: "user"
         },
-        { name: "ユーザ情報変更",
-          path: "/mypage/edit",
-          icon: "edit"
-        },
-        { name: "スタジオ予約確認",
+        { name: "スタジオ予約状況",
           path: "/mypage/studio/reserves",
           icon: "check-circle"
         },
         { name: "参加イベント一覧",
           path: "/mypage/events",
           icon: "calendar-check"
+        },
+        { name: "宿泊予約状況",
+          path: "/mypage/stayrooms",
+          icon: "procedures"
         },
         { name: "パスワード変更",
           path: "/mypage/change_password",
@@ -162,6 +178,10 @@ export default {
     .menu-cards {
       padding-bottom: 20px;
       background: lightgray;
+      .top-message {
+        font-weight: bold;
+        font-size: 18px;
+      }
       .menu-card {
         width: 100%;
         border-bottom: 1px solid #888;
@@ -185,9 +205,9 @@ export default {
             height: 16px;
             margin-right: 10px;
           }
-          &--title {
-            
-          }
+        }
+        .menu-top {
+          font-weight: bold;
         }
       }
     }

@@ -4,7 +4,9 @@
       :modal-msg-prop="modalMsg"
       @process-confirm="updateStudio"/>
     <form v-on:submit.prevent="displayConfirmModal">
-      <ErrMsg :error-messages-prop="apiErrorMessages"/>
+      <div class="error-messages">
+        <ErrMsg/>
+      </div>
       <div class="form-item">
         <p class="form-item--name">
           スタジオ名
@@ -52,8 +54,7 @@ export default {
       errMsg: {
         name: "",
         fee: ""
-      },
-      apiErrorMessages: []
+      }
     }
   },
   methods: {
@@ -90,7 +91,6 @@ export default {
         })
         .catch((error) => {
           this.apiErrors(error.response);
-          this.apiErrorMessages = error.response.data;
         });
       }
     },

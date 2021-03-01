@@ -11,6 +11,7 @@ import MypageTop from '@/views/mypage/Top.vue'
 import MypageEdit from '@/views/mypage/Edit.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
 import MypageEvents from '@/views/mypage/Events.vue'
+import MypageStayrooms from '@/views/mypage/Stayrooms.vue'
 import ChangePassword from '@/views/mypage/ChangePassword.vue'
 import Follow from '@/views/user/Follow.vue'
 import EventNew from '@/views/event/New.vue'
@@ -146,6 +147,13 @@ const routes = [
     component: MypageEvents,
     meta: { requiresAuth: true }
   },
+  // 参加イベント一覧
+  {
+    path: '/mypage/stayrooms',
+    name: 'MypageStayrooms',
+    component: MypageStayrooms,
+    meta: { requiresAuth: true }
+  },
   // パスワード変更
   {
     path: '/mypage/change_password',
@@ -265,9 +273,11 @@ router.beforeEach((to, from, next) => {
   }
   // 管理者権限が必要なページの場合
   else if (to.matched.some(record => record.meta.requiresAdmin)) {
+    // 未ログイン時
     if (!store.getters['user/secureToken']) {
       next({ path: '/login' });
     }
+    // 操作権限がない場合
     else if (store.getters['user/adminType'] == 0) {
       store.dispatch(
         "response/update",
@@ -288,7 +298,8 @@ router.afterEach(() => {
   if (store.getters["response/update"] != 0) {
     store.dispatch(
       "response/update",
-      { status: 0 }
+      { status: 0,
+        messages: '' }
     );
   }
 })

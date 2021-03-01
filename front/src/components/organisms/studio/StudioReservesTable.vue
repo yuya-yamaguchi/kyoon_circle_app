@@ -185,10 +185,10 @@ export default {
         width: 60px;
       }
       .saturday {
-        background: rgb(129, 129, 236);
+        background: var(--saturday-color);
       }
       .sunday {
-        background: rgb(235, 143, 107);
+        background: var(--sunday-color);
       }
     }
     &--content {
