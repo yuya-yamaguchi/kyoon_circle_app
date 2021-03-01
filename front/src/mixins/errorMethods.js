@@ -1,12 +1,13 @@
 export const errorMethods = {
   methods: {
     // statusにはAPIから返却されたのhttpステータスを設定する
-    apiErrors: function(status) {
+    apiErrors: function(response) {
       this.$store.dispatch(
         "response/update",
-        { status: status }
+        { status:   response.status,
+          messages: response.data }
       );
-      if (status === 401) {
+      if (response.status === 401) {
         this.$store.dispatch(
           "loginGuide/update", true
         );

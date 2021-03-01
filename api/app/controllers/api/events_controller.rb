@@ -77,7 +77,7 @@ class Api::EventsController < ApplicationController
       entry_users = @event.users
       render status: 200, json: { entry_users: entry_users }
     else
-      render status: 400, json: { error_message: event_entry.errors.full_messages[0] }
+      render status: 400, json: event_entry.errors.full_messages[0]
     end
   end
 

@@ -39,6 +39,7 @@ table {
     border-bottom: 1px dotted #888;
     .post-date {
       white-space: nowrap;
+      min-width: 120px;
     }
     td {
       display: inline-block;

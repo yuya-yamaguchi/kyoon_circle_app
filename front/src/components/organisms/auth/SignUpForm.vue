@@ -34,9 +34,10 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import { userValidates } from '@/mixins/userValidates';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [userValidates],
+  mixins: [userValidates, errorMethods],
   data() {
     return {
       user: {
@@ -74,10 +75,8 @@ export default {
           })
         })
         .catch((error) => {
-          error.response
-          if (error.response) {
-            this.errorMessages = error.response.data;
-          }
+          this.apiErrors(error.response);
+          this.errorMessages = error.response.data;
         });
       }
     },

@@ -59,7 +59,7 @@ export default {
         this.$emit('set-news-title', this.news.title);
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
     deleteNews: function(confirm) {
@@ -85,7 +85,7 @@ export default {
           })
         })
         .catch((error) => {
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
         });
       }
     },

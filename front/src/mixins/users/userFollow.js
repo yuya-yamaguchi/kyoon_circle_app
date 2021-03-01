@@ -35,7 +35,7 @@ export const userFollow = {
         }
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     },
     followInList(i) {
@@ -65,7 +65,7 @@ export const userFollow = {
           }
         })
         .catch((error) => {
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
         })
       }
     },

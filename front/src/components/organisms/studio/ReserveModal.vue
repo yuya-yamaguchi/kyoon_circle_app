@@ -78,9 +78,9 @@ export default {
       })
       .catch((error) => {
         this.reserving = false;
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
         if (error.response.status !== 401) {
-          this.errMsg = error.response.data.error_message;
+          this.errMsg = error.response.data[0];
         }
       })
     }

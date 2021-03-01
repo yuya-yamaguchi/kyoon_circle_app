@@ -66,7 +66,7 @@ export default {
         this.studio = response.data
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
     // 確認モーダル画面の表示
@@ -89,7 +89,7 @@ export default {
         .then(() => {
         })
         .catch((error) => {
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
           this.apiErrorMessages = error.response.data;
         });
       }

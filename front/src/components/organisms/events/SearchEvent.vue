@@ -43,8 +43,10 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   props: {
     searchProp: {}
   },
@@ -63,7 +65,7 @@ export default {
         this.eventCategories = response.data
       })
       .catch((error) => {
-        console.log(error);
+        this.apiErrors(error.response);
       });
     },
     searchEvents: function() {

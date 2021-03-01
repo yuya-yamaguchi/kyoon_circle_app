@@ -107,7 +107,7 @@ export default {
         this.loading = false;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
     changeWeek: function(week) {

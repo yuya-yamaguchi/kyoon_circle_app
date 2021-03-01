@@ -144,7 +144,7 @@ export default {
               }
             );
           }
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
         });
       }
     },
@@ -174,7 +174,7 @@ export default {
           })
         })
         .catch((error) => {
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
         });
       }
     },

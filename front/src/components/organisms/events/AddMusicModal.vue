@@ -54,7 +54,7 @@ export default {
         this.$emit('close-modal');
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     }
   }

@@ -30,9 +30,10 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import { userValidates } from '@/mixins/userValidates';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [userValidates],
+  mixins: [userValidates, errorMethods],
   data() {
     return {
       email: "",
@@ -44,7 +45,8 @@ export default {
   methods: {
     login: function(){
       if (this.loginValid())
-        axios.post(`http://${g.hostName}/api/login`,
+        axios.post(
+          `http://${g.hostName}/api/login`,
           {
             email:    this.email,
             password: this.password
@@ -77,7 +79,8 @@ export default {
           }
         })
         .catch((error) => {
-          if (error.response.status==401) {
+          this.apiErrors(error.response);
+          if (error.response.status==400) {
             this.errorMessages = ['メールアドレスまたはパスワードが正しくありません'];
           }
         })

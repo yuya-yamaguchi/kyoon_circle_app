@@ -43,7 +43,7 @@ export default {
           this.$emit('reset-password-complete');
         })
         .catch((error) => {
-          console.log(error)
+          this.apiErrors(error.response);
         })
     },
     passwordValid: function() {

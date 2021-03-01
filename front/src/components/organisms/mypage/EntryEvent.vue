@@ -59,7 +59,7 @@ export default {
         this.historyEvents  = response.data.history_events;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
     changeTab: function(num) {

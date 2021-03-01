@@ -33,9 +33,10 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
 import { commonMethods } from '@/mixins/commonMethods';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [commonMethods],
+  mixins: [commonMethods, errorMethods],
   components: {
     ConfirmModal
   },
@@ -91,6 +92,7 @@ export default {
               type:    2
             }
           );
+          this.apiErrors(error.response);
         });
       }
     }

@@ -44,7 +44,7 @@ export default {
         this.isFollowed = response.data.user_followed
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
       .finally(() => {
         this.loading = false;

@@ -19,20 +19,15 @@ export const eventEntry = {
         this.$emit('update-entry-status', true, response.data.entry_users)
       })
       .catch((error) => {
-        if (error.response.status === 400 || error.response.status === 401) {
+        if (error.response.status === 400) {
           this.$store.dispatch(
             "flash/create",
             { message: error.response.data.error_message,
               type:    2
             }
           );
-          if (error.response.status === 401) {
-            this.$store.dispatch(
-              "loginGuide/update", true
-            );
-          }
         }
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
   }

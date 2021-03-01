@@ -51,7 +51,7 @@ export default {
         this.pagy = response.data.pagy;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
     changePage: function(pageNo) {

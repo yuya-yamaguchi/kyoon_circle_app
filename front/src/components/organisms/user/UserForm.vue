@@ -81,7 +81,7 @@ export default {
         this.userInstruments = response.data.user_instruments
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
       .finally(() => {
         this.loading = false;
@@ -113,6 +113,7 @@ export default {
       })
       .catch((error) => {
         this.apiErrorMessages = error.response.data;
+        this.apiErrors(error.response);
       });
     },
     changeAvatar: function(e) {

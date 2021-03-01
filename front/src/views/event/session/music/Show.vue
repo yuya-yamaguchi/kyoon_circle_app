@@ -99,7 +99,7 @@ export default {
         this.sessionMusic = response.data.session_music;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     },
     deleteSessionMusic: function(confirm) {
@@ -117,7 +117,7 @@ export default {
           })
         })
         .catch((error) => {
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
         })
       }
     }

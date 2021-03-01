@@ -47,7 +47,7 @@ class Api::UsersController < ApplicationController
         render status: 422, json: @current_user.errors.full_messages
       end
     else
-      render status: 401, json: '現在のパスワードが正しくありません'
+      render status: 400, json: '現在のパスワードが正しくありません'
     end
   end
 

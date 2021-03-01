@@ -81,9 +81,10 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
 import { commonCheck } from '@/mixins/commonCheck';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [commonCheck],
+  mixins: [commonCheck, errorMethods],
   components: {
     ConfirmModal
   },
@@ -126,7 +127,7 @@ export default {
         this.eventCategories = response.data
       })
       .catch((error) => {
-        console.log(error);
+        this.apiErrors(error.response);
       });
     },
     postEvent: function(confirm) {

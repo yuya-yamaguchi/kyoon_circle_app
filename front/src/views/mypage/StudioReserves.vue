@@ -67,7 +67,7 @@ export default {
         this.historyReserves = response.data.history_reserves
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
     changeTab: function(num) {

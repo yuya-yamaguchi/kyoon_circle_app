@@ -17,9 +17,10 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import { userValidates } from '@/mixins/userValidates';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [userValidates],
+  mixins: [userValidates, errorMethods],
   data() {
     return {
       email: "",
@@ -34,12 +35,13 @@ export default {
           `http://${g.hostName}/api/users/reset_password_email`,
           {
             email: this.email
-          }	
+          }
         )
         .then(() => {
           this.$emit('sent-email', this.email);
         })
         .catch((error) => {
+          this.apiErrors(error.response);
           if (error.response) {
             this.errMsg.email = error.response.data;
           }
