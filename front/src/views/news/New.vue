@@ -6,7 +6,9 @@
     <div class="double-container--right">
       <div class="news-new-container">
         <h1 class="main-title text-center">お知らせの登録</h1>
-        <ErrMsg :error-messages-prop="apiErrorMessages"/>
+        <div>
+          <ErrMsg/>
+        </div>
         <NewsForm :news-prop="news" :modal-msg-prop="modalMsg" @post-news="postNewNews"/>
       </div>
     </div>

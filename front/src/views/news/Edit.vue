@@ -6,7 +6,9 @@
     <div class="double-container--right">
       <div class="news-edit-container">
         <h1 class="main-title text-center">お知らせ編集</h1>
-        <ErrMsg :error-messages-prop="apiErrorMessages"/>
+        <div class="error-messages">
+          <ErrMsg/>
+        </div>
         <NewsForm v-if="news" 
           :news-prop="news"
           :modal-msg-prop="modalMsg"
@@ -38,8 +40,7 @@ export default {
         title: "お知らせの変更",
         message: 'お知らせを変更します。よろしいですか？',
         btn: "変更"
-      },
-      apiErrorMessages: ''
+      }
     }
   },
   methods: {
@@ -68,14 +69,12 @@ export default {
         }
       )
       .then(() => {
-        this.apiErrorMessages = []
         this.$router.push({
           name: "NewsShow"
         })
       })
       .catch((error) => {
         this.apiErrors(error.response);
-        this.apiErrorMessages = error.response.data;
       });
     }
   },

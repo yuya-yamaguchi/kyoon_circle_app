@@ -6,7 +6,9 @@
     <div class="double-container--right">
       <div class="event-new-container">
         <h1 class="main-title text-center">イベント登録</h1>
-        <ErrMsg :error-messages-prop="apiErrorMessages"/>
+        <div class="error-messages">
+          <ErrMsg/>
+        </div>
         <EventForm :event-prop="event" :modal-msg-prop="modalMsg" @post-event="postNewEvent"/>
       </div>
     </div>
@@ -47,8 +49,7 @@ export default {
         title: "イベントの登録",
         message: 'イベントを登録します。よろしいですか？',
         btn: "登録"
-      },
-      apiErrorMessages: []
+      }
     }
   },
   methods: {
@@ -66,7 +67,6 @@ export default {
         }
       )
       .then((response) => {
-        this.apiErrorMessages = []
         this.$router.push({
           name: "EventShow",
           params: {
@@ -76,7 +76,6 @@ export default {
       })
       .catch((error) => {
         this.apiErrors(error.response);
-        this.apiErrorMessages = error.response.data;
       });
     }
   }

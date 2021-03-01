@@ -1,24 +1,31 @@
 <template>
-  <div class="single-container">
-    <StayroomCalendar :stayrooms-prop="stayrooms"/>
+  <div class="double-container">
+    <div class="double-container--left">
+      <SideBar :select-menu-prop="108"/>
+    </div>
+    <div class="double-container--right">
+      <div class="studio-reserves-container">
+        <StayroomCalendar :stayrooms-prop="stayrooms"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import SideBar from "@/components/organisms/common/SideBar.vue";
 import StayroomCalendar from '@/components/organisms/stayroom/StayroomCalendar.vue';
-import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [errorMethods],
+  components: {
+    SideBar,
+    StayroomCalendar
+  },
   data() {
     return {
       stayrooms: []
     }
-  },
-  components: {
-    StayroomCalendar
   },
   methods: {
     getStayRooms: function() {
@@ -39,5 +46,9 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
+.studio-reserves-container {
+  width: 100%;
+  margin: 0 auto;
+}
 </style>

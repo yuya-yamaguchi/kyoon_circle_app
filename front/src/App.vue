@@ -5,7 +5,8 @@
     <LoginModal v-if="$store.getters['loginGuide/isDisplay']"/>
     <div class="base-container">
       <NotFound v-if="[404].includes(errorStatus)"/>
-      <Errors v-else-if="[403, 500].includes(errorStatus)" :error-status-prop="errorStatus"/>
+      <Forbidden v-else-if="[403].includes(errorStatus)"/>
+      <SystemError v-else-if="[500].includes(errorStatus)" :error-status-prop="errorStatus"/>
       <router-view v-else/>
     </div>
     <Footer/>
@@ -23,7 +24,8 @@ import Footer from "@/components/organisms/common/Footer.vue";
 import FlashMsg from "@/components/organisms/common/FlashMsg.vue";
 import LoginModal from "@/components/organisms/common/LoginModal.vue";
 import NotFound from "@/views/errors/NotFound.vue";
-import Errors from "@/views/errors/Errors.vue";
+import Forbidden from "@/views/errors/Forbidden.vue";
+import SystemError from "@/views/errors/SystemError.vue";
 
 export default {
   components: {
@@ -31,8 +33,9 @@ export default {
     Footer,
     FlashMsg,
     NotFound,
+    Forbidden,
     LoginModal,
-    Errors
+    SystemError
   },
   computed: {
     errorStatus() {

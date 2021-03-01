@@ -5,7 +5,9 @@
       <div @click="closeModal()" class="close-button">×</div>
       <div v-if="!reserved">
         <h1 class="main-title text-center">宿泊予約</h1>
-        <div>{{ errors }}</div>
+        <div class="error-messages">
+          <ErrMsg/>
+        </div>
         <div class="reserve-content">
           <table class="reserve-table">
             <tr>
@@ -43,13 +45,13 @@
           <tr>
             <td class="reserve-table--head">チェックイン</td>
             <td>
-              {{ stayroomReserved.checkin_date }}
+              {{ formatDate(stayroomReserved.checkin_date, 'YYYY//MM/DD') }}
             </td>
           </tr>
           <tr>
             <td class="reserve-table--head">チェックアウト</td>
             <td>
-              {{ stayroomReserved.checkout_date }}
+              {{ formatDate(stayroomReserved.checkout_date, 'YYYY//MM/DD') }}
             </td>
           </tr>
         </table>
@@ -64,17 +66,20 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import LoadingCircle from '@/components/organisms/common/LoadingCircle.vue';
 import CommitBackBtns from '@/components/molecules/common/CommitBackBtns.vue';
+import ErrMsg from "@/components/organisms/common/ErrMsg.vue";
+import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [errorMethods],
+  mixins: [commonMethods, errorMethods],
   props: {
     selectStayroomReserveProp: {},
     stayroomsProp: {}
   },
   components: {
     LoadingCircle,
-    CommitBackBtns
+    CommitBackBtns,
+    ErrMsg
   },
   data() {
     return {
@@ -112,7 +117,7 @@ export default {
         }, 1500)
       })
       .catch((error) => {
-        this.errors = error.response.data
+        this.reserving = false;
         this.apiErrors(error.response);
       });
     },

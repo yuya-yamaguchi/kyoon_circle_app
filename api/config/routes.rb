@@ -12,14 +12,15 @@ Rails.application.routes.draw do
 
     resources :stayrooms, only: [:index] do
       scope module: :stayroom do
-        resources :reserves, only: [:index, :create]
+        resources :reserves, only: [:index, :create, :destroy]
       end
     end
 
-    resources :mypage, only: %i[show update] do
+    resources :mypage, only: [:show, :update] do
       collection do
         get :studio_reserves
         get :events
+        get :stayroom_reserves
       end
     end
 

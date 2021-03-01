@@ -104,7 +104,6 @@ export default {
       studioReserve.date = this.selected.year + '-' + this.selected.month + '-' + this.selected.day;
       studioReserve.start_time = this.zeroPadding(this.selected.start_hour, 2) + ':' + this.zeroPadding(this.selected.start_min, 2)
       studioReserve.end_time = this.zeroPadding(this.selected.end_hour, 2) + ':' + this.zeroPadding(this.selected.end_min, 2)
-      console.log(studioReserve)
       this.$emit('post-studio-reserve', studioReserve);
     },
     closeModal: function() {

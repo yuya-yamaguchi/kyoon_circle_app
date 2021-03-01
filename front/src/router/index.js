@@ -11,6 +11,7 @@ import MypageTop from '@/views/mypage/Top.vue'
 import MypageEdit from '@/views/mypage/Edit.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
 import MypageEvents from '@/views/mypage/Events.vue'
+import MypageStayrooms from '@/views/mypage/Stayrooms.vue'
 import ChangePassword from '@/views/mypage/ChangePassword.vue'
 import Follow from '@/views/user/Follow.vue'
 import EventNew from '@/views/event/New.vue'
@@ -23,6 +24,7 @@ import SessionMusicShow from '@/views/event/session/music/Show.vue'
 import UsersIndex from '@/views/admin/users/Index.vue'
 import StudioEdit from '@/views/admin/studio/Edit.vue'
 import StudioReserves from '@/views/admin/studio/Reserves.vue'
+import StayroomReserves from '@/views/admin/stayroom/Reserves.vue'
 import NewsNew from '@/views/news/New.vue'
 import NewsIndex from '@/views/news/Index.vue'
 import NewsShow from '@/views/news/Show.vue'
@@ -146,6 +148,13 @@ const routes = [
     component: MypageEvents,
     meta: { requiresAuth: true }
   },
+  // 参加イベント一覧
+  {
+    path: '/mypage/stayrooms',
+    name: 'MypageStayrooms',
+    component: MypageStayrooms,
+    meta: { requiresAuth: true }
+  },
   // パスワード変更
   {
     path: '/mypage/change_password',
@@ -226,6 +235,13 @@ const routes = [
     component: StudioReserves,
     meta: { requiresAdmin: true }
   },
+  // 宿泊予約確認
+  {
+    path: '/admin/stayrooms',
+    name: 'StayroomReserves',
+    component: StayroomReserves,
+    meta: { requiresAdmin: true }
+  },
   // 成立曲表示
   // {
   //   path: '/musics',
@@ -265,9 +281,11 @@ router.beforeEach((to, from, next) => {
   }
   // 管理者権限が必要なページの場合
   else if (to.matched.some(record => record.meta.requiresAdmin)) {
+    // 未ログイン時
     if (!store.getters['user/secureToken']) {
       next({ path: '/login' });
     }
+    // 操作権限がない場合
     else if (store.getters['user/adminType'] == 0) {
       store.dispatch(
         "response/update",
@@ -288,7 +306,8 @@ router.afterEach(() => {
   if (store.getters["response/update"] != 0) {
     store.dispatch(
       "response/update",
-      { status: 0 }
+      { status: 0,
+        messages: '' }
     );
   }
 })

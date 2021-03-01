@@ -15,6 +15,15 @@ class Api::Stayroom::ReservesController < ApplicationController
     end
   end
 
+  def destroy
+    stayroom_reserve = StayroomReserve.find(params[:id])
+    if stayroom_reserve.destroy
+      render status: 201
+    else
+      render status: 400, json: stayroom_reserve.errors.full_messages
+    end
+  end
+
   private
     def stayroom_reserve_params
       params.require(:stayroom_reserve).permit(:stayroom_id, :checkin_date, :checkout_date).merge(user_id: @current_user.id)

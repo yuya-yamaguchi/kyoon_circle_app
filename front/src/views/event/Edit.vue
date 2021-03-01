@@ -6,7 +6,9 @@
     <div class="double-container--right">
       <div class="event-edit-container">
         <h1 class="main-title text-center">イベント編集</h1>
-        <ErrMsg :error-messages-prop="apiErrorMessages"/>
+        <div class="error-messages">
+          <ErrMsg/>
+        </div>
         <EventForm v-if="event"
           :event-prop="event"
           :modal-msg-prop="modalMsg"
@@ -38,8 +40,7 @@ export default {
         title: "イベント変更",
         message: 'イベントの内容を変更します。よろしいですか？',
         btn: "変更"
-      },
-      apiErrorMessages: []
+      }
     }
   },
   methods: {
@@ -79,7 +80,6 @@ export default {
         })
       })
       .catch((error) => {
-        this.apiErrorMessages = error.response.data;
         this.apiErrors(error.response);
       });
     }
