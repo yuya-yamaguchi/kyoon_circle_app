@@ -36,8 +36,14 @@
     </div>
     <div class="space-between">
       <div>
-        <div class="event-middle-info">開催日時 {{ fmtDate(event.start_datetime, 2) }}〜{{ fmtDate(event.end_datetime, 4) }}</div>
-        <div class="event-middle-info">開催場所 {{ event.place }}</div>
+        <div class="event-middle-info">
+          開催日時 
+          {{ formatDate(event.start_datetime, 'YYYY/MM/DD HH24:MI') }} 〜
+          {{ formatDate(event.end_datetime, 'HH24:MI') }}
+        </div>
+        <div class="event-middle-info">
+          開催場所 {{ event.place }}
+        </div>
       </div>
       <div class="entry-btns">
         <div v-if="!isEntryProp"
@@ -130,20 +136,15 @@ export default {
           this.$emit('update-event-session')
         })
         .catch((error) => {
-          if (error.response.status === 400 || error.response.status === 401) {
+          if (error.response.status === 400) {
             this.$store.dispatch(
               "flash/create",
               { message: error.response.data.error_message,
                 type:    2
               }
             );
-            if (error.response.status == 401) {
-              this.$router.push({ 
-                name: "Login"
-              })
-            }
           }
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
         });
       }
     },
@@ -173,7 +174,7 @@ export default {
           })
         })
         .catch((error) => {
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
         });
       }
     },

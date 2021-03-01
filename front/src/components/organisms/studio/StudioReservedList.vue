@@ -9,11 +9,11 @@
           <div class="reserve--info">
             <div class="reserve--info--top">
               <div class="reserve--info--top--date">
-                {{ formatDate(reserve.date) }}
+                {{ formatDate(reserve.date, 'YYYY年M月D日') }}
               </div>
               <div class="reserve--info--top--time">
-                  {{ formatTime(reserve.start_time) }} 〜
-                  {{ formatTime(reserve.end_time) }}
+                {{ formatDate(reserve.start_time, 'HH24:MI') }} 〜
+                {{ formatDate(reserve.end_time, 'HH24:MI') }}
               </div>
             </div>
             <p>{{ reserve.fee }}円</p>
@@ -32,8 +32,11 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
+import { commonMethods } from '@/mixins/commonMethods';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [commonMethods, errorMethods],
   components: {
     ConfirmModal
   },
@@ -89,16 +92,9 @@ export default {
               type:    2
             }
           );
+          this.apiErrors(error.response);
         });
       }
-    },
-    formatDate: function(date) {
-      return date.substr(0, 4) + "年" + 
-             date.substr(5, 2) + "月" + 
-             date.substr(8, 2) + "日"
-    },
-    formatTime: function(time) {
-      return Number(time.substr(11, 2)) + "：" + time.substr(14, 2)
     }
   },
   updated() {

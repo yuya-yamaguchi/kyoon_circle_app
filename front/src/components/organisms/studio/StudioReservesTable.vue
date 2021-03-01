@@ -26,13 +26,13 @@
           <th v-for="(day, w) in weeks" :key="w"
             :class="{'saturday': calcWeek(day, 1)=='土',
                      'sunday':  calcWeek(day, 1)=='日'}">
-            {{ fmtDate(day, 3) }}<br>
+            {{ formatDate(day, 'M/D') }}<br>
             （{{ calcWeek(day, 1) }}）
           </th>
         </tr>
         <tr v-for="(reserve, i) in reserves" :key="i" class="reserves-table--content">
           <td class="reserve-time">
-            <span>{{ Math.floor(i/2) }}：</span>
+            <span>{{ Math.floor(i/2) }} : </span>
             <span v-if="i%2==0">00</span>
             <span v-else>30</span>
           </td>
@@ -40,7 +40,7 @@
             <template v-if="adminProp==0">
               <td v-if="r.reserve_type==1"  class="already-reserved">×</td>
               <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
-              <td v-else @click="displayReserveModal(r)"  class="can-reserve">{{fmtDate(r.date,1)}} {{r.hour}}:{{('00' + r.minutes).slice( -2 )}}</td>
+              <td v-else @click="displayReserveModal(r)"  class="can-reserve">{{formatDate(r.date, 'M/D')}} {{r.hour}}:{{ zeroPadding(r.minutes, 2) }}</td>
             </template>
             <template v-if="adminProp==1">
               <td v-if="r.reserve_type==1" class="reserved-user"
@@ -107,7 +107,7 @@ export default {
         this.loading = false;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
     changeWeek: function(week) {

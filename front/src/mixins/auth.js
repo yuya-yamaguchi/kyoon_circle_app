@@ -1,4 +1,4 @@
-export const authValidates = {
+export const auth = {
   methods: {
     // ログイン有無を確認
     isLogin: function() {

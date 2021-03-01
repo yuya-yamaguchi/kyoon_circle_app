@@ -53,7 +53,7 @@ export default {
         this.loading = false
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     },
     putSessionMusic: function(sessionMusic, sessionParts) {
@@ -74,7 +74,7 @@ export default {
         this.$emit('close-modal');
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     },
     getPartCategoies: function() {
@@ -85,7 +85,7 @@ export default {
         this.partCategories = response.data;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     }
   },

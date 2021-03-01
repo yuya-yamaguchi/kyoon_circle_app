@@ -54,9 +54,10 @@ import g from "@/variable/variable.js";
 import StayroomReserveModal from '@/components/organisms/stayroom/StayroomReserveModal.vue';
 import { commonMethods } from '@/mixins/commonMethods';
 import { calendar } from '@/mixins/calendar';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [commonMethods, calendar],
+  mixins: [commonMethods, calendar, errorMethods],
   props: {
     stayroomsProp: {}
   },
@@ -94,7 +95,7 @@ export default {
         this.stayroomReserves = response.data.stayroom_reserves
       })
       .catch((error) => {
-        console.log(error)
+        this.apiErrors(error.response);
       });
     },
     canReserve(date) {

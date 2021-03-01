@@ -2,7 +2,7 @@
   <div>
     <table>
       <tr v-for="(news, i) in newsProp" :key="i">
-        <td class="post-date">{{ formatDate(news.created_at) }}</td>
+        <td class="post-date">{{ formatDate(news.created_at, 'YYYY年M月D日') }}</td>
         <td>
           <router-link :to="transLinks(news.id)" class="news-card">
             {{ news.title }}
@@ -14,15 +14,14 @@
 </template>
 
 <script>
+import { commonMethods } from '@/mixins/commonMethods';
+
 export default {
+  mixins: [commonMethods],
   props: {
     newsProp: {}
   },
   methods: {
-    formatDate: function(createdAt) {
-      var date = Number(createdAt.substr(0, 4)) + '年' + Number(createdAt.substr(5, 2)) + '月' + Number(createdAt.substr(8, 2)) + '日'
-      return date
-    },
     transLinks: function(newsId) {
       return (location.pathname == '/news/editlist') ? `/news/${newsId}/edit` : `/news/${newsId}`
     }
@@ -40,6 +39,7 @@ table {
     border-bottom: 1px dotted #888;
     .post-date {
       white-space: nowrap;
+      min-width: 120px;
     }
     td {
       display: inline-block;

@@ -56,7 +56,7 @@ export default {
         this.event = response.data
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
     updateEvent: function(event) {
@@ -80,7 +80,7 @@ export default {
       })
       .catch((error) => {
         this.apiErrorMessages = error.response.data;
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     }
   },

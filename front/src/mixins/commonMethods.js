@@ -2,27 +2,48 @@ const today = new Date();
 
 export const commonMethods = {
   methods: {
-    // 日付のフォーマット変換
-    fmtDate: function(date, type) {
+    formatDate(date, format) {
       if (!date) return
-      switch (type) {
-        // mm/dd(0トリム)
-        case 1:
-          return Number(date.substr(5, 2)) + '/' + Number(date.substr(8, 2))
-        // yyyy/mm/dd HH24:MI:SS
-        case 2:
-          return date.substr(0, 4) + '/' +
-                 date.substr(5, 2) + '/' +
-                 date.substr(8, 2) + ' ' +
-                 date.substr(11, 5)
-        case 3:
-          return Number(date.substr(5, 2)) + '月' + Number(date.substr(8, 2)) + '日'
-        case 4:
-          // HH24:MI
-          return date.substr(11, 5)
-        default:
-          return date
-      }
+      let formatAry = format.split(/([A-Z0-9]*)/);
+      let year  = date.substr(0, 4);
+      let month = date.substr(5, 2);
+      let day   = date.substr(8, 2);
+      let hour  = date.substr(11, 2);
+      let min   = date.substr(14, 2);
+      let sec   = date.substr(17, 2);
+      let outDate = ""
+      formatAry.forEach((v) => {
+        switch (v) {
+          case 'YYYY':
+            outDate += year;
+            break;
+          case 'MM':
+            outDate += this.zeroPadding(month, 2);
+            break;
+          case 'M':
+            outDate += Number(month);
+            break;
+          case 'DD':
+            outDate += this.zeroPadding(day, 2);
+            break;
+          case 'D':
+            outDate += Number(day);
+            break;
+          case 'HH24':
+            outDate += this.zeroPadding(hour, 2);
+            break;
+          case 'MI':
+            outDate += this.zeroPadding(min, 2);
+            break;
+          case 'SS':
+            outDate += this.zeroPadding(sec, 2);
+            break;
+          default:
+            outDate += v;
+            break;
+        }
+      })
+      return outDate
     },
     /* 日付から曜日を算出 */
     calcWeek: function(date, type) {
@@ -63,10 +84,13 @@ export const commonMethods = {
     /* n日後の日付を算出 */
     // [i]date(string): 形式（YYYY-MM-DD）
     // [i]n(int)
-    // [o]n日後(string)
+    // [o]n日後(string): 形式（YYYY-MM-DD）
     afterDays: function(date, n) {
       let calcDate = new Date(date.substr(0, 4), Number(date.substr(5, 2))-1, Number(date.substr(8, 2)) + n)
       return calcDate.getFullYear() + '-' + paddingZero(calcDate.getMonth()+1) + '-' + paddingZero(calcDate.getDate());
+    },
+    zeroPadding(value, n) {
+      return (('0' * n) + String(value)).slice(-n)
     }
   }
 }

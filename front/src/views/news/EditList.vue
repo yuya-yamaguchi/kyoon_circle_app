@@ -37,7 +37,7 @@ export default {
         this.news = response.data;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     }
   },

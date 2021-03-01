@@ -86,7 +86,7 @@ export default {
         this.eventComments = response.data;
       })
       .catch((error) => {
-        console.log(error)
+        this.apiErrors(error.response);
       })
       .finally(() => {
         this.loading = false;
@@ -113,7 +113,7 @@ export default {
         this.editComment.i += 1;
       })
       .catch((error) => {
-        console.log(error)
+        this.apiErrors(error.response);
       });
     },
     editEventComment: function(i) {
@@ -147,7 +147,7 @@ export default {
           this.eventComments[this.editComment.i].text = updateComment;
         })
         .catch((error) => {
-          console.log(error)
+          this.apiErrors(error.response);
         });
       }
       // キャンセルの場合
@@ -171,7 +171,7 @@ export default {
         if (i < this.editComment.i) this.editComment.i -= 1;
       })
       .catch((error) => {
-        console.log(error)
+        this.apiErrors(error.response);
       });
 
     },

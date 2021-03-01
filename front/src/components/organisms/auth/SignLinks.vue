@@ -10,8 +10,10 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   methods: {
     isLinkShow: function(link){
       if (link == location.pathname) {
@@ -23,14 +25,14 @@ export default {
       return (location.pathname == '/signup') ? true : false;
     },
     guestLogin: function(email){
-      axios.post(`http://${g.hostName}/api/login`,
+      axios.post(
+        `http://${g.hostName}/api/login`,
         {
           email:     email,
           password: '12345678'
         }	
       )
       .then((response) => {
-        console.log(response)
         this.$store.dispatch(
           "user/updateUser",
           {
@@ -57,9 +59,8 @@ export default {
         }
       })
       .catch((error) => {
-        if (error.response) {
-          this.errorMessages = error.response.data.errors;
-        }
+        this.apiErrors(error.response);
+        this.errorMessages = error.response.data.errors;
       });
     }
   }

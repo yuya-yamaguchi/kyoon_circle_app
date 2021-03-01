@@ -74,7 +74,7 @@ export default {
         })
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
         this.apiErrorMessages = error.response.data;
       });
     }

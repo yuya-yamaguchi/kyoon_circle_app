@@ -26,8 +26,10 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   data() {
     return {
       playedMusics: []
@@ -42,8 +44,7 @@ export default {
         this.playedMusics = response.data.played_musics
       })
       .catch((error) => {
-        console.log(error)
-        // this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
   },

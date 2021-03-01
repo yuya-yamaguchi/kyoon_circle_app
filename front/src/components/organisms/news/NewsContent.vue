@@ -17,8 +17,8 @@
       </div>
     </div>
     <div class="news-date">
-      <p>投稿日時：{{ formatDate(news.created_at) }}</p>
-      <p>更新日時：{{ formatDate(news.updated_at) }}</p>
+      <p>投稿日時：{{ formatDate(news.created_at, 'YYYY/MM/DD HH24:MI:SS') }}</p>
+      <p>更新日時：{{ formatDate(news.updated_at, 'YYYY/MM/DD HH24:MI:SS') }}</p>
     </div>
     <div class="news-details">
       {{ news.details }}
@@ -30,10 +30,11 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
+import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [errorMethods],
+  mixins: [commonMethods, errorMethods],
   components: {
     ConfirmModal
   },
@@ -58,7 +59,7 @@ export default {
         this.$emit('set-news-title', this.news.title);
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       });
     },
     deleteNews: function(confirm) {
@@ -84,16 +85,9 @@ export default {
           })
         })
         .catch((error) => {
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
         });
       }
-    },
-    formatDate: function(date) {
-      var dateFormat = ""
-      if (date != undefined) {
-        dateFormat = date.substr(0, 4) + '/' + date.substr(5, 2) + '/' + date.substr(8, 2) + ' ' + date.substr(11, 8)
-      }
-      return dateFormat
     },
     displayConfirmModal: function() {
       this.modalFlg = true;

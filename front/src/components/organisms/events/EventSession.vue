@@ -83,10 +83,10 @@ import SelectUserModal from "@/components/organisms/common/SelectUserModal.vue";
 import Loading from '@/components/organisms/common/Loading.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 import { eventEntry } from '@/mixins/events/eventEntry';
-import { authValidates } from '@/mixins/validates/authValidates';
+import { auth } from '@/mixins/auth';
 
 export default {
-  mixins: [errorMethods, eventEntry, authValidates],
+  mixins: [errorMethods, eventEntry, auth],
   components: {
     AddMusicModal,
     ConfirmModal,
@@ -142,7 +142,7 @@ export default {
         this.partCategories = response.data;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     },
     getSessionMusics: function() {
@@ -153,7 +153,7 @@ export default {
         this.sessionMusics = response.data;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
       .finally(() => {
         this.loading = false
@@ -180,7 +180,7 @@ export default {
           })
         })
         .catch((error) => {
-          this.apiErrors(error.response.status);
+          this.apiErrors(error.response);
         })
       }
     },
@@ -201,7 +201,7 @@ export default {
         this.escUsers.push(user)
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     },
     cancelPart: function(sessionMusicId, sessionPartId, sessionMusic, entryUsers, entryUser) {
@@ -223,7 +223,7 @@ export default {
         });
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     },
     entryUserIds(entryUsers) {
@@ -258,7 +258,7 @@ export default {
         this.users = response.data;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     }
   },

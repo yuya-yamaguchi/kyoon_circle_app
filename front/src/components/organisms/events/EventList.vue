@@ -4,7 +4,7 @@
       <router-link :to="transLinks(event.id)" class="event-card">
         <div v-if="checkDateOver(event.start_datetime)" class="event-end">このイベントは終了しました</div>
         <div class="event-card--left">
-          <p class="event-card--left--date">{{ fmtDate(event.start_datetime, 1) }}</p>
+          <p class="event-card--left--date">{{ formatDate(event.start_datetime, 'M/D') }}</p>
           <p class="event-card--left--week">{{ calcWeek(event.start_datetime, 2) }}</p>
         </div>
         <div class="event-card--middle">

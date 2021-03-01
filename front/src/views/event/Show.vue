@@ -81,7 +81,7 @@ export default {
         this.entryUsers = response.data.entry_users;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
     },
     updateEntryStatus: function(entryStatus, entryUsersUp) {

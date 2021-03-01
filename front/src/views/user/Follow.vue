@@ -62,7 +62,7 @@ export default {
         this.currentTab = 1;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
       .finally(() => {
         this.loading = false
@@ -84,7 +84,7 @@ export default {
         this.currentTab = 2;
       })
       .catch((error) => {
-        this.apiErrors(error.response.status);
+        this.apiErrors(error.response);
       })
       .finally(() => {
         this.loading = false

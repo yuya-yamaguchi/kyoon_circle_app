@@ -7,7 +7,6 @@
       <div class="auth-container">
         <h1 class="main-title text-center">パスワード変更</h1>
         <form v-on:submit.prevent="putPassword" class="change-password-form">
-          <ErrMsg :error-messages-prop="apiErrorMessages"/>
           <div class="form-item">
             <p class="form-item--name">現在のパスワード</p>
             <input type="password" v-model="user.current_password" placeholder="" class="default-input">
@@ -34,14 +33,13 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/organisms/common/SideBar.vue";
-import ErrMsg from "@/components/organisms/common/ErrMsg.vue";
 import { userValidates } from '@/mixins/userValidates';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
-  mixins: [userValidates],
+  mixins: [userValidates, errorMethods],
   components: {
-    SideBar,
-    ErrMsg
+    SideBar
   },
   data() {
     return {
@@ -75,12 +73,7 @@ export default {
           })
         })
         .catch((error) => {
-          this.$store.dispatch(
-            "flash/create",
-            { message: error.response.data,
-              type:    2
-            }
-          );
+          this.apiErrors(error.response);
         });
       }
     },

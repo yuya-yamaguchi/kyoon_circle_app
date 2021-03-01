@@ -64,8 +64,10 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import LoadingCircle from '@/components/organisms/common/LoadingCircle.vue';
 import CommitBackBtns from '@/components/molecules/common/CommitBackBtns.vue';
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   props: {
     selectStayroomReserveProp: {},
     stayroomsProp: {}
@@ -111,6 +113,7 @@ export default {
       })
       .catch((error) => {
         this.errors = error.response.data
+        this.apiErrors(error.response);
       });
     },
     stayroomName(stayroom_id) {

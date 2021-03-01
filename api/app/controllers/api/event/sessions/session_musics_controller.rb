@@ -59,8 +59,9 @@ class Api::Event::Sessions::SessionMusicsController < ApplicationController
   private
 
   def session_music_params
-    params.require(:session_music).permit(:title, :artist, :music_url).merge(user_id: @current_user.id,
-                                                                             event_id: params[:event_id])
+    params.require(:session_music)
+          .permit(:title, :artist, :music_url)
+          .merge(user_id: @current_user.id, event_id: params[:event_id])
   end
 
   def session_part_params(i, session_music_id)
