@@ -121,9 +121,9 @@ export default {
           path: "/mypage/stayrooms",
           icon: "procedures"
         },
-        { name: "パスワード変更",
-          path: "/mypage/change_password",
-          icon: "key"
+        { name: "設定",
+          path: "/mypage/settings",
+          icon: "cog"
         }
       ]
       return menus;

@@ -8,7 +8,11 @@
         <th>管理権限</th>
       </tr>
       <tr v-for="(user, i) in users" :key="i">
-        <td>{{ user.name }}</td>
+        <td>
+          <router-link :to="{name: 'UserShow', params: { id: user.id }}" class="user-link">
+            {{ user.name }}
+          </router-link>
+        </td>
         <td>{{ user.email }}</td>
         <td v-if="user.admin_type > 0">あり</td>
       </tr>
@@ -64,6 +68,9 @@ export default {
     }
     td {
       padding: 10px 30px 10px 0;
+    }
+    .user-link {
+      color: #2C3E50;
     }
   }
 }

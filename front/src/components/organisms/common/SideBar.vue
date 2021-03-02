@@ -7,7 +7,7 @@
       <router-link to="/mypage/studio/reserves" :class="{'select-menu': selectMenuProp==3}" class="side-menu">スタジオ予約確認</router-link>
       <router-link to="/mypage/stayrooms" :class="{'select-menu': selectMenuProp==6}" class="side-menu">宿泊予約確認</router-link>
       <router-link to="/mypage/events" :class="{'select-menu': selectMenuProp==4}" class="side-menu">参加イベント一覧</router-link>
-      <router-link to="/mypage/change_password" :class="{'select-menu': selectMenuProp==5}" class="side-menu">パスワードの変更</router-link>
+      <router-link to="/mypage/settings" :class="{'select-menu': selectMenuProp==7}" class="side-menu">設定</router-link>
     </div>
     <div v-if="$store.getters['user/adminType'] > 0">
       <p class="sub-title">管理者メニュー</p>
