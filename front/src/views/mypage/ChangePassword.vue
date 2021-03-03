@@ -4,7 +4,7 @@
       <SideBar :select-menu-prop="7"/>
     </div>
     <div class="double-container--right">
-      <div class="auth-container">
+      <div class="change-password-container">
         <h1 class="main-title text-center">パスワード変更</h1>
         <form v-on:submit.prevent="putPassword" class="change-password-form">
           <div class="form-item">
@@ -92,8 +92,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.change-password-form {
-  max-width: 400px;
-  margin: 30px auto;
+.change-password-container {
+  margin-bottom: 30px;
+  .change-password-form {
+    max-width: 400px;
+    margin: 30px auto;
+  }
 }
 </style>

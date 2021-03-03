@@ -6,13 +6,13 @@ Rails.application.routes.draw do
 
     resources :studios, only: [:show] do
       scope module: :studio do
-        resources :reserves, only: %i[index create destroy]
+        resources :reserves, only: [:index, :show, :create, :destroy]
       end
     end
 
     resources :stayrooms, only: [:index] do
       scope module: :stayroom do
-        resources :reserves, only: [:index, :create, :destroy]
+        resources :reserves, only: [:index, :show, :create, :destroy]
       end
     end
 

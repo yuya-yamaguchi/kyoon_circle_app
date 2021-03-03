@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="main-title text-center">スタジオ予約</h1>
     <form v-on:submit.prevent="postStudioReserve()" class="reserve-form">
       <div class="reserve-form--date">
         <select v-model="selected.year" @change="changeDateTime()">
@@ -32,7 +31,6 @@
         </select>
       </div>
       <p class="form-item--err-msg">{{ errMsg.datetime }}</p>
-      <p class="form-item--err-msg">{{ errMsgProp }}</p>
       <div class="reserve-form--fee">
         料金 : ¥{{ paymentFee }}
       </div>
@@ -52,8 +50,7 @@ export default {
   mixins: [commonMethods],
   props: {
     clickReserveProp: {},
-    studioProp: {},
-    errMsgProp: {}
+    studioProp: {}
   },
   data() {
     return {

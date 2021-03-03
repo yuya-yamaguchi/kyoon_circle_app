@@ -8,6 +8,11 @@
         :stayroomsProp="stayroomsProp"
         @reserve-complete="getStayRoomReserves()"
         @close-modal="closeModal()"/>
+      <StayroomReserveShowModal
+        v-if="selectStayroomReserveShow.id"
+        :stayroom-reserve-prop="selectStayroomReserveShow"
+        @update-stayroom-reserves="getStayRoomReserves()"
+        @close-modal="closeModal()"/>
       <div>宿泊部屋を選択</div>
       <select v-model="selectStayRoomId" class="">
         <option value="0">指定しない</option>
@@ -43,8 +48,8 @@
             :class="{ 'other-month': (currentDate.get('month')+1) != day.month, 'today': isToday(day) }">
             <div :class="{'saturday': index==6, 'sunday': index==0}">{{ day.date }}</div>
             <div v-if="isAdminPage">
-              <div v-for="username in reserveUsers(day)" :key="username" class="reserve-user">
-                {{ username }}
+              <div v-for="reserve in reserveUsers(day)" :key="reserve" class="reserve-user">
+                <p @click="displayReserveShowModal(reserve)">{{ reserve.user_name }}</p>
               </div>
             </div>
             <div v-else>
@@ -62,6 +67,7 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import StayroomReserveModal from '@/components/organisms/stayroom/StayroomReserveModal.vue';
+import StayroomReserveShowModal from '@/components/organisms/stayroom/StayroomReserveShowModal.vue';
 import Loading from '@/components/organisms/common/Loading.vue';
 import { commonMethods } from '@/mixins/commonMethods';
 import { calendar } from '@/mixins/calendar';
@@ -74,6 +80,7 @@ export default {
   },
   components: {
     StayroomReserveModal,
+    StayroomReserveShowModal,
     Loading
   },
   data() {
@@ -81,6 +88,7 @@ export default {
       stayroomReserves: [],
       selectStayRoomId: 0,
       selectStayroomReserve: {},
+      selectStayroomReserveShow: {},
       loading: true
     }
   },
@@ -153,27 +161,30 @@ export default {
       }
     },
     reserveUsers(date) {
-      let users = [];
+      let reserves = [];
       if (this.selectStayRoomId == 0) {
         this.stayroomReserves.some(( v ) => {
           if (v.date == fmtApiDate2(date)) {
-            users.push(v.user_name)
+            reserves.push(v)
           }
         })
       }
       else {
         this.stayroomReserves.some(( v ) => {
           if (v.date == fmtApiDate2(date) && v.stayroom_id == this.selectStayRoomId) {
-            users.push(v.user_name)
+            reserves.push(v)
           }
         })
       }
-      return users
+      return reserves
     },
     displayReserveModal(date) {
       this.selectStayroomReserve.checkin_date = fmtApiDate2(date)
       this.selectStayroomReserve.checkout_date = this.afterDays(fmtApiDate2(date), 1)
       this.selectStayroomReserve.stayroom_id = this.selectStayRoomId
+    },
+    displayReserveShowModal(reserve) {
+      this.selectStayroomReserveShow = reserve;
     },
     changeMonth(month) {
       let componentName = (location.pathname.match(/admin/)) ? "StayroomReserves" : "StayroomIndex"
@@ -186,6 +197,7 @@ export default {
     },
     closeModal: function() {
       this.selectStayroomReserve = {}
+      this.selectStayroomReserveShow = {}
     }
   },
   mounted(){

@@ -22,7 +22,8 @@ class Studio < ApplicationRecord
       i = 0
       loop do
         reserved_time = (studio_reserve.start_time + (i * 30 * 60)).strftime('%H%M')
-        if reserved_time < studio_reserve.end_time.strftime('%H%M')
+        reserved_time = conv_time(reserved_time) if i > 0
+        if reserved_time < conv_time(studio_reserve.end_time.strftime('%H%M'))
           reserves << { time: studio_reserve.date.strftime('%Y%m%d') + reserved_time,
                         user_id: studio_reserve.user_id,
                         studio_reserve_id: studio_reserve.id }
@@ -81,12 +82,9 @@ class Studio < ApplicationRecord
     end
     times
   end
+
+  # 終了時刻の「00:00」を「24:00」として扱いたいため変換
+  def conv_time(time)
+    return (time == '0000') ? '2400' : time
+  end
 end
-
-# 全studio_reservesに対してuserを読み込んだ場合
-# Completed 200 OK in 1310ms (Views: 51.1ms | ActiveRecord: 33.6ms | Allocations: 80591)
-# Completed 200 OK in 961ms (Views: 35.3ms | ActiveRecord: 17.2ms | Allocations: 54676)
-# Completed 200 OK in 1086ms (Views: 32.7ms | ActiveRecord: 38.1ms | Allocations: 77269)
-
-# 重複するuserは再度読込せず、変数に設定したuser情報を使用した場合
-# Completed 200 OK in 122ms (Views: 37.9ms | ActiveRecord: 3.6ms | Allocations: 30843)

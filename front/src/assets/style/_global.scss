@@ -61,6 +61,7 @@
   color: #FFF;
   text-decoration: none;
   border: 1px solid;
+  text-align: center;
   cursor: pointer;
   &:hover {
     opacity: 0.8;
@@ -123,6 +124,7 @@
     border: none;
     outline: none;
     border-bottom: 2px solid;
+    background-color: transparent;
   }
   input:focus {
     border-bottom: 2px solid var(--accent-color);
@@ -263,6 +265,9 @@
   color: #333;
   font-size: 18px;
   font-weight: bold;
+}
+.link-return {
+  color: #2C3E50;
 }
 
 @media screen and (max-width: 600px) {

@@ -1,12 +1,12 @@
 <template>
   <div class="double-container">
     <div class="double-container--left">
-      <SideBar :select-menu-prop="5"/>
+      <SideBar :select-menu-prop="7"/>
     </div>
     <div class="double-container--right">
-      <div class="auth-container">
+      <div class="change-email-container">
         <h1 class="main-title text-center">メールアドレス変更</h1>
-        <form v-on:submit.prevent="putEmail" class="change-password-form">
+        <form v-on:submit.prevent="putEmail" class="change-email-form">
           <div class="form-item">
             <p class="form-item--name">メールアドレス</p>
             <input type="text" v-model="user.email" class="default-input">
@@ -103,8 +103,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.change-password-form {
-  max-width: 400px;
-  margin: 30px auto;
+.change-email-container {
+  margin-bottom: 30px;
+  .change-email-form {
+    max-width: 400px;
+    margin: 30px auto;
+  }
 }
 </style>
