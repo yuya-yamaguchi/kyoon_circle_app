@@ -1,6 +1,7 @@
 class Api::EventsController < ApplicationController
   include Pagy::Backend
 
+  before_action :set_current_user, only: [:index, :show]
   before_action :auth_check, only: %i[edit update create destroy entry entry_cancel]
   before_action :admin_check, only: %i[edit update create destroy]
   before_action :set_event, only: %i[show edit update destroy entry entry_cancel]
@@ -10,17 +11,15 @@ class Api::EventsController < ApplicationController
     pagy, events = pagy(search_events, items: 5)
     out_params = []
     events.each do |event|
-      out_params << event.set_index_params
+      out_params << event.set_index_params(@current_user)
     end
     render status: 200, json: { events: out_params, pagy: pagy_metadata(pagy) }
   end
 
   def show
-    is_entry = false
-    is_entry = @event.event_entries.where(user_id: params[:user_id]).present? if params[:user_id].to_i > 0
+    is_entry = @event.entry?(@current_user)
     entry_users = @event.users
-    render status: 200,
-           json: { event: @event, is_entry: is_entry, entry_users: entry_users }
+    render status: 200, json: { event: @event, is_entry: is_entry, entry_users: entry_users }
   end
 
   def edit

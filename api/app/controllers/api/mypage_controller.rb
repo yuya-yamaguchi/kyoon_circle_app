@@ -18,11 +18,11 @@ class Api::MypageController < ApplicationController
     out_history_params = []
     future_events = @current_user.events.after_today.order_date_desc
     future_events.each do |future_event|
-      out_future_params << future_event.set_index_params
+      out_future_params << future_event.set_index_params(@current_user)
     end
     history_events = @current_user.events.before_today.order_date_desc
     history_events.each do |history_event|
-      out_history_params << history_event.set_index_params
+      out_history_params << history_event.set_index_params(@current_user)
     end
     render status: 200, json: { future_events: out_future_params, history_events: out_history_params }
   end

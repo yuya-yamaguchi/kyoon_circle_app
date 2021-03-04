@@ -7,13 +7,15 @@
         セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
         お気軽にご参加ください！
       </p>
-      <SearchEvent :searchProp="search" @search-events="searchEvents"/>
-      <Loading v-if="loading"/>
-      <div v-else>
-        <EventList v-if="events.length!=0" :events-prop="events"/>
-        <div v-if="events.length==0" class="nothing-msg">該当のイベントはありません</div>
+      <div class="event-list">
+        <SearchEvent :searchProp="search" @search-events="searchEvents"/>
+        <Loading v-if="loading"/>
+        <div v-else>
+          <EventList v-if="events.length!=0" :events-prop="events"/>
+          <div v-if="events.length==0" class="nothing-msg">該当のイベントはありません</div>
+        </div>
+        <Pagination v-if="events.length!=0" :pagy-prop="pagy" @chage-page="changePage"/>
       </div>
-      <Pagination v-if="events.length!=0" :pagy-prop="pagy" @chage-page="changePage"/>
     </div>
   </div>
 </template>
@@ -86,6 +88,9 @@ export default {
             event_category: searchParams.event_category,
             order:          searchParams.order,
             end_event_hide: searchParams.end_event_hide
+          },
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
           }
         }
       )
@@ -133,5 +138,9 @@ export default {
 <style scoped lang="scss">
 .event-explain {
   padding: 20px;
+}
+.event-list {
+  max-width: 900px;
+  margin: 0 auto;
 }
 </style>
