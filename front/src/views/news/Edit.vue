@@ -1,18 +1,21 @@
 <template>
-  <div class="double-container">
-    <div class="double-container--left">
-      <SideBar :select-menu-prop="104"/>
-    </div>
-    <div class="double-container--right">
-      <div class="news-edit-container">
-        <h1 class="main-title text-center">お知らせ編集</h1>
-        <div class="error-messages">
-          <ErrMsg/>
+<div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="double-container">
+      <div class="double-container--left">
+        <SideBar :select-menu-prop="104"/>
+      </div>
+      <div class="double-container--right">
+        <div class="news-edit-container">
+          <h1 class="main-title text-center">お知らせ編集</h1>
+          <div class="error-messages">
+            <ErrMsg/>
+          </div>
+          <NewsForm v-if="news" 
+            :news-prop="news"
+            :modal-msg-prop="modalMsg"
+            @post-news="updateNews"/>
         </div>
-        <NewsForm v-if="news" 
-          :news-prop="news"
-          :modal-msg-prop="modalMsg"
-          @post-news="updateNews"/>
       </div>
     </div>
   </div>
@@ -24,6 +27,7 @@ import g from "@/variable/variable.js";
 import SideBar from "@/components/organisms/common/SideBar.vue";
 import NewsForm from "@/components/organisms/news/NewsForm.vue";
 import ErrMsg from "@/components/organisms/common/ErrMsg.vue";
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
@@ -31,7 +35,27 @@ export default {
   components: {
     SideBar,
     NewsForm,
-    ErrMsg
+    ErrMsg,
+    BreadCrumbs
+  },
+  computed: {
+    breadCrumbs() {
+      const breadCrumbsLists = [
+        { name: 'トップ',
+          path: '/'
+        },
+        { name: '管理メニュー',
+          path: '/admin'
+        },
+        { name: `${this.news.title}`,
+          path: `/news/${this.news.id}`
+        },
+        { name: '編集',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
+    }
   },
   data() {
     return {

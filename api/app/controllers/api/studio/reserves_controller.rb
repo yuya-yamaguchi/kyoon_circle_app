@@ -7,6 +7,11 @@ class Api::Studio::ReservesController < ApplicationController
     render status: 200, json: { studio: studio, reserves: reserves_params, weeks: weeks }
   end
 
+  def show
+    studio_reserve = StudioReserve.select('users.name AS username', 'studio_reserves.*').joins(:user).find_by(id: params[:id])
+    render status: 200, json: { studio_reserve: studio_reserve }
+  end
+
   def create
     @studio = Studio.find(params[:studio_id])
     studio_reserve = StudioReserve.new(studio_reserves_params)
@@ -20,9 +25,9 @@ class Api::Studio::ReservesController < ApplicationController
   def destroy
     studio_reserve = StudioReserve.find(params[:id])
     if studio_reserve.destroy
-      render status: 200
+      render status: 201
     else
-      render status: 400, error_message: studio_reserve.errors.full_messages[0]
+      render status: 400, json: studio_reserve.errors.full_messages
     end
   end
 

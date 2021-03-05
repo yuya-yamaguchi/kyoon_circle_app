@@ -1,12 +1,15 @@
 <template>
-  <div class="double-container">
-    <div class="double-container--left">
-      <SideBar :select-menu-prop="2"/>
-    </div>
-    <div class="double-container--right">
-      <div class="user-profile-container">
-        <h1 class="main-title">ユーザ情報変更</h1>
-        <UserForm/>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="double-container">
+      <div class="double-container--left">
+        <SideBar :select-menu-prop="2"/>
+      </div>
+      <div class="double-container--right">
+        <div class="user-profile-container">
+          <h1 class="main-title">プロフィール変更</h1>
+          <UserForm/>
+        </div>
       </div>
     </div>
   </div>
@@ -15,11 +18,29 @@
 <script>
 import SideBar from "@/components/organisms/common/SideBar.vue";
 import UserForm from "@/components/organisms/user/UserForm.vue";
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 
 export default {
   components: {
     SideBar,
-    UserForm
+    UserForm,
+    BreadCrumbs
+  },
+  computed: {
+    breadCrumbs() {
+      const breadCrumbsLists = [
+        { name: 'トップ',
+          path: '/'
+        },
+        { name: 'マイページ',
+          path: '/mypage'
+        },
+        { name: 'プロフィール変更',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
+    }
   }
 }
 </script>
@@ -37,6 +58,7 @@ export default {
 
 @media screen and (max-width: 600px) {
   .user-profile-container {
+    padding: 0;
     background: var(--base-color);
   }
 }

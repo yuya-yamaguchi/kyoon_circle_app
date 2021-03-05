@@ -4,10 +4,13 @@
       <LoadingCircle v-if="reserving"/>
       <div @click="closeModal()" class="close-button">×</div>
       <template v-if="!isReserved">
+        <h1 class="main-title text-center">スタジオ予約</h1>
+        <div class="error-messages">
+          <ErrMsg/>
+        </div>
         <StudioReserveForm
           :clickReserveProp="clickReserveProp"
           :studioProp="studioProp"
-          :err-msg-prop="errMsg"
           @post-studio-reserve="postStudioReserve"
           @close-modal="closeModal"/>
       </template>
@@ -26,6 +29,7 @@ import g from "@/variable/variable.js";
 import LoadingCircle from '@/components/organisms/common/LoadingCircle.vue';
 import StudioReserveForm from '@/components/organisms/studio/StudioReserveForm.vue';
 import StudioReserveComplete from '@/components/organisms/studio/StudioReserveComplete.vue';
+import ErrMsg from "@/components/organisms/common/ErrMsg.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
@@ -33,7 +37,8 @@ export default {
   components: {
     LoadingCircle,
     StudioReserveForm,
-    StudioReserveComplete
+    StudioReserveComplete,
+    ErrMsg
   },
   props: {
     clickReserveProp: {},
@@ -79,9 +84,6 @@ export default {
       .catch((error) => {
         this.reserving = false;
         this.apiErrors(error.response);
-        if (error.response.status !== 401) {
-          this.errMsg = error.response.data[0];
-        }
       })
     }
   }

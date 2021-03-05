@@ -21,13 +21,15 @@ class StudioReserve < ApplicationRecord
     # 対象の予約日内で時間の重複がないかチェック(UTC時刻だと不整合のケースがあるためSQLで比較せず抽出後JSTで比較)
     studio_reserves.each do |reserve|
       if reserve.start_time.to_s(:time) >= start_time.to_s(:time)
-        if reserve.start_time.to_s(:time) < end_time.to_s(:time)
+        if reserve.start_time.to_s(:time) < conv_time(end_time.to_s(:time))
           is_reserved = true
           break
         end
-      elsif reserve.start_time.to_s(:time) > end_time.to_s(:time)
-        is_reserved = true
-        break
+      else
+        if conv_time(reserve.end_time.to_s(:time)) > start_time.to_s(:time)
+          is_reserved = true
+          break
+        end
       end
     end
     errors.add(:date, 'すでに予約されています。別の時間帯を指定してください。') if is_reserved
@@ -45,5 +47,10 @@ class StudioReserve < ApplicationRecord
       errors.add(:date, '開始日時を過ぎているため取消できません')
       throw(:abort)
     end
+  end
+
+  # 終了時刻の「00:00」を「24:00」として扱いたいため変換
+  def conv_time(time)
+    return (time == '00:00') ? '24:00' : time
   end
 end

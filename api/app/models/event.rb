@@ -23,7 +23,20 @@ class Event < ApplicationRecord
   scope :order_date_desc, -> { order('start_datetime DESC') }
   scope :recent,          ->(count) { after_today.order_date.limit(count) }
 
-  def set_index_params
+  def set_index_params(current_user)
+    following_users = []
+    is_entry = false
+    if current_user
+      # イベントに参加しているユーザの中で、ログインユーザがフォローしているユーザをランダムで2人表示する
+      self.users.each do |user|
+        following_users << user.name if user.followers.include?(current_user)
+        break if following_users.length >= 2
+      end
+      following_users = following_users.sample(2)
+      # ログインユーザがイベントに参加しているか判定
+      is_entry = self.entry?(current_user)
+    end
+    
     out_params = {
       id: id,
       user_id: user_id,
@@ -38,7 +51,9 @@ class Event < ApplicationRecord
       created_at: created_at,
       updated_at: updated_at,
       line_msg_push: line_msg_push,
-      entry_count: event_entries.count
+      entry_count: event_entries.count,
+      following_users: following_users,
+      entry: is_entry
     }
   end
 
@@ -97,5 +112,10 @@ class Event < ApplicationRecord
       config.channel_token = ENV['LINE_CHANNEL_TOKEN']
     end
     response = client.push_message(group_id, message)
+  end
+
+  # イベントに参加しているか判定
+  def entry?(user)
+    event_entries.where(user_id: user&.id).present?
   end
 end

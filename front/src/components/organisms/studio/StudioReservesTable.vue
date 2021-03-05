@@ -9,6 +9,12 @@
           @close-modal="closeModal()"
           @reserve-success="getStudioReserves($route.query.week)"/>
       </transition>
+      <transition name="fade-default" appear>
+        <StudioReserveShowModal v-if="selectReserve!=''"
+          :studio-reserve-prop="selectReserve"
+          @update-studio-reserves="getStudioReserves($route.query.week)"
+          @close-modal="closeModal()"/>
+      </transition>
       <div class="week-bar">
         <div class="prev-week some-updown-center" @click="changeWeek(Number($route.query.week) - 1)">
           <fa icon="chevron-left" class="small-icon"></fa>
@@ -25,7 +31,7 @@
           <th class="reserve-times-head"></th>
           <th v-for="(day, w) in weeks" :key="w"
             :class="{'saturday': calcWeek(day, 1)=='土',
-                     'sunday':  calcWeek(day, 1)=='日'}">
+                     'sunday':   calcWeek(day, 1)=='日'}">
             {{ formatDate(day, 'M/D') }}<br>
             （{{ calcWeek(day, 1) }}）
           </th>
@@ -44,7 +50,10 @@
             </template>
             <template v-if="adminProp==1">
               <td v-if="r.reserve_type==1" class="reserved-user"
-                :class="{'hide-name': i!=0 && (reserves[i-1][j].studio_reserve_id==r.studio_reserve_id)}">{{ r.username }}</td>
+                @click="showReserve(r)"
+                :class="{'hide-name': i!=0 && (reserves[i-1][j].studio_reserve_id==r.studio_reserve_id)}">
+                {{ r.username }}
+              </td>
               <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
               <td v-else class="no-reserves-admin"></td>
             </template>
@@ -59,6 +68,7 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import ReserveModal from '@/components/organisms/studio/ReserveModal.vue';
+import StudioReserveShowModal from '@/components/organisms/studio/StudioReserveShowModal.vue';
 import Loading from '@/components/organisms/common/Loading.vue';
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
@@ -70,6 +80,7 @@ export default {
   },
   components: {
     ReserveModal,
+    StudioReserveShowModal,
     Loading
   },
   data() {
@@ -79,7 +90,8 @@ export default {
       weeks: [],
       // Modal関連
       clickReserve: "",
-      loading: true
+      loading: true,
+      selectReserve: ""
     }
   },
   watch: {
@@ -132,6 +144,10 @@ export default {
     },
     closeModal: function() {
       this.clickReserve = ''
+      this.selectReserve = ''
+    },
+    showReserve: function(reserve) {
+      this.selectReserve = reserve
     }
   },
   mounted: function() {
@@ -226,6 +242,10 @@ export default {
         color: #333;
         font-size: 12px;
         text-align: center;
+        cursor: pointer;
+        &:hover {
+          color: var(--accent-color);
+        }
       }
       .no-reserves {
         border: 1px dotted #333;

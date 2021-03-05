@@ -12,9 +12,12 @@ import MypageEdit from '@/views/mypage/Edit.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
 import MypageEvents from '@/views/mypage/Events.vue'
 import MypageStayrooms from '@/views/mypage/Stayrooms.vue'
+import Settings from '@/views/mypage/Settings.vue'
+import ChangeEmail from '@/views/mypage/ChangeEmail.vue'
 import ChangePassword from '@/views/mypage/ChangePassword.vue'
 import Follow from '@/views/user/Follow.vue'
 import EventNew from '@/views/event/New.vue'
+import AdminMenus from '@/views/admin/AdminMenus.vue'
 import EventEdit from '@/views/event/Edit.vue'
 import EventEditList from '@/views/event/EditList.vue'
 import EventIndex from '@/views/event/Index.vue'
@@ -155,6 +158,20 @@ const routes = [
     component: MypageStayrooms,
     meta: { requiresAuth: true }
   },
+  // 設定
+  {
+    path: '/mypage/settings',
+    name: 'Settings',
+    component: Settings,
+    meta: { requiresAuth: true }
+  },
+  // メールアドレス変更
+  {
+    path: '/mypage/change_email',
+    name: 'ChangeEmail',
+    component: ChangeEmail,
+    meta: { requiresAuth: true }
+  },
   // パスワード変更
   {
     path: '/mypage/change_password',
@@ -172,6 +189,13 @@ const routes = [
   /***********************/
   /* 管理者用VIEW         */
   /***********************/
+  // 管理メニュー
+  {
+    path: '/admin',
+    name: 'AdminMenus',
+    component: AdminMenus,
+    meta: { requiresAdmin: true }
+  },
   // イベント登録
   {
     path: '/event/new',

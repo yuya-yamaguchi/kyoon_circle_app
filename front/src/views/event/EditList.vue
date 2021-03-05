@@ -1,12 +1,15 @@
 <template>
-  <div class="double-container">
-    <div class="double-container--left">
-      <SideBar :select-menu-prop="104"/>
-    </div>
-    <div class="double-container--right">
-      <h1 class="main-title">イベント編集</h1>
-      <EventList v-if="events.length!=0" :events-prop="events"/>
-      <Pagination :pagy-prop="pagy" @chage-page="changePage"/>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="double-container">
+      <div class="double-container--left">
+        <SideBar :select-menu-prop="104"/>
+      </div>
+      <div class="double-container--right">
+        <h1 class="main-title">イベント編集一覧</h1>
+        <EventList v-if="events.length!=0" :events-prop="events"/>
+        <Pagination :pagy-prop="pagy" @chage-page="changePage"/>
+      </div>
     </div>
   </div>
 </template>
@@ -17,6 +20,7 @@ import g from "@/variable/variable.js";
 import SideBar from "@/components/organisms/common/SideBar.vue";
 import EventList from '@/components/organisms/events/EventList.vue';
 import Pagination from '@/components/organisms/common/Pagination.vue';
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
@@ -24,7 +28,24 @@ export default {
   components: {
     SideBar,
     EventList,
-    Pagination
+    Pagination,
+    BreadCrumbs
+  },
+  computed: {
+    breadCrumbs() {
+      const breadCrumbsLists = [
+        { name: 'トップ',
+          path: '/'
+        },
+        { name: '管理メニュー',
+          path: '/admin'
+        },
+        { name: 'イベント編集',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
+    }
   },
   data() {
     return {

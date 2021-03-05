@@ -8,11 +8,19 @@
               こんにちは、{{ $store.getters['user/name'] }} さん
             </router-link>
           </div>
-          <div v-for="menu in myMenues" :key="menu" class="menu-card">
-            <router-link :to="menu.path" class="menu-link some-updown-center">
-              <fa v-if="menu.icon" :icon="menu.icon" class="menu-link--icon"></fa>
+          <div class="menu-card">
+            <router-link :to="{ name: 'MypageTop' }" class="menu-link some-updown-center">
+              <fa icon="user" class="menu-link--icon"></fa>
               <div class="menu-link--title">
-                {{ menu.name }}
+                マイページ
+              </div>
+            </router-link>
+          </div>
+          <div v-if="$store.getters['user/adminType']" class="menu-card">
+            <router-link :to="{ name: 'AdminMenus' }" class="menu-link some-updown-center">
+              <fa icon="user-cog" class="menu-link--icon"></fa>
+              <div class="menu-link--title">
+                管理メニュー
               </div>
             </router-link>
           </div>
@@ -40,21 +48,6 @@
       </div>
       <div class="menu-cards">
         <div v-for="menu in basicMenues" :key="menu" class="menu-card">
-          <router-link :to="menu.path" class="menu-link some-updown-center">
-            <fa v-if="menu.icon" :icon="menu.icon" class="menu-link--icon"></fa>
-            <div class="menu-link--title">
-              {{ menu.name }}
-            </div>
-          </router-link>
-        </div>
-      </div>
-      <div v-if="$store.getters['user/adminType']" class="menu-cards">
-        <div class="menu-card top-message">
-          <div class="menu-link">
-            管理者用メニュー
-          </div>
-        </div>
-        <div v-for="menu in adminMenues" :key="menu" class="menu-card">
           <router-link :to="menu.path" class="menu-link some-updown-center">
             <fa v-if="menu.icon" :icon="menu.icon" class="menu-link--icon"></fa>
             <div class="menu-link--title">
@@ -99,60 +92,6 @@ export default {
         { name: "お知らせ",
           path: "/news",
           icon: "bell"
-        }
-      ]
-      return menus;
-    },
-    myMenues() {
-      let menus = [
-        { name: "マイページ",
-          path: "/mypage",
-          icon: "user"
-        },
-        { name: "スタジオ予約状況",
-          path: "/mypage/studio/reserves",
-          icon: "check-circle"
-        },
-        { name: "参加イベント一覧",
-          path: "/mypage/events",
-          icon: "calendar-check"
-        },
-        { name: "宿泊予約状況",
-          path: "/mypage/stayrooms",
-          icon: "procedures"
-        },
-        { name: "パスワード変更",
-          path: "/mypage/change_password",
-          icon: "key"
-        }
-      ]
-      return menus;
-    },
-    adminMenues() {
-      let menus = [
-        { name: "登録ユーザ一覧",
-          path: "/users"
-        },
-        { name: "スタジオ情報編集",
-          path: "/studio/1/edit"
-        },
-        { name: "スタジオ予約確認",
-          path: "/admin/studio/1/reserves?week=0"
-        },
-        { name: "宿泊予約確認",
-          path: "/admin/stayrooms?month=0"
-        },
-        { name: "イベント登録",
-          path: "/event/new"
-        },
-        { name: "イベント編集",
-          path: "/events/editlist?page=1"
-        },
-        { name: "お知らせ登録",
-          path: "/news/new"
-        },
-        { name: "お知らせ編集",
-          path: "/news/editlist"
         }
       ]
       return menus;

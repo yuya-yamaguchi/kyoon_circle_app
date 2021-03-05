@@ -1,11 +1,21 @@
 <template>
-  <div>
+  <div class="event-cards">
     <div v-for="(event, i) in eventsProp" :key="i">
       <router-link :to="transLinks(event.id)" class="event-card">
         <div v-if="checkDateOver(event.start_datetime)" class="event-end">このイベントは終了しました</div>
         <div class="event-card--left">
-          <p class="event-card--left--date">{{ formatDate(event.start_datetime, 'M/D') }}</p>
-          <p class="event-card--left--week">{{ calcWeek(event.start_datetime, 2) }}</p>
+          <img v-if="event.event_category=='ライブ'" src="/events/live.jpg">
+          <img v-else-if="event.event_category=='セッション'" src="/events/session.jpg">
+          <img v-else-if="event.event_category=='飲み会・懇親会'" src="/events/bear.jpg">
+          <img v-else-if="event.event_category=='合宿'" src="/events/snowboard.jpg">
+          <img v-else src="/events/hummingbird.jpg">
+          <div v-if="event.entry" class="entry-true">
+            参加中
+          </div>
+          <div class="event-card--left--info">
+            <p class="event-card--left--info--date">{{ formatDate(event.start_datetime, 'M/D') }}</p>
+            <p class="event-card--left--info--week">{{ calcWeek(event.start_datetime, 2) }}</p>
+          </div>
         </div>
         <div class="event-card--middle">
           <p class="event-card--middle--title">{{ event.title }}</p>
@@ -18,6 +28,9 @@
           <div class="entry-user-cnt some-updown-center">
             <fa class="entry-user-cnt--icon" icon="user"/>
             <span class="entry-user-cnt--num">{{ event.entry_count }}</span>
+          </div>
+          <div class="entry-following-user">
+            {{ set_following_users(event.following_users) }}
           </div>
         </div>
       </router-link>
@@ -44,6 +57,17 @@ export default {
     },
     transLinks: function(eventId) {
       return (location.pathname == '/events/editlist') ? `/event/${eventId}/edit` : `/event/${eventId}`
+    },
+    set_following_users(following_users) {
+      if (following_users[0] && following_users[1]) {
+        return `${following_users[0]}、${following_users[1]}も参加しています`
+      }
+      else if (following_users[0]) {
+        return `${following_users[0]}も参加しています`
+      }
+      else {
+        return 
+      }
     }
   }
 }
@@ -73,28 +97,53 @@ export default {
     z-index: 1;
   }
   &--left {
-    width: 20%;
+    min-width: 20%;
     max-width: 100px;
-    padding: 20px;
-    font-weight: bold;
-    text-align: center;
-    background: var(--accent-color);
-    &--date {
-      font-size: 24px;
+    position: relative;
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.3;
     }
-    &--week {
-      font-size: 20px;
-      color: #FFF;
+    .entry-true {
+      position: absolute;
+      font-size: 12px;
+      padding: 1px 10px;
+      margin: 3px 0 0 3px;
+      background: orange;
+      display: inline-block;
+      border-radius: 10px;
+      font-weight: bold;
+      background:rgba(255, 145, 0, 0.7);
+    }
+    &--info {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      text-align: center;
+      &--date {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      &--week {
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--accent-color);
+        
+      }
     }
   }
   &--middle {
     padding: 10px;
-    width: 80%;
+    width: 70%;
     &--title {
       font-size: 18px;
     }
     &--type {
-      background: rgb(71, 71, 241);
+      background: var(--accent-color);
       display: inline-block;
       color: #FFF;
       font-size: 10px;
@@ -109,10 +158,16 @@ export default {
     }
   }
   &--right {
+    margin: 5px 5px 0 0;
+    display: flex;
+    flex-direction: column;
     .entry-user-cnt {
-      margin: 5px 5px 0 0;
+      flex: 1;
       white-space: nowrap;
       color: #888;
+      text-align: right;
+      display: flex;
+      justify-content: flex-end;
       &--icon {
         width: 14px;
         height: 14px;
@@ -122,6 +177,14 @@ export default {
         font-size: 16px;
         font-weight: bold;
       }
+    }
+    .entry-following-user {
+      flex: 2;
+      font-size: 12px;
+      color: #888;
+      width: 120px;
+      margin-top: 5px;
+      bottom: 0;
     }
   }
 }

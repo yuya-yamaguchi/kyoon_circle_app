@@ -1,24 +1,42 @@
 <template>
-  <div class="single-container">
-    <UserInfo
-      v-if="!loading"
-      :user-prop="user"
-      :user-instruments-prop="userInstruments"
-      :is-followed-prop="isFollowed"
-      :loading="loading"/>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="single-container">
+      <UserInfo
+        v-if="!loading"
+        :user-prop="user"
+        :user-instruments-prop="userInstruments"
+        :is-followed-prop="isFollowed"
+        :loading="loading"/>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import UserInfo from "@/components/organisms/user/UserInfo.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
   components: {
+    BreadCrumbs,
     UserInfo
+  },
+  computed: {
+    breadCrumbs() {
+      const breadCrumbsLists = [
+        { name: 'トップ',
+          path: '/'
+        },
+        { name: this.user.name,
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
+    }
   },
   data() {
     return {

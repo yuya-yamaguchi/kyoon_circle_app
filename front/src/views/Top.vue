@@ -39,7 +39,12 @@ export default {
   methods: {
     getTop() {
       axios.get(
-        `http://${g.hostName}/api/top`
+        `http://${g.hostName}/api/top`,
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
       )
       .then((response) => {
         this.news = response.data.news;
