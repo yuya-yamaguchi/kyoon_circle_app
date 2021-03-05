@@ -260,6 +260,7 @@ function fmtApiDate2(value) {
     border: 1px solid #333;
     background: #333;
     color: #FFF;
+    font-weight: bold;
   }
   &--head {
     th {
@@ -285,6 +286,7 @@ function fmtApiDate2(value) {
       }
       .reserve-user {
         font-size: 12px;
+        cursor: pointer;
       }
     }
     .other-month {

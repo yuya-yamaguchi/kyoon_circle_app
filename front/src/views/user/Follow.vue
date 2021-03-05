@@ -1,13 +1,16 @@
 <template>
-  <div class="single-container">
-    <div class="follows-container">
-      <div class="user-name">{{ user.name }}</div>
-      <FollowTabs
-        :user="user"
-        :current-tab="currentTab"/>
-      <FollowList
-        v-if="!loading"
-        :follow-users-prop="followUsers"/>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="single-container">
+      <div class="follows-container">
+        <div class="user-name">{{ user.name }}</div>
+        <FollowTabs
+          :user="user"
+          :current-tab="currentTab"/>
+        <FollowList
+          v-if="!loading"
+          :follow-users-prop="followUsers"/>
+      </div>
     </div>
   </div>
 </template>
@@ -15,6 +18,7 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import FollowList from "@/components/organisms/user/FollowList.vue";
 import FollowTabs from "@/components/organisms/user/FollowTabs.vue";
 import { errorMethods } from '@/mixins/errorMethods';
@@ -22,8 +26,25 @@ import { errorMethods } from '@/mixins/errorMethods';
 export default {
   mixins: [errorMethods],
   components: {
+    BreadCrumbs,
     FollowList,
     FollowTabs
+  },
+  computed: {
+    breadCrumbs() {
+      const breadCrumbsLists = [
+        { name: 'トップ',
+          path: '/'
+        },
+        { name: this.user.name,
+          path: `/users/${this.user.id}`
+        },
+        { name: 'フォロー',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
+    }
   },
   data() {
     return {

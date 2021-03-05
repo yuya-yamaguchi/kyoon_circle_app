@@ -111,6 +111,7 @@ export default {
   justify-content: space-between;
   border-radius: 10px;
   background: #FFF;
+  font-size: 14px;
   &--info {
     padding: 10px;
     &--top {

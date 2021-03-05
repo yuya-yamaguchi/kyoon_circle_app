@@ -1,11 +1,14 @@
 <template>
-  <div class="double-container">
-    <div class="double-container--left">
-      <SideBar :select-menu-prop="108"/>
-    </div>
-    <div class="double-container--right">
-      <div class="studio-reserves-container">
-        <StayroomCalendar :stayrooms-prop="stayrooms"/>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="double-container">
+      <div class="double-container--left">
+        <SideBar :select-menu-prop="108"/>
+      </div>
+      <div class="double-container--right">
+        <div class="studio-reserves-container">
+          <StayroomCalendar :stayrooms-prop="stayrooms"/>
+        </div>
       </div>
     </div>
   </div>
@@ -16,11 +19,29 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/organisms/common/SideBar.vue";
 import StayroomCalendar from '@/components/organisms/stayroom/StayroomCalendar.vue';
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 
 export default {
   components: {
     SideBar,
-    StayroomCalendar
+    StayroomCalendar,
+    BreadCrumbs
+  },
+  computed: {
+    breadCrumbs() {
+      const breadCrumbsLists = [
+        { name: 'トップ',
+          path: '/'
+        },
+        { name: '管理メニュー',
+          path: '/admin'
+        },
+        { name: '宿泊予約確認',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
+    }
   },
   data() {
     return {

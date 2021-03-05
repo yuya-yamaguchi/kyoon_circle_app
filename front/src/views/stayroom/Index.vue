@@ -1,24 +1,42 @@
 <template>
-  <div class="single-container">
-    <StayroomCalendar :stayrooms-prop="stayrooms"/>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="single-container">
+      <StayroomCalendar :stayrooms-prop="stayrooms"/>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import StayroomCalendar from '@/components/organisms/stayroom/StayroomCalendar.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
+  components: {
+    BreadCrumbs,
+    StayroomCalendar
+  },
+  computed: {
+    breadCrumbs() {
+      const breadCrumbsLists = [
+        { name: 'トップ',
+          path: '/'
+        },
+        { name: '宿泊予約',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
+    }
+  },
   data() {
     return {
       stayrooms: []
     }
-  },
-  components: {
-    StayroomCalendar
   },
   methods: {
     getStayRooms: function() {

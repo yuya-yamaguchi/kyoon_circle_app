@@ -17,6 +17,7 @@ import ChangeEmail from '@/views/mypage/ChangeEmail.vue'
 import ChangePassword from '@/views/mypage/ChangePassword.vue'
 import Follow from '@/views/user/Follow.vue'
 import EventNew from '@/views/event/New.vue'
+import AdminMenus from '@/views/admin/AdminMenus.vue'
 import EventEdit from '@/views/event/Edit.vue'
 import EventEditList from '@/views/event/EditList.vue'
 import EventIndex from '@/views/event/Index.vue'
@@ -188,6 +189,13 @@ const routes = [
   /***********************/
   /* 管理者用VIEW         */
   /***********************/
+  // 管理メニュー
+  {
+    path: '/admin',
+    name: 'AdminMenus',
+    component: AdminMenus,
+    meta: { requiresAdmin: true }
+  },
   // イベント登録
   {
     path: '/event/new',

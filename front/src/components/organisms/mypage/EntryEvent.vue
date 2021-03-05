@@ -12,13 +12,16 @@
         参加したイベント
       </div>
     </div>
-    <div v-show="currentTab === 1" class="my-events">
-      <EventList v-if="futureEvents.length!=0" :events-prop="futureEvents"/>
-      <p v-else class="nothing-msg">参加予定のイベントはありません</p>
-    </div>
-    <div v-show="currentTab === 2" class="my-events">
-      <EventList v-if="historyEvents.length!=0" :events-prop="historyEvents"/>
-      <p v-else class="nothing-msg">過去参加したイベントはありません</p>
+    <Loading v-if="loading"/>
+    <div v-else>
+      <div v-show="currentTab === 1" class="my-events">
+        <EventList v-if="futureEvents.length!=0" :events-prop="futureEvents"/>
+        <p v-else class="nothing-msg">参加予定のイベントはありません</p>
+      </div>
+      <div v-show="currentTab === 2" class="my-events">
+        <EventList v-if="historyEvents.length!=0" :events-prop="historyEvents"/>
+        <p v-else class="nothing-msg">過去参加したイベントはありません</p>
+      </div>
     </div>
   </div>
 </template>
@@ -27,18 +30,21 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import EventList from '@/components/organisms/events/EventList.vue';
+import Loading from '@/components/organisms/common/Loading.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
   components: {
-    EventList
+    EventList,
+    Loading
   },
   data() {
     return {
       futureEvents: [],
       historyEvents: [],
-      currentTab: 1
+      currentTab: 1,
+      loading: true
     }
   },
   methods: {
@@ -60,6 +66,9 @@ export default {
       })
       .catch((error) => {
         this.apiErrors(error.response);
+      })
+      .finally(() => {
+        this.loading = false
       });
     },
     changeTab: function(num) {

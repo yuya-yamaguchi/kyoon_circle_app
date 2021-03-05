@@ -110,8 +110,8 @@ export default {
     .entry-true {
       position: absolute;
       font-size: 12px;
-      padding: 2px 10px;
-      margin: 5px 0 0 5px;
+      padding: 1px 10px;
+      margin: 3px 0 0 3px;
       background: orange;
       display: inline-block;
       border-radius: 10px;

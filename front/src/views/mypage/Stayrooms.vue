@@ -1,28 +1,34 @@
 <template>
-  <div class="double-container">
-    <div class="double-container--left">
-      <SideBar :select-menu-prop="6"/>
-    </div>
-    <div class="double-container--right">
-      <div class="tabs">
-        <div class="tabs--tab"
-             :class="{ active: currentTab === 1 }"
-             @click="changeTab(1)">
-          宿泊予約
-        </div>
-        <div class="tabs--tab"
-             :class="{ active: currentTab === 2 }"
-             @click="changeTab(2)">
-          過去の予約履歴
-        </div>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="double-container">
+      <div class="double-container--left">
+        <SideBar :select-menu-prop="6"/>
       </div>
-      <div v-show="currentTab === 1" class="studio-reserves">
-        <StayroomReserveList v-if="futureReserves.length!=0" :reserves-prop="futureReserves" :cancel-flg-prop="true"/>
-        <p v-else class="nothing-msg">現在、宿泊予約はありません</p>
-      </div>
-      <div v-show="currentTab === 2" class="studio-reserves">
-        <StayroomReserveList v-if="historyReserves.length!=0" :reserves-prop="historyReserves" :cancel-flg-prop="false"/>
-        <p v-else class="nothing-msg">過去の宿泊はありません</p>
+      <div class="double-container--right">
+        <div class="tabs">
+          <div class="tabs--tab"
+              :class="{ active: currentTab === 1 }"
+              @click="changeTab(1)">
+            宿泊予約
+          </div>
+          <div class="tabs--tab"
+              :class="{ active: currentTab === 2 }"
+              @click="changeTab(2)">
+            過去の予約履歴
+          </div>
+        </div>
+        <Loading v-if="loading"/>
+        <div v-else>
+          <div v-show="currentTab === 1" class="studio-reserves">
+            <StayroomReserveList v-if="futureReserves.length!=0" :reserves-prop="futureReserves" :cancel-flg-prop="true"/>
+            <p v-else class="nothing-msg">現在、宿泊予約はありません</p>
+          </div>
+          <div v-show="currentTab === 2" class="studio-reserves">
+            <StayroomReserveList v-if="historyReserves.length!=0" :reserves-prop="historyReserves" :cancel-flg-prop="false"/>
+            <p v-else class="nothing-msg">過去の宿泊はありません</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -33,19 +39,40 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import SideBar from "@/components/organisms/common/SideBar.vue";
 import StayroomReserveList from "@/components/organisms/stayroom/StayroomReserveList.vue";
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
+import Loading from '@/components/organisms/common/Loading.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
   components: {
+    BreadCrumbs,
     SideBar,
-    StayroomReserveList
+    StayroomReserveList,
+    Loading
+  },
+  computed: {
+    breadCrumbs() {
+      const breadCrumbsLists = [
+        { name: 'トップ',
+          path: '/'
+        },
+        { name: 'マイページ',
+          path: '/mypage'
+        },
+        { name: '宿泊予約確認',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
+    }
   },
   data() {
     return {
       futureReserves: [],
       historyReserves: [],
       currentTab: 1, // 1:スタジオ予約タブ、2:予約履歴タブ
+      loading: true
     }
   },
   methods: {
@@ -68,6 +95,9 @@ export default {
       })
       .catch((error) => {
         this.apiErrors(error.response);
+      })
+      .finally(() => {
+        this.loading = false
       });
     },
     changeTab: function(num) {

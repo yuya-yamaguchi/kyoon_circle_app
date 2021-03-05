@@ -83,7 +83,6 @@ export default {
       })
       .catch((error) => {
         this.reserving = false;
-        console.log(error.response.data)
         this.apiErrors(error.response);
       })
     }

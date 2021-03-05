@@ -10,9 +10,10 @@
   display: flex;
   justify-content: space-between;
   max-width: 1200px;
-  margin: 10px auto;
-  padding: 0 10px;
-  min-height: calc(100vh - 160px);
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 70px 10px;
+  min-height: calc(100vh - 140px);
   &--left {
     width: 25%;
     box-sizing: border-box;
@@ -273,7 +274,7 @@
 @media screen and (max-width: 600px) {
   .double-container {
     background: var(--base-color);
-    padding: 0;
+    padding: 70px 0;
     &--left {
       display: none;
     }

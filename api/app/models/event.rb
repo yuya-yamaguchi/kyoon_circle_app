@@ -30,6 +30,7 @@ class Event < ApplicationRecord
       # イベントに参加しているユーザの中で、ログインユーザがフォローしているユーザをランダムで2人表示する
       self.users.each do |user|
         following_users << user.name if user.followers.include?(current_user)
+        break if following_users.length >= 2
       end
       following_users = following_users.sample(2)
       # ログインユーザがイベントに参加しているか判定
