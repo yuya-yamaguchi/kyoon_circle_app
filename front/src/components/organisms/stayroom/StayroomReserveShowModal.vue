@@ -166,7 +166,7 @@ export default {
   .reserve-show-container {
     .reserve-form {
       select {
-        font-size: 16px;
+        font-size: 0.9rem;
       }
       &--btn {
         display: block;

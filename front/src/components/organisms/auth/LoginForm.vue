@@ -104,7 +104,7 @@ export default {
   text-align: center;
   .password-forget {
     color: #333;
-    font-size: 14px;
+    font-size: 0.8rem;
   }
 }
 </style>

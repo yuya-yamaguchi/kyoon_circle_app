@@ -100,7 +100,7 @@ export default {
         text-align: center;
         background: #888;
         margin-right: 10px;
-        font-size: 15px;
+        font-size: 0.9rem;
       }
       &--post {
         cursor: pointer;
@@ -108,7 +108,7 @@ export default {
         padding: 2px;
         text-align: center;
         background: var(--accent-color);
-        font-size: 15px;
+        font-size: 0.9rem;
       }
     }
   }

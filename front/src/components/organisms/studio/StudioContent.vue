@@ -85,7 +85,7 @@ export default {
     td {
       border: 1px solid;
       padding: 10px;
-      font-size: 16px;
+      font-size: 0.9rem;
       line-height: 24px;
     }
   }
@@ -94,7 +94,7 @@ export default {
     border-radius: 10px;
     padding: 10px;
     margin-left: 20px;
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
 }
 

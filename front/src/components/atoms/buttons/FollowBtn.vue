@@ -27,7 +27,7 @@ export default {
 
 <style scoped lang="scss">
 .follow-btn {
-  font-size: 14px;
+  font-size: 0.8rem;
   color: var(--accent-color);
   border: 2px solid var(--accent-color);
   padding: 2px 20px;

@@ -161,7 +161,7 @@ h1 {
     border: none;
     outline: none;
     border-bottom: 2px solid;
-    font-size: 20px;
+    font-size: 1.1rem;
   }
   &--date {
     margin: 10px;
@@ -170,7 +170,7 @@ h1 {
     margin: 10px;
   }
   &--fee {
-    font-size: 20px;
+    font-size: 1.1rem;
     margin: 20px;
   }
   &--btn {
@@ -198,7 +198,7 @@ h1 {
   .reserve-container {
     .reserve-form {
       select {
-        font-size: 16px;
+        font-size: 0.9rem;
       }
       &--btn {
         display: block;

@@ -52,6 +52,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   background: var(--base-color);
+  font-size: 1.0rem;
 }
 
 .base-container{
@@ -59,5 +60,11 @@ export default {
   padding-top: 60px;
   margin: 0 auto;
   box-sizing: border-box;
+}
+
+@media screen and (max-width: 600px) {
+  #app {
+    font-size: 0.9rem;
+  }
 }
 </style>

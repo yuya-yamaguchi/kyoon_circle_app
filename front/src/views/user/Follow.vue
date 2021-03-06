@@ -133,7 +133,7 @@ export default {
     border-bottom: 1px solid lightgray;
     text-align: center;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 1.1rem;
   }
 }
 </style>

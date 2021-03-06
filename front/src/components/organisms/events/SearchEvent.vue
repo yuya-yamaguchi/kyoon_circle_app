@@ -92,7 +92,7 @@ export default {
     justify-content: flex-start;
     .sort-menu {
       margin-right: 10px;
-      font-size: 15px;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
       color: #888;
@@ -113,7 +113,7 @@ export default {
   .end-event {
     display: block;
     margin: 10px 0;
-    font-size: 15px;
+    font-size: 0.9rem;
     span {
       margin-left: 5px;
     }

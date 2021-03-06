@@ -39,12 +39,12 @@
 }
 
 .main-title {
-  font-size: 26px;
+  font-size: 1.4rem;
   font-weight: bold;
 }
 
 .sub-title {
-  font-size: 24px;
+  font-size: 1.2px;
   margin-bottom: 20px;
 }
 
@@ -56,7 +56,7 @@
   display: block;
   margin: 20px auto;
   padding: 10px 30px;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: bold;
   background: orange;
   color: #FFF;
@@ -74,7 +74,7 @@
   margin: 20px auto;
   padding: 10px 30px;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: bold;
   background: linear-gradient(70deg, var(--gradation-color), var(--accent-color));
   color: #FFF;
@@ -90,7 +90,7 @@
   margin: 20px auto;
   padding: 10px 30px;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: bold;
   background: linear-gradient(70deg, rgb(204, 17, 157), #e46c6c);
   color: #FFF;
@@ -99,10 +99,11 @@
 }
 
 .close-button {
-  font-size: 30px;
+  font-size: 1.6rem;
   width: 30px;
   margin-left: auto;
   color: gray;
+  text-align: center;
   cursor: pointer;
 }
 
@@ -114,7 +115,7 @@
   text-align: left;
   &--name {
     text-align: left;
-    font-size: 20px;
+    font-size: 1.1rem;
     margin: 5px 5px 5px 0;
   }
   .default-input {
@@ -149,13 +150,13 @@
     margin-left: 10px;
   }
   &--addition {
-    font-size: 12px;
+    font-size: 0.8rem;
     margin-bottom: 5px;
     color: #888;
   }
   &--err-msg {
     margin-top: 5px;
-    font-size: 14px;
+    font-size: 0.8rem;
     color: red;
   }
 }
@@ -169,13 +170,6 @@
     padding: 5px;
     margin-left: 10px;
   }
-}
-
-.comming-soon {
-  text-align: center;
-  font-size: 50px;
-  margin-top: 30px;
-  color: #888;
 }
 
 .tabs {
@@ -199,7 +193,7 @@
 }
 
 .nothing-msg {
-  font-size: 20px;
+  font-size: 1.1rem;
   color: #888;
   text-align: center;
   padding: 20px;
@@ -264,7 +258,7 @@
   margin: 0 auto;
   text-align: center;
   color: #333;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: bold;
 }
 .link-return {

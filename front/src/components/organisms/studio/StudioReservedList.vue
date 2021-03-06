@@ -111,7 +111,7 @@ export default {
   justify-content: space-between;
   border-radius: 10px;
   background: #FFF;
-  font-size: 14px;
+  font-size: 0.8rem;
   &--info {
     padding: 10px;
     &--top {
@@ -125,7 +125,7 @@ export default {
   &--cancel {
     display: block;
     color:  red;
-    font-size: 14px;
+    font-size: 0.8rem;
     font-weight: bold;
     padding: 10px;
     display: flex;

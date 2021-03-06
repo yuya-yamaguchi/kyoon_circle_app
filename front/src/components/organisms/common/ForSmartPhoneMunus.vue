@@ -122,7 +122,7 @@ export default {
       background: lightgray;
       .top-message {
         font-weight: bold;
-        font-size: 18px;
+        font-size: 1.0rem;
       }
       .menu-card {
         width: 100%;

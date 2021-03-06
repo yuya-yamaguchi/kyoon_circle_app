@@ -258,7 +258,7 @@ export default {
   }
   .already-entry {
     color: orange;
-    font-size: 14px;
+    font-size: 0.8rem;
   }
   :hover {
     opacity: 0.8;
@@ -270,7 +270,7 @@ export default {
   border-radius: 5px;
   background: #dedef5;
   &--user {
-    font-size: 14px;
+    font-size: 0.8rem;
     color: #333;
     a {
       color: #333;

@@ -43,8 +43,8 @@ export default {
     color: #333;
     text-decoration: none;
     border-bottom: 1px solid lightgray;
-    padding: 5px;
-    font-size: 15px;
+    padding: 10px 5px;
+    font-size: 0.9rem;
     &:hover {
       background: lightgray;
       font-weight: bold;

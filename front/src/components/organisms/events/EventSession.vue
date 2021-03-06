@@ -277,7 +277,7 @@ export default {
   border-radius: 10px;
   padding: 2px 10px;
   margin: 10px 0;
-  font-size: 18px;
+  font-size: 1.0rem;
   font-weight: bold;
   color: #FFF;
   background: #333;
@@ -307,7 +307,7 @@ export default {
         border-left: 1px solid;
         border-bottom: 1px solid;
         &--title {
-          font-size: 16px;
+          font-size: 0.9rem;
           color: #333;
           margin: 0 5px;
         }
@@ -325,7 +325,7 @@ export default {
           display: flex;
           flex-direction: column;
           height: 100%;
-          font-size: 13px;
+          font-size: 0.8rem;
           .entry-user {
             display: flex;
             justify-content: center;

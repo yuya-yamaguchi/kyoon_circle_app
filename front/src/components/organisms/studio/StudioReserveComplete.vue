@@ -51,7 +51,7 @@ h1 {
 .reserve-result {
   margin: 0 auto;
   text-align: center;
-  font-size: 18px;
+  font-size: 1.0rem;
   th {
     text-align: right;
   }

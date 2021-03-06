@@ -35,7 +35,7 @@ export default {
     cursor: pointer;
   }
   .page-no {
-    font-size: 20px;
+    font-size: 1.1rem;
     font-weight: bold;
     width: 30px;
     height: 30px;

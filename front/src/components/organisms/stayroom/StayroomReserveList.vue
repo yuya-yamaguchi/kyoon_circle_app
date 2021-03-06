@@ -121,7 +121,7 @@ export default {
     display: block;
     padding: 10px;
     tr {
-      font-size: 14px;
+      font-size: 0.8rem;
       th {
         min-width: 120px;
       }
@@ -130,7 +130,7 @@ export default {
   &--cancel {
     display: block;
     color:  red;
-    font-size: 14px;
+    font-size: 0.8rem;
     font-weight: bold;
     padding: 10px;
     display: flex;

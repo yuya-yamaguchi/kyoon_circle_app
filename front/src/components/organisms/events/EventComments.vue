@@ -213,13 +213,13 @@ export default {
         .comment-info {
           display: flex;
           justify-content: flex-start;
-          font-size: 15px;
+          font-size: 0.9rem;
           &--username {
             margin-right: 10px;
             color: #333;
           }
           &--time {
-            font-size: 12px;
+            font-size: 0.8rem;
             color: #888;
             
           }
@@ -241,7 +241,7 @@ export default {
         margin-top: 20px;
         padding-left: 20px;
         white-space: nowrap;
-        font-size: 14px;
+        font-size: 0.8rem;
         div {
           margin-bottom: 3px;
           cursor: pointer;

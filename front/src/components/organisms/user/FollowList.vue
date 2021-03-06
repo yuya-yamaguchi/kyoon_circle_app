@@ -93,7 +93,7 @@ export default {
         margin-left: 20px;
         &--profile {
           margin-top: 5px;
-          font-size: 12px;
+          font-size: 0.7rem;
           color: #888;
         }
       }

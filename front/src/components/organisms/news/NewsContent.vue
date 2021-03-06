@@ -104,7 +104,7 @@ export default {
   text-align: right;
 }
 .news-details {
-  font-size: 18px;
+  font-size: 0.9rem;
   margin: 20px 5px;
   padding: 10px;
   background: #FFF;
