@@ -107,7 +107,7 @@
   cursor: pointer;
 }
 
-.form-item{
+.form-item {
   width:  90%;
   min-width: 250px;
   margin: 0 auto;
@@ -263,6 +263,10 @@
 }
 .link-return {
   color: #2C3E50;
+}
+.addition-message {
+  font-size: 0.8rem;
+  color: #888;
 }
 
 @media screen and (max-width: 600px) {

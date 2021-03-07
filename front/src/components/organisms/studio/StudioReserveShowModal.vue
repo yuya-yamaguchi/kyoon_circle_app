@@ -24,8 +24,12 @@
           </td>
         </tr>
         <tr>
+          <th>利用人数</th>
+          <td>{{ studioReserve.users_num}}人</td>
+        </tr>
+        <tr>
           <th>料金</th>
-          <td>{{ studioReserve.fee}}円</td>
+          <td>¥{{ studioReserve.fee}}</td>
         </tr>
       </table>
       <div class="btns">

@@ -16,7 +16,8 @@
                 {{ formatDate(reserve.end_time, 'HH24:MI') }}
               </div>
             </div>
-            <p>{{ reserve.fee }}円</p>
+            <p>人数 {{ reserve.users_num }}人</p>
+            <p>料金 ¥{{ reserve.fee }}</p>
           </div>
           <a v-if="cancelFlgProp" @click="displayCancelModal(reserve, i)" class="reserve--cancel">
             <fa icon="trash"/>

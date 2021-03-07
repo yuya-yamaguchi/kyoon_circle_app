@@ -30,9 +30,14 @@
           <option v-for="min in mins" :key="min">{{ min }}</option>
         </select>
       </div>
+      <div class="reserve-form--users-num">
+        利用人数：<input v-model="usersNum" type="number" @change="changeUsersNum()"> 人
+      </div>
       <p class="form-item--err-msg">{{ errMsg.datetime }}</p>
+      <p class="form-item--err-msg">{{ errMsg.usersNum }}</p>
       <div class="reserve-form--fee">
-        料金 : ¥{{ paymentFee }}
+        <span>料金 : ¥{{ paymentFee }}</span>
+        <span v-if="usersNum > 1">（1人あたり¥{{ paymentFee/usersNum }}）</span>
       </div>
       <div class="reserve-form--btn">
         <div @click="closeModal()" class="default-button back-btn">戻る</div>
@@ -69,7 +74,8 @@ export default {
       errMsg: {},
       disabledFlg: false,
       reserving: false,
-      studioReserve: {}
+      studioReserve: {},
+      usersNum: ''
     }
   },
   computed: {
@@ -88,20 +94,25 @@ export default {
                            this.zeroPadding(this.selected.day, 2), 1);
     },
     paymentFee() {
-      var sa = calcReserveTime(this.selected);
-      if (sa <= 0) {
-        sa = 0
-      }
-      return sa * this.studioProp.fee
+      let sa = calcReserveTime(this.selected);
+      let usersNum = this.usersNum;
+      if (sa <= 0) sa = 0
+      if (usersNum <= 0) usersNum = 0
+      return sa * usersNum * this.studioProp.fee
     }
   },
   methods: {
     postStudioReserve: function() {
       let studioReserve = {}
-      studioReserve.date = this.selected.year + '-' + this.selected.month + '-' + this.selected.day;
-      studioReserve.start_time = this.zeroPadding(this.selected.start_hour, 2) + ':' + this.zeroPadding(this.selected.start_min, 2)
-      studioReserve.end_time = this.zeroPadding(this.selected.end_hour, 2) + ':' + this.zeroPadding(this.selected.end_min, 2)
-      this.$emit('post-studio-reserve', studioReserve);
+      if (this.studioReserveValid()) {
+        if(window.confirm('予約を確定します。よろしいですか？')) {
+          studioReserve.date = this.selected.year + '-' + this.selected.month + '-' + this.selected.day;
+          studioReserve.start_time = this.zeroPadding(this.selected.start_hour, 2) + ':' + this.zeroPadding(this.selected.start_min, 2)
+          studioReserve.end_time = this.zeroPadding(this.selected.end_hour, 2) + ':' + this.zeroPadding(this.selected.end_min, 2)
+          studioReserve.users_num = this.usersNum
+          this.$emit('post-studio-reserve', studioReserve);
+        }
+      }
     },
     closeModal: function() {
       this.$emit('close-modal');
@@ -138,6 +149,24 @@ export default {
       this.disabledFlg = false;
       this.errMsg.datetime = "";
       return
+    },
+    changeUsersNum() {
+      if (!this.usersNum) {
+        this.errMsg.usersNum = '利用人数を入力してください';
+        return false
+      }
+      else if (this.usersNum < 1) {
+        this.errMsg.usersNum = '利用人数は0人以上で入力してください';
+        return false
+      }
+      this.errMsg.usersNum = "";
+      return true
+    },
+    studioReserveValid() {
+      if (!this.changeUsersNum()) {
+        return false
+      }
+      return true
     }
   }
 }
@@ -168,6 +197,13 @@ h1 {
   }
   &--time {
     margin: 10px;
+  }
+  &--users-num {
+    margin: 10px;
+    input {
+      width: 50px;
+      padding: 2px;
+    }
   }
   &--fee {
     font-size: 1.1rem;

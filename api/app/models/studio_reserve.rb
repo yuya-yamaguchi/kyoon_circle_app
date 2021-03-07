@@ -11,6 +11,16 @@ class StudioReserve < ApplicationRecord
   scope :after_today_desc,  -> { after_today.date_desc.time_desc }
   scope :bofore_today_desc, -> { bofore_today.date_desc.time_desc }
 
+  def reserve_line
+    text = "【スタジオ予約】\nスタジオ予約が行われました\n\n予約者：#{self.user.name}\n日時　：#{date.strftime('%Y/%m/%d')} #{start_time.strftime('%H:%M')}〜#{end_time.strftime('%H:%M')}\n人数　：#{users_num}人\n料金　：#{fee}円"
+    push_line(text)
+  end
+
+  def cancel_line
+    text = "【予約キャンセル】\nスタジオの予約がキャンセルされました\n\n予約者：#{self.user.name}\n日時　：#{date.strftime('%Y/%m/%d')} #{start_time.strftime('%H:%M')}〜#{end_time.strftime('%H:%M')}\n人数　：#{users_num}人\n料金　：#{fee}円"
+    push_line(text)
+  end
+
   private
 
   # 予約の重複がないか確認する
@@ -52,5 +62,20 @@ class StudioReserve < ApplicationRecord
   # 終了時刻の「00:00」を「24:00」として扱いたいため変換
   def conv_time(time)
     return (time == '00:00') ? '24:00' : time
+  end
+
+  def push_line(text)
+    if Rails.env.production?
+      group_id = ENV['LINE_STUDIO_RESERVE_GROUPID']
+      message = {
+        type: 'text',
+        text: text
+      }
+      client = Line::Bot::Client.new do |config|
+        config.channel_secret = ENV['LINE_CHANNEL_SECRET']
+        config.channel_token = ENV['LINE_CHANNEL_TOKEN']
+      end
+      response = client.push_message(group_id, message)
+    end
   end
 end
