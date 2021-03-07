@@ -34,7 +34,7 @@ export default {
   border: 1px solid red;
   margin: 10px 0;
   .message {
-    font-size: 15px;
+    font-size: 0.9rem;
     color: red;
     padding: 2px 5px;
   }

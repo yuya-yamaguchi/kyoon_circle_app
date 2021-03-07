@@ -31,7 +31,7 @@ export default {
     text-decoration: none;
     color: #333;
     &--name {
-      font-size: 15px;
+      font-size: 0.9rem;
     }
     &--count {
       font-weight: bold;

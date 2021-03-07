@@ -92,7 +92,7 @@ export default {
     &--edit {
       margin: 10px;
       text-align: right;
-      font-size: 14px;
+      font-size: 0.8rem;
       font-weight: bold;
       text-decoration: none;
       color: #333;
@@ -110,7 +110,7 @@ export default {
     min-height: 200px;
     &--contents {
       margin-top: 20px;
-      font-size: 14px;
+      font-size: 0.8rem;
       box-sizing: border-box;
       background: #FFF;
       white-space: pre-wrap;

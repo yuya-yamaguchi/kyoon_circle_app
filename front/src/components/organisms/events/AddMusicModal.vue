@@ -85,7 +85,7 @@ export default {
   h1 {
     margin-bottom: 30px;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 1.2rem;
     text-align: center;
   }
 }

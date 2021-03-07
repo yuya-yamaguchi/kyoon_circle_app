@@ -112,7 +112,7 @@ export default {
   margin: 50px auto;
   max-width: 500px;
   &--block {
-    margin-bottom: 20px;
+    margin: 20px 30px;
   }
 }
 </style>

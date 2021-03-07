@@ -32,7 +32,7 @@ export default {
     color: #FFF;
     font-weight: bold;
     opacity: 0.3;
-    font-size: 14px;
+    font-size: 0.8rem;
   }
   .can-play {
     opacity: 1;

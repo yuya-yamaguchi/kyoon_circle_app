@@ -73,7 +73,7 @@ export default {
   h1 {
     margin-bottom: 30px;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 1.2rem;
     text-align: center;
   }
   .select-users {
@@ -88,7 +88,7 @@ export default {
     }
     &--err-msg {
       margin: 3px auto;
-      font-size: 14px;
+      font-size: 0.8rem;
       color: red;
       text-align: center;
     }

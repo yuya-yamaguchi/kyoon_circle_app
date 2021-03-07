@@ -75,7 +75,7 @@ header{
     line-height: 60px;
     padding: 0 10px;
     color: #FFF;
-    font-size: 30px;
+    font-size: 1.4rem;
     text-decoration: none;
     white-space: nowrap;
   }
@@ -85,6 +85,7 @@ header{
     justify-content: flex-end;
     .header-menu {
       text-decoration: none;
+      font-size: 0.9rem;
       color: #FFF;
       line-height: 60px;
       margin: 0 20px;
@@ -112,7 +113,7 @@ header{
       display: block;
       text-decoration: none;
       color:#FFF;
-      font-size: 12px;
+      font-size: 0.8rem;
       font-weight: bold;
       background: linear-gradient(70deg, var(--gradation-color), var(--accent-color));
       border: 1px solid;

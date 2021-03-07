@@ -88,7 +88,7 @@ export default {
     width: 100%;
     height: 100%;
     color: #FFF;
-    font-size: 20px;
+    font-size: 1.1rem;
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -109,7 +109,7 @@ export default {
     }
     .entry-true {
       position: absolute;
-      font-size: 12px;
+      font-size: 0.7rem;
       padding: 1px 10px;
       margin: 3px 0 0 3px;
       background: orange;
@@ -125,11 +125,11 @@ export default {
       transform: translate(-50%,-50%);
       text-align: center;
       &--date {
-        font-size: 24px;
+        font-size: 1.2rem;
         font-weight: bold;
       }
       &--week {
-        font-size: 20px;
+        font-size: 1.1rem;
         font-weight: bold;
         color: var(--accent-color);
         
@@ -140,7 +140,7 @@ export default {
     padding: 10px;
     width: 70%;
     &--title {
-      font-size: 18px;
+      font-size: 1.0rem;
     }
     &--type {
       background: var(--accent-color);
@@ -174,7 +174,7 @@ export default {
       }
       &--num {
         margin-left: 2px;
-        font-size: 16px;
+        font-size: 0.9rem;
         font-weight: bold;
       }
     }

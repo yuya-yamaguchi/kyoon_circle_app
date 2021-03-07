@@ -121,7 +121,7 @@ export default {
 .admin-menus-container {
   margin: 0 20px;
   .admin-menu-title {
-    font-size: 20px;
+    font-size: 1.1rem;
     font-weight: bold;
   }
   .admin-menus {

@@ -31,7 +31,7 @@ export default {
   flex-wrap : wrap;
   padding: 10px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 0.9rem;
   background: #333;
   border-top: 1px dotted #888;
   color: #FFF;
@@ -56,6 +56,12 @@ export default {
     &--arrow {
       margin: 0 10px;
     }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .bread-crumbs {
+    font-size: 0.85rem;
   }
 }
 </style>

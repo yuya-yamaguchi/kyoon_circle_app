@@ -17,12 +17,16 @@
         </td>
       </tr>
       <tr>
+        <th>利用人数：</th>
+        <td>{{ studioReserve.users_num }}人</td>
+      </tr>
+      <tr>
         <th>料金：</th>
-        <td>¥{{ studioReserve.fee }}</td>
+        <td>¥{{ studioReserve.fee }}（1人あたり¥{{ studioReserve.fee/studioReserve.users_num }}）</td>
       </tr>
     </table>
     <div class="assist-message">
-      ※キャンセルは「マイページ > スタジオ予約一覧」から可能です
+      ※キャンセルは「マイページ > スタジオ予約確認」から可能です
     </div>
     <button @click="closeModal()" class="default-button back-btn">閉じる</button>
   </div>
@@ -51,7 +55,7 @@ h1 {
 .reserve-result {
   margin: 0 auto;
   text-align: center;
-  font-size: 18px;
+  font-size: 1.0rem;
   th {
     text-align: right;
   }

@@ -48,14 +48,14 @@ export default {
   -ms-transform: translate(-50%, -50%);
   .success-msg {
     color: #FFF;
-    font-size: 20px;
+    font-size: 1.1rem;
     padding: 5px 20px;
     background: var(--main-color);
     
   }
   .error-msg {
     color: red;
-    font-size: 20px;
+    font-size: 1.1rem;
     padding: 5px 20px;
     background: rgba(243, 195, 195, 0.7);
   }

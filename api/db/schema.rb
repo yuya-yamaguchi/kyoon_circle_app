@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_24_173151) do
+ActiveRecord::Schema.define(version: 2021_03_07_154840) do
 
   create_table "event_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -149,6 +149,7 @@ ActiveRecord::Schema.define(version: 2021_02_24_173151) do
     t.time "start_time", null: false
     t.time "end_time", null: false
     t.integer "fee", default: 0
+    t.integer "users_num", default: 0
     t.index ["studio_id"], name: "index_studio_reserves_on_studio_id"
     t.index ["user_id"], name: "index_studio_reserves_on_user_id"
   end
