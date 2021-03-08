@@ -23,7 +23,7 @@
       </div>
     </div>
     <div v-if="!followUsers.length" class="nothing-msg">
-      {{ nothigMsg }}
+      {{ nothingMsg }}
     </div>
   </div>
 </template>
@@ -48,13 +48,13 @@ export default {
     FollowBtn
   },
   computed: {
-    nothigMsg() {
+    nothingMsg() {
       let message = ''
       if (this.$route.query.follow === 'following') {
-        message = 'フォローしているユーザはいません'
+        message = 'フォロー中のユーザはいません'
       }
       else if (this.$route.query.follow === 'followers') {
-        message = 'フォロー中のユーザはいません'
+        message = 'まだフォローされていません'
       }
       return message
     }

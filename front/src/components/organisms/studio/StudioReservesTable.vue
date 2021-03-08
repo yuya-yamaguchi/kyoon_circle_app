@@ -26,40 +26,42 @@
           <fa icon="chevron-right" class="small-icon"></fa>
         </div>
       </div>
-      <table class="reserves-table">
-        <tr class="reserves-table--header">
-          <th class="reserve-times-head"></th>
-          <th v-for="(day, w) in weeks" :key="w"
-            :class="{'saturday': calcWeek(day, 1)=='土',
-                     'sunday':   calcWeek(day, 1)=='日'}">
-            {{ formatDate(day, 'M/D') }}<br>
-            （{{ calcWeek(day, 1) }}）
-          </th>
-        </tr>
-        <tr v-for="(reserve, i) in reserves" :key="i" class="reserves-table--content">
-          <td class="reserve-time">
-            <span>{{ Math.floor(i/2) }} : </span>
-            <span v-if="i%2==0">00</span>
-            <span v-else>30</span>
-          </td>
-          <template v-for="(r, j) in reserve" :key="j">
-            <template v-if="adminProp==0">
-              <td v-if="r.reserve_type==1"  class="already-reserved">×</td>
-              <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
-              <td v-else @click="displayReserveModal(r)"  class="can-reserve">{{formatDate(r.date, 'M/D')}} {{r.hour}}:{{ zeroPadding(r.minutes, 2) }}</td>
+      <div class="studio-reserves-table-container">
+        <table class="reserves-table">
+          <tr class="reserves-table--header">
+            <th class="reserve-times-head"></th>
+            <th v-for="(day, w) in weeks" :key="w"
+              :class="{'saturday': calcWeek(day, 1)=='土',
+                      'sunday':   calcWeek(day, 1)=='日'}">
+              {{ formatDate(day, 'M/D') }}<br>
+              （{{ calcWeek(day, 1) }}）
+            </th>
+          </tr>
+          <tr v-for="(reserve, i) in reserves" :key="i" class="reserves-table--content">
+            <td class="reserve-time">
+              <span>{{ Math.floor(i/2) }} : </span>
+              <span v-if="i%2==0">00</span>
+              <span v-else>30</span>
+            </td>
+            <template v-for="(r, j) in reserve" :key="j">
+              <template v-if="adminProp==0">
+                <td v-if="r.reserve_type==1"  class="already-reserved">×</td>
+                <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
+                <td v-else @click="displayReserveModal(r)"  class="can-reserve">{{formatDate(r.date, 'M/D')}} {{r.hour}}:{{ zeroPadding(r.minutes, 2) }}</td>
+              </template>
+              <template v-if="adminProp==1">
+                <td v-if="r.reserve_type==1" class="reserved-user"
+                  @click="showReserve(r)"
+                  :class="{'hide-name': i!=0 && (reserves[i-1][j].studio_reserve_id==r.studio_reserve_id)}">
+                  {{ r.username }}
+                </td>
+                <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
+                <td v-else class="no-reserves-admin"></td>
+              </template>
             </template>
-            <template v-if="adminProp==1">
-              <td v-if="r.reserve_type==1" class="reserved-user"
-                @click="showReserve(r)"
-                :class="{'hide-name': i!=0 && (reserves[i-1][j].studio_reserve_id==r.studio_reserve_id)}">
-                {{ r.username }}
-              </td>
-              <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
-              <td v-else class="no-reserves-admin"></td>
-            </template>
-          </template>
-        </tr>
-      </table>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -183,92 +185,109 @@ export default {
       }
     }
   }
-  .reserves-table {
-    width: 100%;
-    border: 1px solid;
-    margin: 0 auto;
-    table-layout: fixed;
-    &--header {
-      th {
-        border-bottom: 1px dotted;
-        border-right: 1px dotted #FFF;
-        text-align: center;
+  .studio-reserves-table-container {
+    max-height: calc(100vh - 300px);
+    overflow: scroll;
+    .reserves-table {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #333;
+      margin: 0 auto;
+      table-layout: fixed;
+      &--header {
+        th {
+          border-bottom: 1px dotted;
+          border-right: 1px dotted #FFF;
+          text-align: center;
+          background: #333;
+          color: #FFF;
+          font-weight: bold;
+          position: sticky;
+          top: 0;
+          z-index: 1;
+          &:before{
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #FFF;
+          }
+        }
+        .reserve-times-head {
+          width: 60px;
+        }
+        .saturday {
+          background: var(--saturday-color);
+        }
+        .sunday {
+          background: var(--sunday-color);
+        }
+      }
+      &--content {
+        border: 1px dotted;
         background: #333;
         color: #FFF;
-        font-weight: bold;
-      }
-      .reserve-times-head {
-        width: 60px;
-      }
-      .saturday {
-        background: var(--saturday-color);
-      }
-      .sunday {
-        background: var(--sunday-color);
-      }
-    }
-    &--content {
-      border: 1px dotted;
-      background: #333;
-      color: #FFF;
-      .can-reserve {
-        border: 1px dotted #333;
-        height: 20px;
-        background: #FFF;
-        font-size: 12px;
-        text-align: center;
-        cursor: pointer;
-        &:hover{
-          background: rgb(231, 231, 231);
+        .can-reserve {
+          border: 1px dotted #333;
+          height: 20px;
+          background: #FFF;
+          font-size: 12px;
+          text-align: center;
+          cursor: pointer;
+          &:hover{
+            background: rgb(231, 231, 231);
+            color: #888;
+            transition: .3s;
+          }
+        }
+        .can-not-reserve {
+          background: lightgray;
           color: #888;
-          transition: .3s;
+          text-align: center;
+          border: 1px dotted;
+        }
+        .already-reserved {
+          background: lightgray;
+          color: #888;
+          text-align: center;
+          border: 1px dotted;
+        }
+        .reserved-user {
+          border: 1px dotted #333;
+          background: #FFF;
+          color: #333;
+          font-size: 12px;
+          text-align: center;
+          cursor: pointer;
+          &:hover {
+            color: var(--accent-color);
+          }
+        }
+        .no-reserves {
+          border: 1px dotted #333;
+          height: 20px;
+          background: #FFF;
+        }
+        .no-reserves-admin {
+          border: 1px dotted #333;
+          height: 20px;
+          background: lightgray;
+        }
+        .hide-name {
+          font-size: 0px;
+          color: #FFF;
+          border-top: 1px solid #FFF;
         }
       }
-      .can-not-reserve {
-        background: lightgray;
-        color: #888;
-        text-align: center;
-        border: 1px dotted;
-      }
-      .already-reserved {
-        background: lightgray;
-        color: #888;
-        text-align: center;
-        border: 1px dotted;
-      }
-      .reserved-user {
-        border: 1px dotted #333;
-        background: #FFF;
-        color: #333;
-        font-size: 12px;
-        text-align: center;
-        cursor: pointer;
-        &:hover {
-          color: var(--accent-color);
-        }
-      }
-      .no-reserves {
-        border: 1px dotted #333;
+      .reserve-time {
+        width: 100px;
         height: 20px;
-        background: #FFF;
+        text-align: right;
+        padding-right: 5px;
+        white-space: nowrap
       }
-      .no-reserves-admin {
-        border: 1px dotted #333;
-        height: 20px;
-        background: lightgray;
-      }
-      .hide-name {
-        font-size: 0px;
-        color: #FFF;
-        border-top: 1px solid #FFF;
-      }
-    }
-    .reserve-time {
-      width: 100px;
-      height: 20px;
-      text-align: right;
-      padding-right: 5px;
-      white-space: nowrap
     }
   }
 }

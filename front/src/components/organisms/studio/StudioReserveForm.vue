@@ -49,7 +49,6 @@
 
 <script>
 import { commonMethods } from '@/mixins/commonMethods';
-var today = new Date();
 
 export default {
   mixins: [commonMethods],
@@ -118,6 +117,7 @@ export default {
       this.$emit('close-modal');
     },
     changeDateTime: function() {
+      let today = new Date();
       let select_date = new Date(this.selected.year,
                                  this.selected.month-1,
                                  this.selected.day,
