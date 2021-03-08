@@ -2,6 +2,7 @@ class StudioReserve < ApplicationRecord
   belongs_to :user
 
   validate :validate_reserve_duplicate
+  validate :validate_before_today
   before_destroy :validate_before_today
 
   scope :after_today,  -> { where('date >= ?', Time.now.in_time_zone.to_date) }
@@ -54,7 +55,9 @@ class StudioReserve < ApplicationRecord
       is_cant_cancel = true if start_time.to_s(:time) <= now.to_s(:time)
     end
     if is_cant_cancel
-      errors.add(:date, '開始日時を過ぎているため取消できません')
+      # 更新処理がある場合、問題あり（登録更新時と削除時でメソッドを分ける？？）
+      message = id.present? ? '開始日時を過ぎているため取消できません' : '開始日時を過ぎているため予約できません'
+      errors[:base] << message
       throw(:abort)
     end
   end

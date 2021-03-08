@@ -60,7 +60,9 @@ class Studio < ApplicationRecord
           studio_reserve_id = reserved[:studio_reserve_id]
           reserve_type = 1
         # 過去日付、または60日後の場合
-        elsif now.to_date > day || (now.to_date + 60) < day
+        elsif now.to_date > day ||
+              (now.to_date + 60) < day ||
+              (day == now.to_date && now.to_s(:time) > format('%02d:%02d', time[:hour], time[:minutes]))
           reserve_type = 2 # 予約不可
         end
         work << { date: day, hour: time[:hour], minutes: time[:minutes], reserve_type: reserve_type, user_id: user_id,

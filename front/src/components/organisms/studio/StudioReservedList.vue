@@ -89,7 +89,7 @@ export default {
         .catch((error) => {
           this.$store.dispatch(
             "flash/create",
-            { message: error.response.data.error_message,
+            { message: error.response.data[0],
               type:    2
             }
           );

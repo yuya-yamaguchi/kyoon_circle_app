@@ -26,7 +26,7 @@
           <p>前の月</p>
         </div>
         <div class="current-month" @click="changeMonth(0)">
-          <p>現在の月へ</p>
+          <p>今月へ</p>
         </div>
         <div class="next-month some-updown-center" @click="changeMonth(Number($route.query.month)+1)">
           <p>次の月</p>
