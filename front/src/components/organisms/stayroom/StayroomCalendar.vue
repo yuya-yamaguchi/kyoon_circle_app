@@ -46,7 +46,7 @@
           <td v-for="(day, index) in week" :key="index"
             class="calendar-date"
             :class="{ 'other-month': (currentDate.get('month')+1) != day.month, 'today': isToday(day) }">
-            <div :class="{'saturday': index==6, 'sunday': index==0}">{{ day.date }}</div>
+            <div class="calendar-date--no" :class="{'saturday': index==6, 'sunday': index==0}">{{ day.date }}</div>
             <div v-if="isAdminPage">
               <div v-for="reserve in reserveUsers(day)" :key="reserve" class="reserve-user">
                 <p @click="displayReserveShowModal(reserve)">{{ reserve.user_name }}</p>
@@ -270,11 +270,14 @@ function fmtApiDate2(value) {
     }
   }
   &--body {
-    td {
+    .calendar-date {
       width: 100px;
       height: 60px;
       border: 1px solid;
       vertical-align: top;
+      &--no {
+        font-weight: bold;
+      }
       .reserve-btn {
         font-size: 12px;
         font-weight: bold;

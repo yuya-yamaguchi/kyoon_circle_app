@@ -180,9 +180,9 @@ export default {
     }
     .entry-following-user {
       flex: 2;
-      font-size: 12px;
+      font-size: 0.7rem;
       color: #888;
-      width: 120px;
+      max-width: 100px;
       margin-top: 5px;
       bottom: 0;
     }
