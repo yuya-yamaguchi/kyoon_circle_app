@@ -95,12 +95,9 @@ class Api::UsersController < ApplicationController
                                  { instrument_ids: [] })
   end
 
+  # ログインユーザが対象のユーザをフォローしているかを判定
   def set_is_followed(follow_users)
-    outparams = []
-    current_user_followed_ids = @current_user.active_relationships.map{|relationship| relationship.followed_id}
-    follow_users.each do |follow_user|
-      outparams << follow_user.set_following_status(current_user_followed_ids)
-    end
-    outparams
+    current_user_followed_ids = @current_user.active_relationships.map { |relationship| relationship.followed_id }
+    outparams = follow_users.map { |follow_user| follow_user.set_following_status(current_user_followed_ids) }
   end
 end

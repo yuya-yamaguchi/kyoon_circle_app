@@ -9,10 +9,7 @@ class Api::EventsController < ApplicationController
   def index
     search_events = Event.search(params)
     pagy, events = pagy(search_events, items: 5)
-    out_params = []
-    events.each do |event|
-      out_params << event.set_index_params(@current_user)
-    end
+    out_params = events.map { |event| event.set_index_params(@current_user) }
     render status: 200, json: { events: out_params, pagy: pagy_metadata(pagy) }
   end
 
@@ -70,9 +67,7 @@ class Api::EventsController < ApplicationController
   def entry_cancel
     event_entry = @event.event_entries.find_by(user_id: params[:user_id])
     if event_entry.destroy && @event.user_entry_parts.where(user_id: params[:user_id]).delete_all
-      @event.session_musics.each do |session_music|
-        session_music.change_status
-      end
+      @event.session_musics.each { |session_music| session_music.change_status }
       entry_users = @event.users
       render status: 200, json: { entry_users: entry_users }
     else

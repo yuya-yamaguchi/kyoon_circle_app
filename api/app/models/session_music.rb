@@ -1,6 +1,7 @@
 class SessionMusic < ApplicationRecord
   belongs_to :event
   has_many :session_parts, dependent: :destroy
+  accepts_nested_attributes_for :session_parts
 
   before_create :set_youtube_url
   before_update :set_youtube_url

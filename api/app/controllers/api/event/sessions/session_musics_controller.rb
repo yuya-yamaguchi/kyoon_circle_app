@@ -10,9 +10,7 @@ class Api::Event::Sessions::SessionMusicsController < ApplicationController
   def create
     session_music = SessionMusic.new(session_music_params)
     if session_music.save
-      params[:session_parts].length.times do |i|
-        SessionPart.create(session_part_params(i, session_music.id))
-      end
+      params[:session_parts].each{ |session_part| SessionPart.create(session_part_params(session_part, session_music.id)) }
       render status: 201, json: { session_music: session_music }
     else
       render status: 400
@@ -64,8 +62,8 @@ class Api::Event::Sessions::SessionMusicsController < ApplicationController
           .merge(user_id: @current_user.id, event_id: params[:event_id])
   end
 
-  def session_part_params(i, session_music_id)
-    params.require(:session_parts)[i].permit(:part_category_id, :status).merge(session_music_id: session_music_id)
+  def session_part_params(session_part, session_music_id)
+    session_part.permit(:part_category_id, :status).merge(session_music_id: session_music_id)
   end
 
   def set_event
