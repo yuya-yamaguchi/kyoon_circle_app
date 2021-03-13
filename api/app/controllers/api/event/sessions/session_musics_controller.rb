@@ -13,7 +13,7 @@ class Api::Event::Sessions::SessionMusicsController < ApplicationController
       params[:session_parts].each{ |session_part| SessionPart.create(session_part_params(session_part, session_music.id)) }
       render status: 201, json: { session_music: session_music }
     else
-      render status: 400
+      render status: 400, json: session_music.errors.full_messages
     end
   end
 
