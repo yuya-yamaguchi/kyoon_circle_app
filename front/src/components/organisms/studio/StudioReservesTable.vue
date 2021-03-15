@@ -46,7 +46,7 @@
             <template v-for="(r, j) in reserve" :key="j">
               <template v-if="adminProp==0">
                 <td v-if="r.reserve_type==1"  class="already-reserved">×</td>
-                <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
+                <td v-else-if="r.reserve_type==2" class="can-not-reserve"></td>
                 <td v-else @click="displayReserveModal(r)"  class="can-reserve">{{formatDate(r.date, 'M/D')}} {{r.hour}}:{{ zeroPadding(r.minutes, 2) }}</td>
               </template>
               <template v-if="adminProp==1">
@@ -55,7 +55,7 @@
                   :class="{'hide-name': i!=0 && (reserves[i-1][j].studio_reserve_id==r.studio_reserve_id)}">
                   {{ r.username }}
                 </td>
-                <td v-else-if="r.reserve_type==2" class="can-not-reserve">-</td>
+                <td v-else-if="r.reserve_type==2" class="can-not-reserve"></td>
                 <td v-else class="no-reserves-admin"></td>
               </template>
             </template>
@@ -258,9 +258,10 @@ export default {
           border: 1px dotted #333;
           background: #FFF;
           color: #333;
-          font-size: 12px;
+          font-size: 0.7rem;
           text-align: center;
           cursor: pointer;
+          word-wrap: break-word;
           &:hover {
             color: var(--accent-color);
           }
@@ -287,6 +288,20 @@ export default {
         text-align: right;
         padding-right: 5px;
         white-space: nowrap
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .studio-reserve-container {
+    .studio-reserves-table-container {
+      .reserves-table {
+        &--content {
+          .can-reserve {
+            font-size: 0px;
+          }
+        }
       }
     }
   }

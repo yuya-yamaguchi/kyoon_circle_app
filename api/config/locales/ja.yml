@@ -24,6 +24,9 @@ ja:
         details: 内容
       studio_reserve:
         date: ''
+      session_music:
+        title: 曲名
+        artist: アーティスト名
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'

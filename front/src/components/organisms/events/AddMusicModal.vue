@@ -3,6 +3,9 @@
     <div class="add-music-container">
       <div @click="closeModal()" class="close-button">×</div>
       <h1>曲の追加</h1>
+      <div class="error-messages">
+        <ErrMsg/>
+      </div>
       <SessionMusicForm
         :part-categories-prop="partCategoriesProp"
         :session-music-prop="sessionMusic"
@@ -18,17 +21,23 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import SessionMusicForm from '@/components/organisms/events/sessions/SessionMusicForm';
+import ErrMsg from "@/components/organisms/common/ErrMsg.vue";
+import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
+  mixins: [errorMethods],
   props: {
     partCategoriesProp: {}
   },
   components: {
-    SessionMusicForm
+    SessionMusicForm,
+    ErrMsg
   },
   data() {
     return {
-      sessionMusic: {},
+      sessionMusic: {
+        title: "",
+        artist: ""},
       sessionParts: this.partCategoriesProp.map(function(pc){ return {part_category_id: pc.id, status: "1"} }),
     }
   },

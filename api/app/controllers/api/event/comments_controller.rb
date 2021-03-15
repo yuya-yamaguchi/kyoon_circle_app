@@ -5,10 +5,7 @@ class Api::Event::CommentsController < ApplicationController
 
   def index
     event_comments = @event.event_comments.recent
-    out_params = []
-    event_comments.each do |event_comment|
-      out_params << event_comment.set_out_params
-    end
+    out_params = event_comments.map { |event_comment| event_comment.set_out_params }
     render status: 200, json: out_params
   end
 

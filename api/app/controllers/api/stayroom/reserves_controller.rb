@@ -10,7 +10,6 @@ class Api::Stayroom::ReservesController < ApplicationController
     stayroom_reserve = StayroomReserve.select('stayroom_reserves.*', 'users.name AS user_name', 'stayrooms.name AS room_name')
                                       .joins(:user).joins(:stayroom)
                                       .find_by(id: params[:id])
-    # binding.pry
     render status: 200, json: { stayroom_reserve: stayroom_reserve }
   end
   

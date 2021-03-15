@@ -23,24 +23,120 @@
 
 # サイト概要
 京都で活動している音楽サークルの専用サイト<br>
-サークルの代表が所有しているスタジオの予約や、イベントの開催をWebにて取りまとめられるよう作成
+サークルの代表が所有しているスタジオの予約、イベントの開催などをWebにて取りまとめられるようにするため作成。
 
 # 機能一覧
+⚫︎はログイン時使用可能な機能
+★は管理者が使用可能な機能
 ### 認証
-* 新規会員登録
-* ログイン
-* ログアウト
-
+* ・新規会員登録
+* ・ログイン
+* ⚫︎ログアウト
+* ⚫︎パスワード変更
+* ・パスワード失念時の再設定
 ### お知らせ
-* 一覧表示、詳細表示
-* 作成(LINE通知)、編集、削除（管理者のみ）
-
+* ・お知らせ一覧表示
+* ・お知らせ詳細表示
+* ★お知らせ新規登録(LINE通知)
+* ★お知らせ編集、削除
 ### イベント
-* 一覧表示、詳細表示
-* 作成(LINE通知)、編集、削除（管理者のみ）
-* 参加、参加キャンセル（ログイン時）
-* イベントへのコメント投稿、編集、削除（ログイン時）
-
+* ・イベント一覧表示
+* ・イベント詳細表示
+* ⚫︎イベントへの参加、キャンセル
+* ⚫︎参加したイベントの確認
+* ⚫︎イベントへのコメント（編集、削除可）
+* ★イベント新規登録(LINE通知)
+* ★イベント編集、削除
 ### スタジオ
-* 予約、予約キャンセル（ログイン時）
-* スタジオ情報の編集（管理者のみ）
+* ・スタジオ詳細表示
+* ⚫︎スタジオ予約、キャンセル
+* ⚫︎予約したスタジオの確認
+* ★スタジオ情報の編集
+
+# 初期セットアップ（環境構築）
+### 前提
+* 開発端末にDockerがインストールされていること
+
+### 手順１
+* 開発端末にgit cloneする
+```
+git clone https://github.com/yuya-yamaguchi/kyoon_circle_app.git
+```
+* クローンしたディレクトリに移動
+```
+cd kyoon_circle_app
+```
+* .sec_envファイルの作成
+```
+touch ./api/.sec_env
+```
+* Dockerコンテナをビルド
+```
+docker-compose build
+```
+
+### 手順２：バックエンド側（API側）
+* DBの作成
+```
+docker-compose run web rails db:create
+rm .//api/db/migrate/20210122213320_drop_table_user_reserves.rb
+docker-compose run web rails db:migrate
+```
+* 初期データの設定
+```
+docker-compose run web rails db:seed
+docker-compose run web rails r db/seeds/v1.1/instrument.rb
+docker-compose run web rails r db/seeds/v1.2/part_categories.rb
+docker-compose run web rails r db/seeds/v1.2/part_categories.rb
+docker-compose run web rails r db/seeds/v1.3/stayroom.rb
+```
+
+### 手順3：フロント側
+* フロントコンテナ内にアクセス
+```
+docker-compose run front sh
+```
+* vue-routerをインストール
+```
+npm install vue-router
+```
+* vue-vuexをインストール
+```
+npm install vuex
+```
+* vuex-persistedstateをインストール
+```
+npm install vuex-persistedstate
+```
+* axiosをインストール
+```
+npm install axios
+```
+* sass-loaderをインストール
+```
+npm install sass-loader node-sass --save-dev
+```
+* momentをインストール
+```
+npm install moment
+```
+* fontawesomeをインストール
+```
+npm i --save @fortawesome/fontawesome-svg-core
+npm i --save @fortawesome/free-solid-svg-icons
+npm i --save @fortawesome/free-brands-svg-icons
+npm i --save @fortawesome/vue-fontawesome@3.0.0-1
+```
+
+### 手順4
+* 初期セットアップの変更を対比（暫定）
+```
+git stash
+```
+
+### ゲストログインを有効にする場合
+* 下記内容でユーザを新規登録する
+
+|  email  |  password  |
+| ------- | ---------- |
+|  	normal@example.com  |  12345678  |

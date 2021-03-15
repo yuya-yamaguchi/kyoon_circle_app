@@ -9,11 +9,8 @@ class Studio < ApplicationRecord
   def week_reserve(params)
     reserves_params = []
     now = Time.now.in_time_zone
-    weeks = []
     # 1週間を配列に設定
-    7.times do |i|
-      weeks << now.to_date + i + (params[:week].to_i * 7)
-    end
+    weeks = 7.times.map { |i| now.to_date + i + (params[:week].to_i * 7) }
     # 1週間分のスタジオ予約を取得
     studio_reserves = self.studio_reserves.where('date between ? and ?', weeks[0], weeks[6])
     reserves = []
