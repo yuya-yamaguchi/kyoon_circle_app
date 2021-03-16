@@ -16,6 +16,7 @@ class Api::Stayroom::ReservesController < ApplicationController
   def create
     stayroom_reserve = StayroomReserve.new(stayroom_reserve_params)
     if stayroom_reserve.save
+      stayroom_reserve.reserve_line
       render status: 201, json: { stayroom_reserve: stayroom_reserve }
     else
       render status: 400, json: stayroom_reserve.errors.full_messages
@@ -25,6 +26,7 @@ class Api::Stayroom::ReservesController < ApplicationController
   def destroy
     stayroom_reserve = StayroomReserve.find(params[:id])
     if stayroom_reserve.destroy
+      stayroom_reserve.cancel_line
       render status: 201
     else
       render status: 400, json: stayroom_reserve.errors.full_messages
