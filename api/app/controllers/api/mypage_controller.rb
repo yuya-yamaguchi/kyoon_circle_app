@@ -19,7 +19,7 @@ class Api::MypageController < ApplicationController
     out_future_params = future_events.map { |future_event| future_event.set_index_params(@current_user) }
     # 過去の参加イベント
     history_events = @current_user.events.before_today.order_date_desc
-    out_history_params = history_events.each { |history_event| history_event.set_index_params(@current_user) }
+    out_history_params = history_events.map { |history_event| history_event.set_index_params(@current_user) }
     render status: 200, json: { future_events: out_future_params, history_events: out_history_params }
   end
 

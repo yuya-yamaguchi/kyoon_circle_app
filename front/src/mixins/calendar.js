@@ -1,5 +1,4 @@
 import moment from "moment";
-let today = new Date();
 
 export const calendar = {
   data() {
@@ -45,6 +44,7 @@ export const calendar = {
       return date.add(6 - youbiNum, "days");
     },
     isToday(day) {
+      let today = new Date();
       if (today.getFullYear() === day.year &&
           today.getMonth()+1  === day.month &&
           today.getDate()     ===  day.date) {
