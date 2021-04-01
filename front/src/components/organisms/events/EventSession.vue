@@ -113,7 +113,8 @@ export default {
       users: {},
       escSessionMusic: {},
       escSessionPart: {},
-      escUsers: {}
+      escUsers: {},
+      isEnteringPart: false
     }
   },
   methods: {
@@ -160,7 +161,8 @@ export default {
       })
     },
     entryPart: function(sessionMusicId, sessionPartId, sessionMusic, entryUsers) {
-      if (this.entryPartValid()) {
+      if (this.entryPartValid() && !this.isEnteringPart) {
+        this.isEnteringPart = true;
         axios.post(
           `http://${g.hostName}/api/events/${this.$route.params.id}/session_musics/${sessionMusicId}/session_parts/${sessionPartId}/entry`,
           {
@@ -181,6 +183,9 @@ export default {
         })
         .catch((error) => {
           this.apiErrors(error.response);
+        })
+        .finally(() => {
+          this.isEnteringPart = false;
         })
       }
     },
