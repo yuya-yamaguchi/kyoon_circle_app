@@ -64,7 +64,8 @@ export default {
         place: "",
         fee: "",
         max_entry: 0,
-        line_msg_push: true
+        line_msg_push: true,
+        isEventCreating: false
       },
       modalMsg: {
         title: "イベントの登録",
@@ -75,29 +76,35 @@ export default {
   },
   methods: {
     postNewEvent: function(event) {
-      axios.post(
-        `http://${g.hostName}/api/events`,
-        {
-          user_id: this.$store.getters['user/id'],
-          event: event
-        },
-        {
-          headers: {
-            Authorization: this.$store.getters['user/secureToken']
+      if (!this.isEventCreating) {
+        this.isEventCreating = true;
+        axios.post(
+          `http://${g.hostName}/api/events`,
+          {
+            user_id: this.$store.getters['user/id'],
+            event: event
+          },
+          {
+            headers: {
+              Authorization: this.$store.getters['user/secureToken']
+            }
           }
-        }
-      )
-      .then((response) => {
-        this.$router.push({
-          name: "EventShow",
-          params: {
-            id: response.data.id
-          }
+        )
+        .then((response) => {
+          this.$router.push({
+            name: "EventShow",
+            params: {
+              id: response.data.id
+            }
+          })
         })
-      })
-      .catch((error) => {
-        this.apiErrors(error.response);
-      });
+        .catch((error) => {
+          this.apiErrors(error.response);
+        })
+        .finally(() => {
+          this.isEventCreating = false;
+        });
+      }
     }
   }
 }
