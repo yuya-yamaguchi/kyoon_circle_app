@@ -26,6 +26,10 @@ class StudioReserve < ApplicationRecord
     StudioReserveMailer.studio_reserved_email(self, self.user).deliver
   end
 
+  def send_cancel_email
+    StudioReserveMailer.studio_cancel_email(self, self.user).deliver
+  end
+
   private
 
   # 予約の重複がないか確認する
