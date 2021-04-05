@@ -1,7 +1,7 @@
 <template>
   <div id="overlay">
     <div class="confirm-container">
-      <LoadingCircle v-if="isProcessing"/>
+      <LoadingCircle v-if="isProcessingProp"/>
       <div @click="closeModal()" class="close-button">×</div>
       <h1>{{ modalMsgProp.title }}</h1>
       <p v-html="modalMsgProp.message" class="caution-msg"></p>
@@ -27,17 +27,11 @@ export default {
   components: {
     LoadingCircle
   },
-  data() {
-    return {
-      isProcessing: this.isProcessingProp
-    }
-  },
   methods: {
     closeModal: function() {
       this.$emit('process-confirm', false);
     },
     confirmCancel: function() {
-      this.isProcessing = true;
       this.$emit('process-confirm', true);
     }
   }

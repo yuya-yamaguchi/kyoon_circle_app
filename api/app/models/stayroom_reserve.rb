@@ -69,6 +69,14 @@ class StayroomReserve < ApplicationRecord
     push_line(text)
   end
 
+  def send_reserved_email
+    StayroomReserveMailer.stayroom_reserved_email(self, self.user).deliver
+  end
+
+  def send_cancel_email
+    StayroomReserveMailer.stayroom_cancel_email(self, self.user).deliver
+  end
+
   private
   def validate_date_consistency
     # チェックアウトがチェックイン以前の場合

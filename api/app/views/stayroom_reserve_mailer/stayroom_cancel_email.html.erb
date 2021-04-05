@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p><%= @user.name %> 様</p>
+    <p>
+      京音Webサイトをご利用いただきありがとうございます。<br>
+      宿泊予約のキャンセルが完了しました。<br>
+      <br>
+      ◆キャンセル内容<br>
+      部屋名　　　　：<%= @stayroom_reserve.stayroom.name %><br>
+      チェックイン　：<%= @stayroom_reserve.checkin_date.strftime('%Y年%m月%d日') %><br>
+      チェックアウト：<%= @stayroom_reserve.checkout_date.strftime('%Y年%m月%d日') %><br>
+    </p>
+  </body>
+</html>
