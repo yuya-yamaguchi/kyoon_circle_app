@@ -22,6 +22,10 @@ class StudioReserve < ApplicationRecord
     push_line(text)
   end
 
+  def send_reserved_email
+    StudioReserveMailer.studio_reserved_email(self, self.user).deliver
+  end
+
   private
 
   # 予約の重複がないか確認する
