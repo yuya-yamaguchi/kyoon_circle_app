@@ -1,6 +1,7 @@
 <template>
   <div id="overlay">
     <div class="confirm-container">
+      <LoadingCircle v-if="isProcessingProp"/>
       <div @click="closeModal()" class="close-button">×</div>
       <h1>{{ modalMsgProp.title }}</h1>
       <p v-html="modalMsgProp.message" class="caution-msg"></p>
@@ -13,14 +14,18 @@
 </template>
 
 <script>
+import LoadingCircle from '@/components/organisms/common/LoadingCircle.vue';
+
 export default {
   props: {
-    modalMsgProp: {}
-  },
-  data() {
-    return {
-      data: ""
+    modalMsgProp: {},
+    isProcessingProp: {
+      type: Boolean,
+      default: false
     }
+  },
+  components: {
+    LoadingCircle
   },
   methods: {
     closeModal: function() {

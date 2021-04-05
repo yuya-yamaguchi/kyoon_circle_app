@@ -2,6 +2,7 @@
   <div>
     <ConfirmModal v-show="cancelFlg"
       :modal-msg-prop="modalMsg"
+      :is-processing-prop="isCanceling"
       @process-confirm="cancelStudioReserve"/>
     <div v-for="(reserve, i) in reserves" :key="i">
       <transition name="fade-default" :key="i">
@@ -55,7 +56,8 @@ export default {
         title: "スタジオ予約取消",
         message: "スタジオの予約を取り消します。よろしいですか？",
         btn: "取消"
-      }
+      },
+      isCanceling: false
     }
   },
   methods: {
@@ -67,34 +69,42 @@ export default {
     },
     // キャンセル処理の実行
     cancelStudioReserve(cancelConfirmFlg) {
-      this.cancelFlg = false;
       if (cancelConfirmFlg) {
-        axios.delete(
-          `http://${g.hostName}/api/studios/${this.selectedReserve.studio_id}/reserves/${this.selectedReserve.id}`,
-          {
-            headers: {
-              Authorization: this.$store.getters['user/secureToken']
+        if (!this.isCanceling) {
+          this.isCanceling = true;
+          axios.delete(
+            `http://${g.hostName}/api/studios/${this.selectedReserve.studio_id}/reserves/${this.selectedReserve.id}`,
+            {
+              headers: {
+                Authorization: this.$store.getters['user/secureToken']
+              }
             }
-          }
-        )
-        .then(() => {
-          this.reserves.splice(this.removeNo, 1)
-          this.$store.dispatch(
-            "flash/create",
-            { message: "取消が完了しました",
-              type:    1
-            }
-          );
-        })
-        .catch((error) => {
-          this.$store.dispatch(
-            "flash/create",
-            { message: error.response.data[0],
-              type:    2
-            }
-          );
-          this.apiErrors(error.response);
-        });
+          )
+          .then(() => {
+            this.reserves.splice(this.removeNo, 1)
+            this.$store.dispatch(
+              "flash/create",
+              { message: "取消が完了しました",
+                type:    1
+              }
+            );
+          })
+          .catch((error) => {
+            this.$store.dispatch(
+              "flash/create",
+              { message: error.response.data[0],
+                type:    2
+              }
+            );
+            this.apiErrors(error.response);
+          })
+          .finally(() => {
+            this.isCanceling = false;
+            this.cancelFlg = false;
+          });
+        }
+      } else {
+        this.cancelFlg = false;
       }
     }
   },

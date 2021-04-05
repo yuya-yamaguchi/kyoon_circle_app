@@ -59,6 +59,24 @@ class StayroomReserve < ApplicationRecord
                                       .before_today_desc
   end
 
+  def reserve_line
+    text = "【宿泊予約】\n宿泊の予約が行われました\n\n予約者：#{self.user.name}\n部屋名：#{self.stayroom.name}\nチェックイン：#{checkin_date.strftime('%Y/%m/%d')}\nチェックアウト：#{checkout_date.strftime('%Y/%m/%d')}"
+    push_line(text)
+  end
+
+  def cancel_line
+    text = "【宿泊予約キャンセル】\n宿泊の予約キャンセルが行われました\n\n予約者：#{self.user.name}\n部屋名：#{self.stayroom.name}\nチェックイン：#{checkin_date.strftime('%Y/%m/%d')}\nチェックアウト：#{checkout_date.strftime('%Y/%m/%d')}"
+    push_line(text)
+  end
+
+  def send_reserved_email
+    StayroomReserveMailer.stayroom_reserved_email(self, self.user).deliver
+  end
+
+  def send_cancel_email
+    StayroomReserveMailer.stayroom_cancel_email(self, self.user).deliver
+  end
+
   private
   def validate_date_consistency
     # チェックアウトがチェックイン以前の場合
@@ -98,5 +116,20 @@ class StayroomReserve < ApplicationRecord
       end
     end
     return false
+  end
+
+  def push_line(text)
+    if Rails.env.production?
+      group_id = ENV['LINE_STUDIO_RESERVE_GROUPID']
+      message = {
+        type: 'text',
+        text: text
+      }
+      client = Line::Bot::Client.new do |config|
+        config.channel_secret = ENV['LINE_CHANNEL_SECRET']
+        config.channel_token = ENV['LINE_CHANNEL_TOKEN']
+      end
+      response = client.push_message(group_id, message)
+    end
   end
 end

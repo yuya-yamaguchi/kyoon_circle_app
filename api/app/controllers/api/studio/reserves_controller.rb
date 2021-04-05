@@ -17,6 +17,7 @@ class Api::Studio::ReservesController < ApplicationController
     studio_reserve = StudioReserve.new(studio_reserves_params)
     if studio_reserve.save
       studio_reserve.reserve_line
+      studio_reserve.send_reserved_email
       render status: 201, json: { studio_reserve: studio_reserve }
     else
       render status: 400, json: studio_reserve.errors.full_messages
@@ -27,6 +28,7 @@ class Api::Studio::ReservesController < ApplicationController
     studio_reserve = StudioReserve.find(params[:id])
     if studio_reserve.destroy
       studio_reserve.cancel_line
+      studio_reserve.send_cancel_email
       render status: 201
     else
       render status: 400, json: studio_reserve.errors.full_messages

@@ -13,13 +13,21 @@ class StudioReserve < ApplicationRecord
   scope :bofore_today_desc, -> { bofore_today.date_desc.time_desc }
 
   def reserve_line
-    text = "【スタジオ予約】\nスタジオ予約が行われました\n\n予約者：#{self.user.name}\n日時　：#{date.strftime('%Y/%m/%d')} #{start_time.strftime('%H:%M')}〜#{end_time.strftime('%H:%M')}\n人数　：#{users_num}人\n料金　：#{fee}円"
+    text = "【スタジオ予約】\nスタジオの予約が行われました\n\n予約者：#{self.user.name}\n日時　：#{date.strftime('%Y/%m/%d')} #{start_time.strftime('%H:%M')}〜#{end_time.strftime('%H:%M')}\n人数　：#{users_num}人\n料金　：#{fee}円"
     push_line(text)
   end
 
   def cancel_line
-    text = "【予約キャンセル】\nスタジオの予約がキャンセルされました\n\n予約者：#{self.user.name}\n日時　：#{date.strftime('%Y/%m/%d')} #{start_time.strftime('%H:%M')}〜#{end_time.strftime('%H:%M')}\n人数　：#{users_num}人\n料金　：#{fee}円"
+    text = "【スタジオ予約キャンセル】\nスタジオの予約がキャンセルされました\n\n予約者：#{self.user.name}\n日時　：#{date.strftime('%Y/%m/%d')} #{start_time.strftime('%H:%M')}〜#{end_time.strftime('%H:%M')}\n人数　：#{users_num}人\n料金　：#{fee}円"
     push_line(text)
+  end
+
+  def send_reserved_email
+    StudioReserveMailer.studio_reserved_email(self, self.user).deliver
+  end
+
+  def send_cancel_email
+    StudioReserveMailer.studio_cancel_email(self, self.user).deliver
   end
 
   private

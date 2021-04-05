@@ -66,7 +66,7 @@ export default {
         return `${following_users[0]}も参加しています`
       }
       else {
-        return 
+        return
       }
     }
   }
