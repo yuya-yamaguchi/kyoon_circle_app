@@ -7,23 +7,28 @@
     <div v-for="(reserve, i) in reserves" :key="i">
       <transition name="fade-default" :key="i">
         <div class="reserve">
+          <div class="reserve--top">
+            {{ formatDate(reserve.date, 'M月D日') }}
+            ({{ calcWeek(reserve.date, 1) }})
+            {{ formatDate(reserve.start_time, 'HH24:MI') }} 〜
+            {{ formatDate(reserve.end_time, 'HH24:MI') }}
+          </div>
           <div class="reserve--info">
-            <div class="reserve--info--top">
-              <div class="reserve--info--top--date">
-                {{ formatDate(reserve.date, 'YYYY年M月D日') }}
+            <div class="reserve--info--left">
+              <div class="reserve--info--left--detail">
+                人数 {{ reserve.users_num }}人
               </div>
-              <div class="reserve--info--top--time">
-                {{ formatDate(reserve.start_time, 'HH24:MI') }} 〜
-                {{ formatDate(reserve.end_time, 'HH24:MI') }}
+              <div class="reserve--info--left--detail">
+                料金 ¥{{ reserve.fee }}
               </div>
             </div>
-            <p>人数 {{ reserve.users_num }}人</p>
-            <p>料金 ¥{{ reserve.fee }}</p>
+            <div class="reserve--info--right">
+              <a v-if="cancelFlgProp" @click="displayCancelModal(reserve, i)" class="reserve--info--right--cancel">
+                <fa icon="trash"/>
+                <span>取消</span>
+              </a>
+            </div>
           </div>
-          <a v-if="cancelFlgProp" @click="displayCancelModal(reserve, i)" class="reserve--cancel">
-            <fa icon="trash"/>
-            <span>取消</span>
-          </a>
         </div>
       </transition>
     </div>
@@ -118,33 +123,40 @@ export default {
 .reserve {
   box-shadow:  2px 2px 0 0 rgba(0,0,0,0.3);
   margin: 15px 5px;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 10px;
   background: #FFF;
   font-size: 0.8rem;
+  &--top {
+    background: #888;
+    color: #FFF;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 5px;
+  }
   &--info {
-    padding: 10px;
-    &--top {
-      display: flex;
-      justify-content: flex-start;
-      &--date {
-        padding-right: 10px;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    &--left {
+      &--detail {
+        margin: 5px;
       }
     }
-  }
-  &--cancel {
-    display: block;
-    color:  red;
-    font-size: 0.8rem;
-    font-weight: bold;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    svg {
-      width: 14px;
-      margin-right: 10px;
+    &--right {
+      display: flex;
+      align-items: center;
+      &--cancel {
+        display: block;
+        color:  red;
+        font-size: 0.8rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        svg {
+          width: 14px;
+          margin-right: 10px;
+        }
+      }
     }
   }
 }
