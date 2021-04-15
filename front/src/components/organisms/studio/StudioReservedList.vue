@@ -4,6 +4,11 @@
       :modal-msg-prop="modalMsg"
       :is-processing-prop="isCanceling"
       @process-confirm="cancelStudioReserve"/>
+    <StudioReserveUpdateModal v-if="updateReserve!=''"
+      :click-reserve-prop="updateReserve"
+      @update-success="updateSuccess"
+      @close-modal="closeUpdateModal"
+      />
     <div v-for="(reserve, i) in reserves" :key="i">
       <transition name="fade-default" :key="i">
         <div class="reserve">
@@ -23,10 +28,16 @@
               </div>
             </div>
             <div class="reserve--info--right">
-              <a v-if="cancelFlgProp" @click="displayCancelModal(reserve, i)" class="reserve--info--right--cancel">
-                <fa icon="trash"/>
-                <span>取消</span>
-              </a>
+              <div>
+                <a v-if="cancelFlgProp" @click="displayUpdateModal(reserve, i)" class="reserve--info--right--cancel">
+                  <fa icon="redo-alt"/>
+                  <span>変更</span>
+                </a>
+                <a v-if="cancelFlgProp" @click="displayCancelModal(reserve, i)" class="reserve--info--right--cancel">
+                  <fa icon="trash"/>
+                  <span>取消</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -39,13 +50,15 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
+import StudioReserveUpdateModal from '@/components/organisms/studio/StudioReserveUpdateModal.vue';
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [commonMethods, errorMethods],
   components: {
-    ConfirmModal
+    ConfirmModal,
+    StudioReserveUpdateModal
   },
   props: {
     reservesProp: {},
@@ -57,6 +70,9 @@ export default {
       selectedReserve: "",
       cancelFlg: false,
       removeNo: 0,
+      updateReserve: "",
+      updateFlg: false,
+      updateNo: 0,
       modalMsg: {
         title: "スタジオ予約取消",
         message: "スタジオの予約を取り消します。よろしいですか？",
@@ -71,6 +87,16 @@ export default {
       this.cancelFlg = true;
       this.selectedReserve = reserve;
       this.removeNo = i;
+    },
+    // 変更モーダルの表示
+    displayUpdateModal: function(reserve, i) {
+      this.updateReserve = reserve;
+      this.updateNo = i;
+      this.updateReserve.hour = Number(reserve.start_time.substr(11, 2));
+      this.updateReserve.minutes = reserve.start_time.substr(14, 2);
+      this.updateReserve.end_hour = Number(reserve.end_time.substr(11, 2));
+      this.updateReserve.end_minutes = reserve.end_time.substr(14, 2);
+      this.updateFlg = true;
     },
     // キャンセル処理の実行
     cancelStudioReserve(cancelConfirmFlg) {
@@ -111,6 +137,16 @@ export default {
       } else {
         this.cancelFlg = false;
       }
+    },
+    updateSuccess(updateReserve) {
+      this.updateFlg = false;
+      this.reserves[this.updateNo] = updateReserve;
+      this.updateReserve = "";
+    },
+    // 変更モーダルを閉じる
+    closeUpdateModal() {
+      this.updateFlg = false;
+      this.updateReserve = "";
     }
   },
   updated() {
@@ -128,9 +164,9 @@ export default {
   &--top {
     background: #888;
     color: #FFF;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
-    padding: 5px;
+    padding: 2px 5px;
   }
   &--info {
     padding: 5px 10px;
@@ -146,7 +182,8 @@ export default {
       align-items: center;
       &--cancel {
         display: block;
-        color:  red;
+        color:  #888;
+        margin: 5px 0;
         font-size: 0.8rem;
         font-weight: bold;
         display: flex;

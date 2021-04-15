@@ -36,6 +36,8 @@ class StudioReserve < ApplicationRecord
   def validate_reserve_duplicate
     studio_reserves = StudioReserve.where(studio_id: studio_id)
                                    .where(date: date)
+    # 更新処理の場合、自身のは対象外にする
+    studio_reserves = studio_reserves.where.not(id: id) if id.present?
     is_reserved = false
     # 対象の予約日内で時間の重複がないかチェック(UTC時刻だと不整合のケースがあるためSQLで比較せず抽出後JSTで比較)
     studio_reserves.each do |reserve|

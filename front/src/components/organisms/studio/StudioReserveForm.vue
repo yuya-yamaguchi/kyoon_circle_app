@@ -74,7 +74,7 @@ export default {
       disabledFlg: false,
       reserving: false,
       studioReserve: {},
-      usersNum: ''
+      usersNum: this.clickReserveProp.users_num
     }
   },
   computed: {
@@ -93,11 +93,14 @@ export default {
                            this.zeroPadding(this.selected.day, 2), 1);
     },
     paymentFee() {
-      let sa = calcReserveTime(this.selected);
-      let usersNum = this.usersNum;
-      if (sa <= 0) sa = 0
-      if (usersNum <= 0) usersNum = 0
-      return sa * usersNum * this.studioProp.fee
+      if (this.usersNum) {
+        let sa = calcReserveTime(this.selected);
+        let usersNum = this.usersNum;
+        if (sa <= 0) sa = 0
+        if (usersNum <= 0) usersNum = 0
+        return sa * usersNum * this.studioProp.fee
+      }
+      return 0
     }
   },
   methods: {
