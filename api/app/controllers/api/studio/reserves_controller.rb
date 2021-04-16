@@ -39,6 +39,8 @@ class Api::Studio::ReservesController < ApplicationController
     @studio = Studio.find(params[:studio_id])
     studio_reserve = StudioReserve.find(params[:id])
     if studio_reserve.update(studio_reserves_params)
+      studio_reserve.update_line
+      studio_reserve.send_update_email
       render status: 201, json: { studio_reserve: studio_reserve }
     else
       render status: 400, json: studio_reserve.errors.full_messages

@@ -22,12 +22,21 @@ class StudioReserve < ApplicationRecord
     push_line(text)
   end
 
+  def update_line
+    text = "【スタジオ予約内容変更】\nスタジオの予約内容が変更されました\n\n予約者：#{self.user.name}\n日時　：#{date.strftime('%Y/%m/%d')} #{start_time.strftime('%H:%M')}〜#{end_time.strftime('%H:%M')}\n人数　：#{users_num}人\n料金　：#{fee}円"
+    push_line(text)
+  end
+
   def send_reserved_email
     StudioReserveMailer.studio_reserved_email(self, self.user).deliver
   end
 
   def send_cancel_email
     StudioReserveMailer.studio_cancel_email(self, self.user).deliver
+  end
+
+  def send_update_email
+    StudioReserveMailer.studio_update_email(self, self.user).deliver
   end
 
   private
