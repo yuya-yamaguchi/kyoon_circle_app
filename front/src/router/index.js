@@ -16,6 +16,7 @@ import Settings from '@/views/mypage/Settings.vue'
 import ChangeEmail from '@/views/mypage/ChangeEmail.vue'
 import ChangePassword from '@/views/mypage/ChangePassword.vue'
 import Follow from '@/views/user/Follow.vue'
+import MessageShow from '@/views/user/message/Show.vue'
 import EventNew from '@/views/event/New.vue'
 import AdminMenus from '@/views/admin/AdminMenus.vue'
 import EventEdit from '@/views/event/Edit.vue'
@@ -184,6 +185,13 @@ const routes = [
     path: '/users/:id/follow',
     name: 'Follow',
     component: Follow,
+    meta: { requiresAuth: true }
+  },
+  // メッセージ
+  {
+    path: '/users/:id/messages',
+    name: 'MessageShow',
+    component: MessageShow,
     meta: { requiresAuth: true }
   },
   /***********************/
