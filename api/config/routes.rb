@@ -35,6 +35,9 @@ Rails.application.routes.draw do
         get :following
         get :followers
       end
+      scope module: :users do
+        resources :messages, only: [:index, :create]
+      end
     end
 
     resources :relationships, only: [:create, :destroy]

@@ -5,7 +5,7 @@
         
       </div>
       <div class="send-message">
-        <textarea></textarea>
+        <textarea v-model="message.text"></textarea>
         <fa @click="postMessage()" icon="paper-plane"></fa>
       </div>
     </div>
@@ -19,10 +19,39 @@ import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
+  data() {
+    return {
+      messageroom: {},
+      message: {}
+    }
+  },
   methods: {
+    getMessages: function() {
+      axios.get(
+        `http://${g.hostName}/api/users/${this.$route.params.id}/messages`,
+        {
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
+      )
+      .then((response) => {
+        this.messageroom = response.data.messageroom
+      })
+      .catch((error) => {
+        this.apiErrors(error.response);
+      })
+      .finally(() => {
+        
+      });
+    },
     postMessage: function() {
       axios.post(
         `http://${g.hostName}/api/users/${this.$route.params.id}/messages`,
+        {
+          messageroom: this.messageroom,
+          message: this.message
+        },
         {
           headers: {
             Authorization: this.$store.getters['user/secureToken']
@@ -39,6 +68,9 @@ export default {
         
       });
     }
+  },
+  mounted() {
+    this.getMessages();
   }
 }
 </script>
