@@ -1,7 +1,6 @@
 class Api::Users::MessagesController < ApplicationController
   before_action :auth_check, only: [:index, :create]
 
-
   def index
     messageroom_entry = MessageroomEntry.get_belong_room(@current_user.id ,params[:user_id])
     if messageroom_entry.empty?
@@ -10,14 +9,16 @@ class Api::Users::MessagesController < ApplicationController
     else
       @messageroom = Messageroom.find(messageroom_entry[0].messageroom_id)
     end
-    render status: 200, json: { messageroom: @messageroom }
+    messages = @messageroom.messages
+    dm_user = User.find(params[:user_id])
+    render status: 200, json: { messageroom: @messageroom, messages: messages, dm_user: dm_user }
   end
 
   def create
-    binding.pry
     @messageroom = Messageroom.find(params[:messageroom][:id])
-    if Message.create(message_params)
-      render status: 200
+    message = Message.new(message_params)
+    if message.save
+      render status: 201, json: { message: message }
     else
       render status: 400
     end

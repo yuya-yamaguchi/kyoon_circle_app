@@ -1,9 +1,10 @@
 <template>
   <div class="message-container">
-    <div class="message-contents">
-      <div class="">
-        
-      </div>
+    <div  class="message-contents">
+      <MessageDisplay
+        v-if="messages.length!=0"
+        :messagesProp="messages"
+        :dmUserProp="dmUser"/>
       <div class="send-message">
         <textarea v-model="message.text"></textarea>
         <fa @click="postMessage()" icon="paper-plane"></fa>
@@ -15,14 +16,20 @@
 <script>
 import axios from 'axios';
 import g from "@/variable/variable.js";
+import MessageDisplay from "@/components/organisms/message/MessageDisplay.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
+  components: {
+    MessageDisplay
+  },
   data() {
     return {
       messageroom: {},
-      message: {}
+      message: {},  // 送信用のメッセージ
+      messages: [], // 既存メッセージ
+      dmUser: {}
     }
   },
   methods: {
@@ -36,7 +43,9 @@ export default {
         }
       )
       .then((response) => {
-        this.messageroom = response.data.messageroom
+        this.messageroom = response.data.messageroom;
+        this.messages    = response.data.messages;
+        this.dmUser      = response.data.dm_user;
       })
       .catch((error) => {
         this.apiErrors(error.response);
@@ -59,7 +68,7 @@ export default {
         }
       )
       .then((response) => {
-        console.log(response);
+        this.messages.push(response.data.message);
       })
       .catch((error) => {
         this.apiErrors(error.response);
@@ -77,10 +86,11 @@ export default {
 
 <style scoped lang="scss">
 .message-container {
+  min-height: calc(100vh - 130px);
   .send-message {
     display: flex;
     justify-content: space-between;
-    background: red;
+    background: #333;
     padding: 10px;
     position: fixed;
     bottom: 0;
@@ -96,6 +106,7 @@ export default {
     svg {
       width: 20px;
       padding: 5px;
+      color: #FFF;
       cursor: pointer;
     }
   }
