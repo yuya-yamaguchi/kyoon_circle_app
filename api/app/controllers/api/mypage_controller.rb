@@ -28,4 +28,15 @@ class Api::MypageController < ApplicationController
     history_reserves = StayroomReserve.history_reserves(@current_user.id)
     render status: 200, json: { future_reserves: future_reserves, history_reserves: history_reserves }
   end
+
+  def messages
+    messagerooms = @current_user.messagerooms
+    messagerooms.each do |messageroom|
+      message = messageroom.messages.order('created_at DESC').first
+      other_user = messageroom.users.where.not(id: @current_user.id).first
+      # binding.pry
+    end
+    # messages = messagerooms.map { |messageroom| messageroom.messages.order('created_at DESC').first }
+    render status: 200, json: { messagerooms: messagerooms }
+  end
 end

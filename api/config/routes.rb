@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         get :studio_reserves
         get :events
         get :stayroom_reserves
+        get :messages
       end
     end
 
