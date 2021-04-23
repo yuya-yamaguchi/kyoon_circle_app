@@ -31,12 +31,8 @@ class Api::MypageController < ApplicationController
 
   def messages
     messagerooms = @current_user.messagerooms
-    messagerooms.each do |messageroom|
-      message = messageroom.messages.order('created_at DESC').first
-      other_user = messageroom.users.where.not(id: @current_user.id).first
-      # binding.pry
-    end
-    # messages = messagerooms.map { |messageroom| messageroom.messages.order('created_at DESC').first }
-    render status: 200, json: { messagerooms: messagerooms }
+    messages_list = messagerooms.map { |messageroom| messageroom.get_messages_list(@current_user_id) }.compact
+    messages_list.sort_by! { |message| message[:created_at] }.reverse!
+    render status: 200, json: { messages_list: messages_list }
   end
 end

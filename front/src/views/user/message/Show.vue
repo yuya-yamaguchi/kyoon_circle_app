@@ -50,9 +50,6 @@ export default {
       .catch((error) => {
         this.apiErrors(error.response);
       })
-      .finally(() => {
-        
-      });
     },
     postMessage: function() {
       axios.post(

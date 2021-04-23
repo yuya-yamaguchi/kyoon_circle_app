@@ -12,6 +12,7 @@ import MypageEdit from '@/views/mypage/Edit.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
 import MypageEvents from '@/views/mypage/Events.vue'
 import MypageStayrooms from '@/views/mypage/Stayrooms.vue'
+import MypageMessages from '@/views/mypage/Messages.vue'
 import Settings from '@/views/mypage/Settings.vue'
 import ChangeEmail from '@/views/mypage/ChangeEmail.vue'
 import ChangePassword from '@/views/mypage/ChangePassword.vue'
@@ -157,6 +158,13 @@ const routes = [
     path: '/mypage/stayrooms',
     name: 'MypageStayrooms',
     component: MypageStayrooms,
+    meta: { requiresAuth: true }
+  },
+  // メッセージ一覧
+  {
+    path: '/mypage/messages',
+    name: 'MypageMessages',
+    component: MypageMessages,
     meta: { requiresAuth: true }
   },
   // 設定

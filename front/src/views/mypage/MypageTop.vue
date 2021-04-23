@@ -53,6 +53,10 @@ export default {
           path: "/mypage/stayrooms",
           icon: "procedures"
         },
+        { name: "メッセージ",
+          path: "/mypage/messages",
+          icon: "envelope"
+        },
         { name: "設定",
           path: "/mypage/settings",
           icon: "cog"
