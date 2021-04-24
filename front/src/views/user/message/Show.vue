@@ -1,13 +1,18 @@
 <template>
   <div class="message-container">
-    <div  class="message-contents">
-      <MessageDisplay
-        v-if="messages.length!=0"
-        :messagesProp="messages"
-        :dmUserProp="dmUser"/>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="message-contents">
+      <div class="messages-display">
+        <MessageDisplay
+          v-if="messages.length!=0"
+          :messagesProp="messages"
+          :dmUserProp="dmUser"/>
+      </div>
       <div class="send-message">
-        <textarea v-model="message.text"></textarea>
-        <fa @click="postMessage()" icon="paper-plane"></fa>
+        <div class="send-message-form">
+          <textarea v-model="message.text"></textarea>
+          <fa @click="postMessage()" icon="paper-plane"></fa>
+        </div>
       </div>
     </div>
   </div>
@@ -17,12 +22,14 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import MessageDisplay from "@/components/organisms/message/MessageDisplay.vue";
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
   components: {
-    MessageDisplay
+    MessageDisplay,
+    BreadCrumbs
   },
   data() {
     return {
@@ -30,6 +37,29 @@ export default {
       message: {},  // 送信用のメッセージ
       messages: [], // 既存メッセージ
       dmUser: {}
+    }
+  },
+  computed: {
+    breadCrumbs() {
+      var breadCrumbsLists = [
+        {
+          name: 'トップ',
+          path: '/'
+        },
+        {
+          name: 'マイページ',
+          path: '/mypage'
+        },
+        {
+          name: 'メッセージ',
+          path: '/mypage/messages'
+        },
+        {
+          name: this.dmUser.name,
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
     }
   },
   methods: {
@@ -65,6 +95,7 @@ export default {
         }
       )
       .then((response) => {
+        this.message = {};
         this.messages.push(response.data.message);
       })
       .catch((error) => {
@@ -82,29 +113,38 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.message-container {
-  min-height: calc(100vh - 130px);
+.message-contents {
+  padding-top: 40px;
+  .messages-display {
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: calc(100vh - 180px);
+  }
   .send-message {
-    display: flex;
-    justify-content: space-between;
     background: #333;
     padding: 10px;
     position: fixed;
     bottom: 0;
     width: 100%;
     box-sizing: border-box;
-    textarea {
-      display: block;
-      width: 98%;
-      padding: 5px;
-      margin-right: 10px;
-      font-size: 0.9rem;
-    }
-    svg {
-      width: 20px;
-      padding: 5px;
-      color: #FFF;
-      cursor: pointer;
+    .send-message-form {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      textarea {
+        display: block;
+        width: 98%;
+        padding: 5px;
+        margin-right: 10px;
+        font-size: 0.9rem;
+      }
+      svg {
+        width: 20px;
+        padding: 5px;
+        color: #FFF;
+        cursor: pointer;
+      }
     }
   }
 }

@@ -1,22 +1,25 @@
 <template>
-  <div class="messages-list-container">
-    <router-link v-for="message in messagesList" :key="message"
-      :to="{name: 'MessageShow', params: { id:message.user_id }}"
-      class="message">
-      <div class="message--left">
-        <div class="message--left--user-avatar">
-          <UserAvatar :avatarProp="message.avatar"/>
+  <div>
+    <BreadCrumbs :breadCrumbs="breadCrumbs"/>
+    <div class="messages-list-container">
+      <router-link v-for="message in messagesList" :key="message"
+        :to="{name: 'MessageShow', params: { id:message.user_id }}"
+        class="message">
+        <div class="message--left">
+          <div class="message--left--user-avatar">
+            <UserAvatar :avatarProp="message.avatar"/>
+          </div>
         </div>
-      </div>
-      <div class="message--middle">
-        <p class="message--middle--username">{{ message.user_name }}</p>
-        <p class="message--middle--text">{{ messageTrim(message.text) }}</p>
-      </div>
-      <div class="message--right">
-        <p class="message--right--datetime">{{formatDate(message.created_at, 'YYYY/MM/DD HH24:MI:SS') }}</p>
-        <p v-if="message.unread_cnt > 0" class="message--right--unread-cnt">{{ message.unread_cnt }}</p>
-      </div>
-    </router-link>
+        <div class="message--middle">
+          <p class="message--middle--username">{{ message.user_name }}</p>
+          <p class="message--middle--text">{{ messageTrim(message.text) }}</p>
+        </div>
+        <div class="message--right">
+          <p class="message--right--datetime">{{formatDate(message.created_at, 'YYYY/MM/DD HH24:MI:SS') }}</p>
+          <p v-if="message.unread_cnt > 0" class="message--right--unread-cnt">{{ message.unread_cnt }}</p>
+        </div>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -24,17 +27,38 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import UserAvatar from "@/components/atoms/UserAvatar.vue";
+import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [commonMethods, errorMethods],
   components: {
-    UserAvatar
+    UserAvatar,
+    BreadCrumbs
   },
   data() {
     return {
       messagesList: []
+    }
+  },
+  computed: {
+    breadCrumbs() {
+      var breadCrumbsLists = [
+        {
+          name: 'トップ',
+          path: '/'
+        },
+        {
+          name: 'マイページ',
+          path: '/mypage'
+        },
+        {
+          name: 'メッセージ',
+          path: ''
+        }
+      ]
+      return breadCrumbsLists
     }
   },
   methods: {
@@ -66,7 +90,10 @@ export default {
 
 <style scoped lang="scss">
 .messages-list-container {
-  min-height: calc(100vh - 60px);;
+  min-height: calc(100vh - 105px);
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 45px;
   .message {
     display: flex;
     justify-content: flex-start;

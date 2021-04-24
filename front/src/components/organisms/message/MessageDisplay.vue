@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="message-display-container">
     <div v-for="message in messagesProp" :key="message" class="message-block">
       <div v-if="message.user_id == $store.getters['user/id']" class="own-message">
         <div>
@@ -51,56 +51,60 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.message-block {
-  width: 100%;
-  .own-message {
-    margin: 20px;
-    margin-left: auto;
-    max-width: 60%;
-    &--already-read {
-      display: flex;
-      align-items: flex-end;
-      color: #888;
-      font-size: 0.7rem;
-      margin-right: 5px;
-    }
-    &--text {
-      display: inline-block;
-      padding: 10px;
-      border-radius: 10px;
-      background: #FFF;
-      white-space: pre-wrap;
-    }
-    &--datetime {
-      font-size: 0.8rem;
-      color: #888;
-      text-align: right;
-    }
-  }
-  .other-message {
-    margin: 20px;
-    display: flex;
-    justify-content: flex-start;
-    &--avatar {
-      width: 45px;
-      height: 45px;
-    }
-    &--body {
-      margin-left: 5px;
+.message-display-container {
+  max-height: calc(100vh - 170px);
+  overflow: scroll;
+  .message-block {
+    width: 100%;
+    .own-message {
+      margin: 20px;
+      margin-left: auto;
+      max-width: 60%;
+      &--already-read {
+        display: flex;
+        align-items: flex-end;
+        color: #888;
+        font-size: 0.7rem;
+        margin-right: 5px;
+      }
       &--text {
+        display: inline-block;
         padding: 10px;
         border-radius: 10px;
         background: #FFF;
+        white-space: pre-wrap;
       }
       &--datetime {
         font-size: 0.8rem;
         color: #888;
+        text-align: right;
+      }
+    }
+    .other-message {
+      margin: 20px;
+      display: flex;
+      justify-content: flex-start;
+      &--avatar {
+        width: 45px;
+        height: 45px;
+      }
+      &--body {
+        margin-left: 5px;
+        &--text {
+          padding: 10px;
+          border-radius: 10px;
+          background: #FFF;
+        }
+        &--datetime {
+          font-size: 0.8rem;
+          color: #888;
+        }
       }
     }
   }
-}
-.block-right {
-  display: flex;
-  justify-content: flex-end;
+  .block-right {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>
