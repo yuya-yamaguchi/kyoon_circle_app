@@ -31,7 +31,7 @@ class Api::MypageController < ApplicationController
 
   def messages
     messagerooms = @current_user.messagerooms
-    messages_list = messagerooms.map { |messageroom| messageroom.get_messages_list(@current_user_id) }.compact
+    messages_list = messagerooms.map { |messageroom| messageroom.get_messages_list(@current_user.id) }.compact
     messages_list.sort_by! { |message| message[:created_at] }.reverse!
     render status: 200, json: { messages_list: messages_list }
   end

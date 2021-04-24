@@ -14,6 +14,7 @@
       </div>
       <div class="message--right">
         <p class="message--right--datetime">{{formatDate(message.created_at, 'YYYY/MM/DD HH24:MI:SS') }}</p>
+        <p v-if="message.unread_cnt > 0" class="message--right--unread-cnt">{{ message.unread_cnt }}</p>
       </div>
     </router-link>
   </div>
@@ -96,6 +97,18 @@ export default {
       &--datetime {
         font-size: 0.7rem;
         color: #888;
+      }
+      &--unread-cnt {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        color: #FFF;
+        font-weight: bold;
+        background: var(--accent-color);
+        border-radius: 100%;
+        margin-top: 5px;
+        margin-left: auto;
       }
     }
   }

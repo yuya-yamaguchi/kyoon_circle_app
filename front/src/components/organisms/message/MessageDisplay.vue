@@ -4,6 +4,9 @@
       <div v-if="message.user_id == $store.getters['user/id']" class="own-message">
         <div>
           <div class="block-right">
+            <p v-if="message.read_flg" class="own-message--already-read">
+              既読
+            </p>
             <p class="own-message--text">
               {{ message.text }}
             </p>
@@ -54,6 +57,13 @@ export default {
     margin: 20px;
     margin-left: auto;
     max-width: 60%;
+    &--already-read {
+      display: flex;
+      align-items: flex-end;
+      color: #888;
+      font-size: 0.7rem;
+      margin-right: 5px;
+    }
     &--text {
       display: inline-block;
       padding: 10px;
