@@ -22,6 +22,11 @@ class StudioReserve < ApplicationRecord
     push_line(text)
   end
 
+  def update_line
+    text = "【スタジオ予約内容変更】\nスタジオの予約内容が変更されました\n\n予約者：#{self.user.name}\n日時　：#{date.strftime('%Y/%m/%d')} #{start_time.strftime('%H:%M')}〜#{end_time.strftime('%H:%M')}\n人数　：#{users_num}人\n料金　：#{fee}円"
+    push_line(text)
+  end
+
   def send_reserved_email
     StudioReserveMailer.studio_reserved_email(self, self.user).deliver
   end
@@ -30,12 +35,18 @@ class StudioReserve < ApplicationRecord
     StudioReserveMailer.studio_cancel_email(self, self.user).deliver
   end
 
+  def send_update_email
+    StudioReserveMailer.studio_update_email(self, self.user).deliver
+  end
+
   private
 
   # 予約の重複がないか確認する
   def validate_reserve_duplicate
     studio_reserves = StudioReserve.where(studio_id: studio_id)
                                    .where(date: date)
+    # 更新処理の場合、自身のは対象外にする
+    studio_reserves = studio_reserves.where.not(id: id) if id.present?
     is_reserved = false
     # 対象の予約日内で時間の重複がないかチェック(UTC時刻だと不整合のケースがあるためSQLで比較せず抽出後JSTで比較)
     studio_reserves.each do |reserve|

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
     resources :studios, only: [:show] do
       scope module: :studio do
-        resources :reserves, only: [:index, :show, :create, :destroy]
+        resources :reserves, only: [:index, :show, :create, :destroy, :update]
       end
     end
 
@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         get :studio_reserves
         get :events
         get :stayroom_reserves
+        get :messages
       end
     end
 
@@ -34,6 +35,9 @@ Rails.application.routes.draw do
       member do
         get :following
         get :followers
+      end
+      scope module: :users do
+        resources :messages, only: [:index, :create]
       end
     end
 

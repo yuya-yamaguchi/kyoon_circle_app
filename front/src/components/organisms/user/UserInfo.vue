@@ -7,11 +7,17 @@
       <div class="user-info--top--name main-title">
         {{ userProp.name }}
       </div>
-      <div v-if="$store.getters['user/id'] != userProp.id" class="user-info--top--follow-btn">
-        <FollowBtn
-          :is-followed="isFollowed"
-          @follow="follow(userProp)"
-          @unfollow="unfollow(userProp)"/>
+      <div v-if="$store.getters['user/id'] != userProp.id">
+        <router-link :to="{ name: 'MessageShow', params: { id: $route.params.id }}" class="user-info--top--message-btn some-updown-center">
+          <fa icon="envelope"></fa>
+          <p>メッセージを送る</p>
+        </router-link>
+        <div class="user-info--top--follow-btn">
+          <FollowBtn
+            :is-followed="isFollowed"
+            @follow="follow(userProp)"
+            @unfollow="unfollow(userProp)"/>
+        </div>
       </div>
       <div class="user-info--top--follow">
         <FollowCount :user-prop="user"/>
@@ -80,6 +86,19 @@ export default {
     &--name {
       text-align: center;
       margin: 10px;
+    }
+    &--message-btn {
+      margin: 10px auto;
+      width: 150px;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+      text-decoration: none;
+      cursor: pointer;
+      svg {
+        width: 16px;
+        margin-right: 5px;
+      }
     }
     &--follow-btn {
       margin: 10px auto;

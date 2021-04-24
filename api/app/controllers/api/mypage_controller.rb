@@ -28,4 +28,11 @@ class Api::MypageController < ApplicationController
     history_reserves = StayroomReserve.history_reserves(@current_user.id)
     render status: 200, json: { future_reserves: future_reserves, history_reserves: history_reserves }
   end
+
+  def messages
+    messagerooms = @current_user.messagerooms
+    messages_list = messagerooms.map { |messageroom| messageroom.get_messages_list(@current_user.id) }.compact
+    messages_list.sort_by! { |message| message[:created_at] }.reverse!
+    render status: 200, json: { messages_list: messages_list }
+  end
 end

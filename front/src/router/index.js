@@ -12,10 +12,12 @@ import MypageEdit from '@/views/mypage/Edit.vue'
 import MypageStudioReserves from '@/views/mypage/StudioReserves.vue'
 import MypageEvents from '@/views/mypage/Events.vue'
 import MypageStayrooms from '@/views/mypage/Stayrooms.vue'
+import MypageMessages from '@/views/mypage/Messages.vue'
 import Settings from '@/views/mypage/Settings.vue'
 import ChangeEmail from '@/views/mypage/ChangeEmail.vue'
 import ChangePassword from '@/views/mypage/ChangePassword.vue'
 import Follow from '@/views/user/Follow.vue'
+import MessageShow from '@/views/user/message/Show.vue'
 import EventNew from '@/views/event/New.vue'
 import AdminMenus from '@/views/admin/AdminMenus.vue'
 import EventEdit from '@/views/event/Edit.vue'
@@ -158,6 +160,13 @@ const routes = [
     component: MypageStayrooms,
     meta: { requiresAuth: true }
   },
+  // メッセージ一覧
+  {
+    path: '/mypage/messages',
+    name: 'MypageMessages',
+    component: MypageMessages,
+    meta: { requiresAuth: true }
+  },
   // 設定
   {
     path: '/mypage/settings',
@@ -184,6 +193,13 @@ const routes = [
     path: '/users/:id/follow',
     name: 'Follow',
     component: Follow,
+    meta: { requiresAuth: true }
+  },
+  // メッセージ
+  {
+    path: '/users/:id/messages',
+    name: 'MessageShow',
+    component: MessageShow,
     meta: { requiresAuth: true }
   },
   /***********************/

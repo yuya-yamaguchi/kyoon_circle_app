@@ -4,26 +4,42 @@
       :modal-msg-prop="modalMsg"
       :is-processing-prop="isCanceling"
       @process-confirm="cancelStudioReserve"/>
+    <StudioReserveUpdateModal v-if="updateReserve!=''"
+      :click-reserve-prop="updateReserve"
+      @update-success="updateSuccess"
+      @close-modal="closeUpdateModal"
+      />
     <div v-for="(reserve, i) in reserves" :key="i">
       <transition name="fade-default" :key="i">
         <div class="reserve">
+          <div class="reserve--top">
+            {{ formatDate(reserve.date, 'M月D日') }}
+            ({{ calcWeek(reserve.date, 1) }})
+            {{ formatDate(reserve.start_time, 'HH24:MI') }} 〜
+            {{ formatDate(reserve.end_time, 'HH24:MI') }}
+          </div>
           <div class="reserve--info">
-            <div class="reserve--info--top">
-              <div class="reserve--info--top--date">
-                {{ formatDate(reserve.date, 'YYYY年M月D日') }}
+            <div class="reserve--info--left">
+              <div class="reserve--info--left--detail">
+                人数 {{ reserve.users_num }}人
               </div>
-              <div class="reserve--info--top--time">
-                {{ formatDate(reserve.start_time, 'HH24:MI') }} 〜
-                {{ formatDate(reserve.end_time, 'HH24:MI') }}
+              <div class="reserve--info--left--detail">
+                料金 ¥{{ reserve.fee }}
               </div>
             </div>
-            <p>人数 {{ reserve.users_num }}人</p>
-            <p>料金 ¥{{ reserve.fee }}</p>
+            <div class="reserve--info--right">
+              <div>
+                <a v-if="cancelFlgProp" @click="displayUpdateModal(reserve, i)" class="reserve--info--right--cancel">
+                  <fa icon="redo-alt"/>
+                  <span>変更</span>
+                </a>
+                <a v-if="cancelFlgProp" @click="displayCancelModal(reserve, i)" class="reserve--info--right--cancel">
+                  <fa icon="trash"/>
+                  <span>取消</span>
+                </a>
+              </div>
+            </div>
           </div>
-          <a v-if="cancelFlgProp" @click="displayCancelModal(reserve, i)" class="reserve--cancel">
-            <fa icon="trash"/>
-            <span>取消</span>
-          </a>
         </div>
       </transition>
     </div>
@@ -34,13 +50,15 @@
 import axios from 'axios';
 import g from "@/variable/variable.js";
 import ConfirmModal from "@/components/organisms/common/ConfirmModal.vue";
+import StudioReserveUpdateModal from '@/components/organisms/studio/StudioReserveUpdateModal.vue';
 import { commonMethods } from '@/mixins/commonMethods';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [commonMethods, errorMethods],
   components: {
-    ConfirmModal
+    ConfirmModal,
+    StudioReserveUpdateModal
   },
   props: {
     reservesProp: {},
@@ -52,6 +70,9 @@ export default {
       selectedReserve: "",
       cancelFlg: false,
       removeNo: 0,
+      updateReserve: "",
+      updateFlg: false,
+      updateNo: 0,
       modalMsg: {
         title: "スタジオ予約取消",
         message: "スタジオの予約を取り消します。よろしいですか？",
@@ -66,6 +87,16 @@ export default {
       this.cancelFlg = true;
       this.selectedReserve = reserve;
       this.removeNo = i;
+    },
+    // 変更モーダルの表示
+    displayUpdateModal: function(reserve, i) {
+      this.updateReserve = reserve;
+      this.updateNo = i;
+      this.updateReserve.hour = Number(reserve.start_time.substr(11, 2));
+      this.updateReserve.minutes = reserve.start_time.substr(14, 2);
+      this.updateReserve.end_hour = Number(reserve.end_time.substr(11, 2));
+      this.updateReserve.end_minutes = reserve.end_time.substr(14, 2);
+      this.updateFlg = true;
     },
     // キャンセル処理の実行
     cancelStudioReserve(cancelConfirmFlg) {
@@ -106,6 +137,16 @@ export default {
       } else {
         this.cancelFlg = false;
       }
+    },
+    updateSuccess(updateReserve) {
+      this.updateFlg = false;
+      this.reserves[this.updateNo] = updateReserve;
+      this.updateReserve = "";
+    },
+    // 変更モーダルを閉じる
+    closeUpdateModal() {
+      this.updateFlg = false;
+      this.updateReserve = "";
     }
   },
   updated() {
@@ -118,33 +159,41 @@ export default {
 .reserve {
   box-shadow:  2px 2px 0 0 rgba(0,0,0,0.3);
   margin: 15px 5px;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 10px;
   background: #FFF;
   font-size: 0.8rem;
+  &--top {
+    background: #888;
+    color: #FFF;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 2px 5px;
+  }
   &--info {
-    padding: 10px;
-    &--top {
-      display: flex;
-      justify-content: flex-start;
-      &--date {
-        padding-right: 10px;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    &--left {
+      &--detail {
+        margin: 5px;
       }
     }
-  }
-  &--cancel {
-    display: block;
-    color:  red;
-    font-size: 0.8rem;
-    font-weight: bold;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    svg {
-      width: 14px;
-      margin-right: 10px;
+    &--right {
+      display: flex;
+      align-items: center;
+      &--cancel {
+        display: block;
+        color:  #888;
+        margin: 5px 0;
+        font-size: 0.8rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        svg {
+          width: 14px;
+          margin-right: 10px;
+        }
+      }
     }
   }
 }

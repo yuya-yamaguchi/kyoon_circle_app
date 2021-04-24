@@ -9,7 +9,7 @@
       <SystemError v-else-if="[500].includes(errorStatus)" :error-status-prop="errorStatus"/>
       <router-view v-else/>
     </div>
-    <Footer/>
+    <Footer v-if="footerShow"/>
   </div>
 </template>
 
@@ -37,9 +37,21 @@ export default {
     LoginModal,
     SystemError
   },
+  data() {
+    return {
+      urlPath: location.pathname
+    }
+  },
   computed: {
     errorStatus() {
       return this.$store.getters["response/status"]
+    },
+    footerShow() {
+      let paths = this.$route.path.split('/')
+      if (paths[paths.length-1] == "messages") {
+        return false
+      }
+      return true
     }
   }
 }

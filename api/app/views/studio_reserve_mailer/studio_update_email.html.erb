@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p><%= @user.name %> 様</p>
+    <p>
+      京音Webサイトをご利用いただきありがとうございます。<br>
+      スタジオ予約内容を変更しました。<br>
+      <br>
+      ◆変更後の内容<br>
+      日時：<%= @studio_reserve.date.strftime('%Y/%m/%d') %> <%= @studio_reserve.start_time.strftime('%H:%M') %>〜<%= @studio_reserve.end_time.strftime('%H:%M') %><br>
+      料金：<%= @studio_reserve.fee %>円<br>
+      人数：<%= @studio_reserve.users_num %>人<br>
+    </p>
+  </body>
+</html>
