@@ -118,7 +118,9 @@ export default {
   .messages-display {
     max-width: 1000px;
     margin: 0 auto;
-    min-height: calc(100vh - 180px);
+    margin-bottom: 60px;
+    min-height: calc(100vh - 170px);
+    overflow-y: scroll;
   }
   .send-message {
     background: #333;
