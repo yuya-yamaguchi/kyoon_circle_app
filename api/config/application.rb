@@ -35,5 +35,8 @@ module App
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # バッチファイル実行のため追加
+    config.autoload_paths += Dir["#{config.root}/lib"]
   end
 end

@@ -3,6 +3,7 @@
     <BreadCrumbs :breadCrumbs="breadCrumbs"/>
     <div class="single-container">
       <StayroomCalendar :stayrooms-prop="stayrooms"/>
+      <StayroomCation/>
     </div>
   </div>
 </template>
@@ -12,13 +13,15 @@ import axios from 'axios';
 import g from "@/variable/variable.js";
 import BreadCrumbs from "@/components/organisms/common/BreadCrumbs.vue";
 import StayroomCalendar from '@/components/organisms/stayroom/StayroomCalendar.vue';
+import StayroomCation from '@/components/organisms/stayroom/StayroomCation.vue';
 import { errorMethods } from '@/mixins/errorMethods';
 
 export default {
   mixins: [errorMethods],
   components: {
     BreadCrumbs,
-    StayroomCalendar
+    StayroomCalendar,
+    StayroomCation
   },
   computed: {
     breadCrumbs() {
