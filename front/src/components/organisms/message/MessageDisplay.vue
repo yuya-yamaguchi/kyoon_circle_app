@@ -52,8 +52,6 @@ export default {
 
 <style scoped lang="scss">
 .message-display-container {
-  max-height: calc(100vh - 170px);
-  overflow: scroll;
   .message-block {
     width: 100%;
     .own-message {
