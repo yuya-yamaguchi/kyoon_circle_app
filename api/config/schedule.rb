@@ -5,8 +5,8 @@ set :environment, rails_env
 set :output, 'log/cron.log'
 ENV.each { |k, v| env(k, v) }
 
-every 1.minute do
-  runner "Batch::SendEmail.studio_reserves_remind_email"
+every 1.day, at: '6:00 pm' do
+  rake 'notification:remind_studio_reserve_day_before'
 end
 
 # Learn more: http://github.com/javan/whenever
