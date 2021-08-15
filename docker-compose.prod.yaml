@@ -23,7 +23,9 @@ services:
     ports:
       - '3306:3306'
   front:
-    build: ./front
+    build:
+      context: ./front
+      dockerfile: "Dockerfile_prod"
     volumes:
       - ./front:/app
     ports:
