@@ -13,13 +13,16 @@
         :stayroom-reserve-prop="selectStayroomReserveShow"
         @update-stayroom-reserves="getStayRoomReserves()"
         @close-modal="closeModal()"/>
-      <div>宿泊部屋を選択</div>
-      <select v-model="selectStayRoomId" class="">
-        <option value="0">指定しない</option>
-        <option v-for="stayroom in stayroomsProp" :value="stayroom.id" :key="stayroom">
-          {{ stayroom.name }}
-        </option>
-      </select>
+      <h1 class="main-title">宿泊予約</h1>
+      <div class="room-tabs">
+        <p @click="changeRoom(0)" class="room-tab" :class="{ 'room-active': selectStayRoomId === 0 }">指定なし</p>
+        <div v-for="stayroom in stayroomsProp" :key="stayroom">
+          <p @click="changeRoom(stayroom.id)"
+             class="room-tab"
+             :class="{ 'room-active': selectStayRoomId === stayroom.id }">{{ stayroom.name }}
+          </p>
+        </div>
+      </div>
       <div class="month-bar space-between">
         <div class="prev-month some-updown-center" @click="changeMonth(Number($route.query.month)-1)">
           <fa icon="chevron-left" class="small-icon"></fa>
@@ -53,7 +56,8 @@
               </div>
             </div>
             <div v-else>
-              <span v-if="canReserve(day)" @click="displayReserveModal(day)" class="reserve-btn">予約する</span>
+              <span v-if="berforeToday(day)"></span>
+              <span v-else-if="canReserve(day)" @click="displayReserveModal(day)" class="reserve-btn">予約する</span>
               <span v-else>×</span>
             </div>
           </td>
@@ -198,6 +202,12 @@ export default {
     closeModal: function() {
       this.selectStayroomReserve = {}
       this.selectStayroomReserveShow = {}
+    },
+    changeRoom(stayroomId) {
+      this.selectStayRoomId = stayroomId
+    },
+    berforeToday(date) {
+      return new Date(date.year, date.month - 1, date.date + 1) <= new Date()
     }
   },
   mounted(){
@@ -219,6 +229,22 @@ function fmtApiDate2(value) {
 </script>
 
 <style scoped lang="scss">
+.room-tabs {
+  display: flex;
+  justify-content: flex-start;
+  margin: 20px 0;
+  .room-tab {
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  .room-active {
+    font-weight: bold;
+    background: var(--base-color);
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+  }
+}
+
 .month-bar {
   .prev-month {
     cursor: pointer;
