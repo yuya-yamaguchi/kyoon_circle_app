@@ -2,7 +2,7 @@
   <div class="other-auth-links">
     <router-link v-show="isLinkShow('/signup')" to="/signup" class="other-auth-links--sign-up">会員登録はこちら</router-link>
     <router-link v-show="isLoginLinkShow()" to="/login" class="other-auth-links--login">ログインはこちら</router-link>
-    <a @click="guestLogin('normal@example.com')" class="other-auth-links--guest-login">ゲストログイン</a>
+    <!-- <a @click="guestLogin('normal@example.com')" class="other-auth-links--guest-login">ゲストログイン</a> -->
     <!-- <a @click="guestLogin('admin@example.com')" class="other-auth-links--guest-login">ゲストログイン<br>（管理ユーザ）</a> -->
   </div>
 </template>
