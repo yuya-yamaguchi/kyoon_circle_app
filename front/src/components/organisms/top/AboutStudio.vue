@@ -5,8 +5,8 @@
       <div>
         <h3 class="studio-info--title top-each-title">STUDIO</h3>
         <div class="studio-info--explain">
-          <p>広さ30畳の音楽スタジオ</p>
           <p>ライブやバンド練習にご利用できます</p>
+          <p>24時間利用可能です</p>
           <p>ご予約は下記から</p>
         </div>
         <router-link to="/studios/1?week=0" class="studio-info--link gorgeous-button">
