@@ -6,7 +6,7 @@
         <h3 class="stay-info--title top-each-title">STAY</h3>
         <div class="stay-info--explain">
           <p>宿泊可能なお部屋をご用意しております</p>
-          <p>遠方からお越しの際などにご利用ください</p>
+          <p>ご予約は下記から</p>
         </div>
         <router-link to="/stayrooms/?month=0" class="stay-info--link gorgeous-button">
           <p>予約はこちら</p>

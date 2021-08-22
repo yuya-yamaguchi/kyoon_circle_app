@@ -5,6 +5,7 @@
       <Loading v-if="loadingProp"/>
       <div class="event-lists w800">
         <EventList v-if="eventsProp.length!=0" :events-prop="eventsProp"/>
+        <div v-else class="nothing-msg" style="margin-bottom: 30px;">開催予定のイベントはありません</div>
         <router-link :to="{name: 'EventIndex', query: {page: 1}}" class="all-view-link">すべてのイベントを見る</router-link>
       </div>
     </div>
