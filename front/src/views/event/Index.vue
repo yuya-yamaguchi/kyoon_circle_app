@@ -4,8 +4,6 @@
     <div class="single-container">
       <h1 class="main-title">イベント一覧</h1>
       <p class="event-explain">
-        セッションや飲み会など、毎月いろんなイベントを開催しています！<br>
-        お気軽にご参加ください！
       </p>
       <div class="event-list">
         <SearchEvent :searchProp="search" @search-events="searchEvents"/>
