@@ -74,7 +74,7 @@ export default {
   box-sizing: border-box;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   #app {
     font-size: 0.9rem;
   }

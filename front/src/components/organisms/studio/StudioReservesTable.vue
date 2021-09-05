@@ -293,7 +293,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .studio-reserve-container {
     .studio-reserves-table-container {
       .reserves-table {
