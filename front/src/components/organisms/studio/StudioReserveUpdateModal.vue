@@ -124,7 +124,7 @@ export default {
   margin: 0 auto;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .reserve-container {
     .reserve-form {
       select {

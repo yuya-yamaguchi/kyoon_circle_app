@@ -56,7 +56,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .user-profile-container {
     padding: 0;
     background: var(--base-color);

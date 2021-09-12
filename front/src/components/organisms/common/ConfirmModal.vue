@@ -86,7 +86,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .confirm-container {
     .btn-area {
       display: block;

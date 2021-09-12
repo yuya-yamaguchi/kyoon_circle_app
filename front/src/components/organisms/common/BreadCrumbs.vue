@@ -59,7 +59,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .bread-crumbs {
     font-size: 0.85rem;
   }

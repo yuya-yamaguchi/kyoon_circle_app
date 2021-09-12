@@ -108,7 +108,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .select-user-modal-container {
     .btn-area {
       display: block;
