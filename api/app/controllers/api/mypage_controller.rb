@@ -1,4 +1,6 @@
 class Api::MypageController < ApplicationController
+  include Pagy::Backend
+
   before_action :auth_check
 
   def show
@@ -7,10 +9,16 @@ class Api::MypageController < ApplicationController
     render status: 200, json: { user: user, user_instruments: user_instruments }
   end
 
-  def studio_reserves
-    future_reserves = @current_user.studio_reserves.after_today_desc
-    history_reserves = @current_user.studio_reserves.bofore_today_desc
-    render status: 200, json: { future_reserves: future_reserves, history_reserves: history_reserves }
+  # スタジオ予約
+  def future_studio_reserves
+    pagy, future_reserves = pagy(@current_user.studio_reserves.after_today_desc, items: 10)
+    render status: 200, json: { future_reserves: future_reserves, pagy: pagy_metadata(pagy) }
+  end
+
+  # スタジオ予約履歴
+  def history_studio_reserves
+    pagy, history_reserves = pagy(@current_user.studio_reserves.bofore_today_desc, items: 10)
+    render status: 200, json: { history_reserves: history_reserves, pagy: pagy_metadata(pagy) }
   end
 
   def events

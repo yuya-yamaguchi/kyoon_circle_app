@@ -42,9 +42,10 @@ import SideBar from "@/components/organisms/common/SideBar.vue";
 import StudioReservedList from "@/components/organisms/studio/StudioReservedList.vue";
 import Loading from '@/components/organisms/common/Loading.vue';
 import { errorMethods } from '@/mixins/errorMethods';
+import { scrollable } from '@/mixins/scrollable';
 
 export default {
-  mixins: [errorMethods],
+  mixins: [errorMethods, scrollable],
   components: {
     BreadCrumbs,
     SideBar,
@@ -69,20 +70,28 @@ export default {
   },
   data() {
     return {
+      // スタジオ予約関連
       futureReserves: [],
+      futurePage: 0,
+      futureLastPage: 1,
+      // スタジオ予約履歴関連
       historyReserves: [],
+      historyPage: 0,
+      historyLastPage: 1,
       currentTab: 1, // 1:スタジオ予約タブ、2:予約履歴タブ
       loading: true
     }
   },
   methods: {
     // ユーザのスタジオ予約状況の取得
-    getStudioReserves: function() {
+    getFutureStudioReserves() {
+      this.requesting = true
       axios.get(
-        `http://${g.hostName}/api/mypage/studio_reserves`,
+        `http://${g.hostName}/api/mypage/future_studio_reserves`,
         {
           params: {
-            user_id: this.$store.getters['user/id']
+            user_id: this.$store.getters['user/id'],
+            page: this.futurePage + 1
           },
           headers: {
             Authorization: this.$store.getters['user/secureToken']
@@ -90,22 +99,72 @@ export default {
         }
       )
       .then((response) => {
-        this.futureReserves  = response.data.future_reserves
-        this.historyReserves = response.data.history_reserves
+        this.futureReserves = this.futureReserves.concat(response.data.future_reserves)
+        this.futurePage = response.data.pagy.page
+        this.futureLastPage = response.data.pagy.last
       })
       .catch((error) => {
         this.apiErrors(error.response);
       })
       .finally(() => {
         this.loading = false
+        this.requesting = false
       })
     },
-    changeTab: function(num) {
-      this.currentTab = num
-    }
+    // ユーザのスタジオ予約履歴の取得
+    getHistoryStudioReserves() {
+      this.requesting = true
+      axios.get(
+        `http://${g.hostName}/api/mypage/history_studio_reserves`,
+        {
+          params: {
+            user_id: this.$store.getters['user/id'],
+            page: this.historyPage + 1
+          },
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
+      )
+      .then((response) => {
+        this.historyReserves = this.historyReserves.concat(response.data.history_reserves)
+        this.historyPage = response.data.pagy.page
+        this.historyLastPage = response.data.pagy.last
+      })
+      .catch((error) => {
+        this.apiErrors(error.response);
+      })
+      .finally(() => {
+        this.loading = false
+        this.requesting = false
+      })
+    },
+    changeTab(tabNo) {
+      if (this.currentTab === tabNo) { return }
+
+      this.currentTab = tabNo
+      this.fetchNextPage()
+    },
+    fetchNextPage() {
+      if (this.requesting) { return }
+      
+      if (this.currentTab === 1) {
+        if (this.futureLastPage > this.futurePage) {
+          this.getFutureStudioReserves()
+        }
+      } else {
+        if (this.historyLastPage > this.historyPage) {
+          this.getHistoryStudioReserves()
+        }
+      }
+    },
   },
-  mounted: function() {
-    this.getStudioReserves();
+  mounted() {
+    this.getFutureStudioReserves();
+    document.addEventListener('scroll', this.handleScroll)
+  },
+  unmounted() {
+    document.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>
