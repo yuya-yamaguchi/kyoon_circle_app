@@ -142,6 +142,8 @@ export default {
     changeTab(tabNo) {
       if (this.currentTab === tabNo) { return }
 
+      // 初回読込の時は読込のCSSを出すため、loadingをTrueにする
+      if (this.futurePage === 0 || this.historyPage === 0) { this.loading = true }
       this.currentTab = tabNo
       this.fetchNextPage()
     },

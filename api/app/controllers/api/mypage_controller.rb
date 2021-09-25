@@ -20,15 +20,19 @@ class Api::MypageController < ApplicationController
     pagy, history_reserves = pagy(@current_user.studio_reserves.bofore_today_desc, items: 10)
     render status: 200, json: { history_reserves: history_reserves, pagy: pagy_metadata(pagy) }
   end
-
-  def events
-    # 参加予定のイベント
-    future_events = @current_user.events.after_today.order_date_desc
+  
+  # 参加予定のイベント
+  def future_events
+    pagy, future_events = pagy(@current_user.events.after_today.order_date_desc, items: 10)
     out_future_params = future_events.map { |future_event| future_event.set_index_params(@current_user) }
-    # 過去の参加イベント
-    history_events = @current_user.events.before_today.order_date_desc
+    render status: 200, json: { future_events: out_future_params, pagy: pagy_metadata(pagy) }
+  end
+  
+  # 過去の参加イベント
+  def history_events
+    pagy, history_events = pagy(@current_user.events.before_today.order_date_desc, items: 10)
     out_history_params = history_events.map { |history_event| history_event.set_index_params(@current_user) }
-    render status: 200, json: { future_events: out_future_params, history_events: out_history_params }
+    render status: 200, json: { history_events: out_history_params, pagy: pagy_metadata(pagy) }
   end
 
   def stayroom_reserves
