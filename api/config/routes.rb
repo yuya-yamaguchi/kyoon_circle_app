@@ -18,9 +18,12 @@ Rails.application.routes.draw do
 
     resources :mypage, only: [:show, :update] do
       collection do
-        get :studio_reserves
-        get :events
-        get :stayroom_reserves
+        get :future_studio_reserves
+        get :history_studio_reserves
+        get :future_events
+        get :history_events
+        get :future_stayroom_reserves
+        get :history_stayroom_reserves
         get :messages
       end
     end

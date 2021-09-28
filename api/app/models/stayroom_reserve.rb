@@ -45,20 +45,6 @@ class StayroomReserve < ApplicationRecord
     return reserves
   end
 
-  def self.feature_reserves(user_id)
-    future_reserves = StayroomReserve.select(:id, :stayroom_id, :checkin_date, :checkout_date, :fee, 'stayrooms.name')
-                                     .left_joins(:stayroom)
-                                     .where('stayroom_reserves.user_id = ?', user_id)
-                                     .after_today_desc
-  end
-
-  def self.history_reserves(user_id)
-    history_reserves = StayroomReserve.select(:id, :checkin_date, :checkout_date, :fee, 'stayrooms.name')
-                                      .left_joins(:stayroom)
-                                      .where('stayroom_reserves.user_id = ?', user_id)
-                                      .before_today_desc
-  end
-
   def reserve_line
     text = "【宿泊予約】\n宿泊の予約が行われました\n\n予約者：#{self.user.name}\n部屋名：#{self.stayroom.name}\nチェックイン：#{checkin_date.strftime('%Y/%m/%d')}\nチェックアウト：#{checkout_date.strftime('%Y/%m/%d')}"
     push_line(text)

@@ -32,9 +32,10 @@ import g from "@/variable/variable.js";
 import EventList from '@/components/organisms/events/EventList.vue';
 import Loading from '@/components/organisms/common/Loading.vue';
 import { errorMethods } from '@/mixins/errorMethods';
+import { scrollable } from '@/mixins/scrollable';
 
 export default {
-  mixins: [errorMethods],
+  mixins: [errorMethods, scrollable],
   components: {
     EventList,
     Loading
@@ -42,18 +43,23 @@ export default {
   data() {
     return {
       futureEvents: [],
+      futurePage: 0,
+      futureLastPage: 1,
       historyEvents: [],
+      historyPage: 0,
+      historyLastPage: 1,
       currentTab: 1,
       loading: true
     }
   },
   methods: {
-    getMyEvents: function() {
+    getFutureEvents() {
       axios.get(
-        `http://${g.hostName}/api/mypage/events`,
+        `http://${g.hostName}/api/mypage/future_events`,
         {
           params: {
-            user_id: this.$store.getters['user/id']
+            user_id: this.$store.getters['user/id'],
+            page:    this.futurePage + 1
           },
           headers: {
             Authorization: this.$store.getters['user/secureToken']
@@ -61,22 +67,72 @@ export default {
         }
       )
       .then((response) => {
-        this.futureEvents  = response.data.future_events;
-        this.historyEvents  = response.data.history_events;
+        this.futureEvents = this.futureEvents.concat(response.data.future_events);
+        this.futurePage = response.data.pagy.page
+        this.futureLastPage = response.data.pagy.last
       })
       .catch((error) => {
         this.apiErrors(error.response);
       })
       .finally(() => {
         this.loading = false
+        this.requesting = false
       });
     },
-    changeTab: function(num) {
-      this.currentTab = num
-    }
+    getHistoryEvents() {
+      axios.get(
+        `http://${g.hostName}/api/mypage/history_events`,
+        {
+          params: {
+            user_id: this.$store.getters['user/id'],
+            page:    this.historyPage + 1
+          },
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
+      )
+      .then((response) => {
+        this.historyEvents = this.historyEvents.concat(response.data.history_events);
+        this.historyPage = response.data.pagy.page
+        this.historyLastPage = response.data.pagy.last
+      })
+      .catch((error) => {
+        this.apiErrors(error.response);
+      })
+      .finally(() => {
+        this.loading = false
+        this.requesting = false
+      });
+    },
+    changeTab(tabNo) {
+      if (this.currentTab === tabNo) { return }
+
+      // 初回読込の時は読込のCSSを出すため、loadingをTrueにする
+      if (this.futurePage === 0 || this.historyPage === 0) { this.loading = true }
+      this.currentTab = tabNo
+      this.fetchNextPage()
+    },
+    fetchNextPage() {
+      if (this.requesting) { return }
+      
+      if (this.currentTab === 1) {
+        if (this.futureLastPage > this.futurePage) {
+          this.getFutureEvents()
+        }
+      } else {
+        if (this.historyLastPage > this.historyPage) {
+          this.getHistoryEvents()
+        }
+      }
+    },
   },
   mounted() {
-    this.getMyEvents();
+    this.getFutureEvents();
+    document.addEventListener('scroll', this.handleScroll);
+  },
+  unmounted() {
+    document.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>

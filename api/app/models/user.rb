@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
                     length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-  
+
   def set_follow_count
     following_count = self.following.count
     followers_count = self.followers.count
@@ -74,6 +74,20 @@ class User < ActiveRecord::Base
       false
     end
   end
+
+  def future_stayroom_reserves
+      self.stayroom_reserves
+          .joins(:stayroom)
+          .after_today_desc
+          .select(:id, :stayroom_id, :checkin_date, :checkout_date, :fee, 'stayrooms.name')
+  end
+
+  def history_stayroom_reserves
+    self.stayroom_reserves
+        .joins(:stayroom)
+        .before_today_desc
+        .select(:id, :stayroom_id, :checkin_date, :checkout_date, :fee, 'stayrooms.name')
+end
 
   def new_token
     SecureRandom.urlsafe_base64

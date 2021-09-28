@@ -69,20 +69,28 @@ export default {
   },
   data() {
     return {
+      // 宿泊予約関連
       futureReserves: [],
+      futurePage: 0,
+      futureLastPage: 1,
+      // 宿泊予約履歴関連
       historyReserves: [],
-      currentTab: 1, // 1:スタジオ予約タブ、2:予約履歴タブ
+      historyPage: 0,
+      historyLastPage: 1,
+
+      currentTab: 1, // 1:予約タブ、2:予約履歴タブ
       loading: true
     }
   },
   methods: {
-    // ユーザのスタジオ予約状況の取得
-    getStudioReserves: function() {
+    // ユーザの宿泊予約状況の取得
+    getFutureStayroomReserves() {
       axios.get(
-        `http://${g.hostName}/api/mypage/stayroom_reserves`,
+        `http://${g.hostName}/api/mypage/future_stayroom_reserves`,
         {
           params: {
-            user_id: this.$store.getters['user/id']
+            user_id: this.$store.getters['user/id'],
+            page: this.futurePage + 1
           },
           headers: {
             Authorization: this.$store.getters['user/secureToken']
@@ -90,22 +98,73 @@ export default {
         }
       )
       .then((response) => {
-        this.futureReserves  = response.data.future_reserves
-        this.historyReserves = response.data.history_reserves
+        this.futureReserves = response.data.future_reserves
+        this.futurePage = response.data.pagy.page
+        this.futureLastPage = response.data.pagy.last
       })
       .catch((error) => {
         this.apiErrors(error.response);
       })
       .finally(() => {
         this.loading = false
+        this.requesting = false
       });
     },
-    changeTab: function(num) {
-      this.currentTab = num
-    }
+    // ユーザの過去の宿泊履歴を取得
+    getHistoryStayroomReserves() {
+      axios.get(
+        `http://${g.hostName}/api/mypage/history_stayroom_reserves`,
+        {
+          params: {
+            user_id: this.$store.getters['user/id'],
+            page: this.historyPage + 1
+          },
+          headers: {
+            Authorization: this.$store.getters['user/secureToken']
+          }
+        }
+      )
+      .then((response) => {
+        this.historyReserves = response.data.history_reserves
+        this.historyPage = response.data.pagy.page
+        this.historyLastPage = response.data.pagy.last
+      })
+      .catch((error) => {
+        this.apiErrors(error.response);
+      })
+      .finally(() => {
+        this.loading = false
+        this.requesting = false
+      });
+    },
+    changeTab(tabNo) {
+      if (this.currentTab === tabNo) { return }
+      
+      // 初回読込の時は読込中のCSSを出すため、loadingをTrueにする
+      if (this.futurePage === 0 || this.historyPage === 0) { this.loading = true }
+      this.currentTab = tabNo
+      this.fetchNextPage()
+    },
+    fetchNextPage() {
+      if (this.requesting) { return }
+      
+      if (this.currentTab === 1) {
+        if (this.futureLastPage > this.futurePage) {
+          this.getFutureStayroomReserves()
+        }
+      } else {
+        if (this.historyLastPage > this.historyPage) {
+          this.getHistoryStayroomReserves()
+        }
+      }
+    },
   },
-  mounted: function() {
-    this.getStudioReserves();
+  mounted() {
+    this.getFutureStayroomReserves();
+    document.addEventListener('scroll', this.handleScroll)
+  },
+  unmounted() {
+    document.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>
