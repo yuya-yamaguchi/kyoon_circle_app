@@ -35,10 +35,14 @@ class Api::MypageController < ApplicationController
     render status: 200, json: { history_events: out_history_params, pagy: pagy_metadata(pagy) }
   end
 
-  def stayroom_reserves
-    future_reserves  = StayroomReserve.feature_reserves(@current_user.id)
-    history_reserves = StayroomReserve.history_reserves(@current_user.id)
-    render status: 200, json: { future_reserves: future_reserves, history_reserves: history_reserves }
+  def future_stayroom_reserves
+    pagy, future_reserves = pagy(@current_user.future_stayroom_reserves, item: 10)
+    render status: 200, json: { future_reserves: future_reserves, pagy: pagy_metadata(pagy) }
+  end
+
+  def history_stayroom_reserves
+    pagy, history_reserves = pagy(@current_user.history_stayroom_reserves, item: 10)
+    render status: 200, json: { history_reserves: history_reserves, pagy: pagy_metadata(pagy) }
   end
 
   def messages

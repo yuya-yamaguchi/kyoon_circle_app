@@ -22,7 +22,8 @@ Rails.application.routes.draw do
         get :history_studio_reserves
         get :future_events
         get :history_events
-        get :stayroom_reserves
+        get :future_stayroom_reserves
+        get :history_stayroom_reserves
         get :messages
       end
     end
